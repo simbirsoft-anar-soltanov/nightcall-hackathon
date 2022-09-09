@@ -1,3 +1,4 @@
+import { Auth, getAuth } from 'firebase/auth';
 import Firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
@@ -23,6 +24,7 @@ const firebaseConfig: configType = {
 };
 
 const firebase: Firebase.app.App = Firebase.initializeApp(firebaseConfig);
+const auth: Auth = getAuth(firebase);
 const { FieldValue } = Firebase.firestore;
 
-export { firebase, FieldValue };
+export { firebase, auth, FieldValue };

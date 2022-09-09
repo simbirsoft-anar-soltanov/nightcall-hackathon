@@ -110,6 +110,15 @@ module.exports = {
         },
       },
       {
+        test: /\.(jpg|png)/,
+        use: {
+          loader: 'file-loader',
+          options: {
+            limit: 50000,
+          },
+        },
+      },
+      {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
         type: 'asset/resource',
       },

@@ -6,9 +6,6 @@ const handleShortTextfield = (fieldName: string, minNumber: number) => {
 
 const loginRegExp = /^[a-z]+([-_]?[a-z0-9]+){0,2}$/i;
 
-const passwordRegExp =
-  /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/;
-
 export const yupFields = {
   login: yup
     .string()
@@ -28,7 +25,6 @@ export const yupFields = {
   password: yup
     .string()
     .required('Введите пароль')
-    .min(8, handleShortTextfield('пароль', 8))
-    .max(26)
-    .matches(passwordRegExp, 'Недопустимый формат пароля'),
+    .min(6, handleShortTextfield('пароль', 6))
+    .max(26),
 };
