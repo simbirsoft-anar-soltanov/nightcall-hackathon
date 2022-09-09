@@ -6,9 +6,12 @@ type tDefaultLayout = { children: ReactNode };
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: '1240px',
+    maxWidth: '1280px',
     margin: '0 auto',
     padding: '28px',
+    height: '100vh',
+    display: 'flex',
+    justifyContent: 'center',
   },
 });
 

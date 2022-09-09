@@ -10,6 +10,8 @@ Nightcall
 
 ## Демо
 
+- https://nightcall-hackathon.vercel.app
+
 ## Авторы
 
 - [@anar.soltanov](https://github.com/simbirsoft-anar-soltanov)

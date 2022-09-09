@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { Suspense, useContext } from 'react';
 import {
   Navigate,
   Route,
@@ -7,20 +7,33 @@ import {
 } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import Error404Page from 'pages/Error404Page/Error404Page';
+import { UserContext } from 'core/context/user';
 import { appPaths } from './paths';
 
 const history = createBrowserHistory({ window });
 
-const Routing = () => (
-  <Suspense fallback='Loading...'>
-    <HistoryRouter history={history}>
-      <Routes>
-        <Route path='/' element={<Navigate to='/auth' />} />
-        {appPaths.authPage.asRoute()}
-        <Route path={'*'} element={<Error404Page />} />
-      </Routes>
-    </HistoryRouter>
-  </Suspense>
-);
+const Routing = () => {
+  const { user: loggedInUser } = useContext(UserContext);
+
+  return (
+    <Suspense fallback='Loading...'>
+      <HistoryRouter history={history}>
+        <Routes>
+          <Route path='/' element={<Navigate to='/auth' />} />
+          {appPaths.authPage.asRoute()}
+          {appPaths.signUpPage.asRoute()}
+          {loggedInUser && (
+            <>
+              {appPaths.moderatorPage.asRoute()}
+              {appPaths.organizationPage.asRoute()}
+              {appPaths.employeePage.asRoute()}
+            </>
+          )}
+          <Route path={'*'} element={<Error404Page />} />
+        </Routes>
+      </HistoryRouter>
+    </Suspense>
+  );
+};
 
 export default Routing;
