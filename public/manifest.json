@@ -1,0 +1,8 @@
+{
+  "short_name": "Сервис по управлению волонтёрством",
+  "name": "Сервис по управлению волонтёрством",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000",
+  "background_color": "#fff"
+}
