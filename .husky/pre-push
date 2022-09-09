@@ -1,0 +1,4 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+npx --no-install git-branch-is -r '^tmp/' 2>/dev/null || npm run test -- --watchAll=false

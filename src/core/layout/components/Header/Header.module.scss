@@ -1,0 +1,19 @@
+.navbar {
+  padding: 30px 40px 0;
+  display: flex;
+  justify-content: space-between;
+
+  &-item {
+    padding: 0;
+  }
+
+  .leftpanel {
+    align-items: center;
+  }
+
+  .rightPanel {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}

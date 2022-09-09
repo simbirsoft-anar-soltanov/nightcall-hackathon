@@ -1,0 +1,1 @@
+Документация по [husky](https://typicode.github.io/husky/#/) и [lint-staged](https://www.npmjs.com/package/lint-staged)
