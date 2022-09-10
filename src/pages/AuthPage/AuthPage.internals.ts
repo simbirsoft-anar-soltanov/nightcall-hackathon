@@ -23,7 +23,7 @@ const schema = yup
 
 const styledAuthContainer = {
   maxWidth: '600px',
-  margin: '24px auto',
+  margin: '16px auto',
 };
 
 const styledForm = {
@@ -32,4 +32,10 @@ const styledForm = {
   gap: '42px',
 };
 
-export { schema, styledAuthContainer, styledForm };
+const rolePath: Record<string, string> = {
+  ['Модератор']: '/modDashboard',
+  ['Организатор']: '/orgDashboard',
+  ['Сотрудник']: '/empDashboard',
+};
+
+export { rolePath, schema, styledAuthContainer, styledForm };

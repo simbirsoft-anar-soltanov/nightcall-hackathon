@@ -27,4 +27,8 @@ export const yupFields = {
     .required('Введите пароль')
     .min(6, handleShortTextfield('пароль', 6))
     .max(26),
+  organizationName: yup.string().required('Введите название организации'),
+  city: yup.string().required('Укажите город'),
+  email: yup.string().email().required('Введите почту'),
+  numberPhone: yup.string().required('Введите номер телефона'),
 };

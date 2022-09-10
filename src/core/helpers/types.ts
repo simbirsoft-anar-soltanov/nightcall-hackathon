@@ -1,7 +1,7 @@
 import { Dispatch } from 'react';
 
 export type User = {
-  userId: string;
+  id: string;
   name: string;
   surname: string;
   dateCreated: number;
@@ -9,6 +9,9 @@ export type User = {
   emailAddress: string;
   avatar: string;
   role: string;
+  city: string;
+  numberPhone: string;
+  organizationName?: string;
 };
 
 export type UseUserType = {

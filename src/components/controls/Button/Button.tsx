@@ -9,7 +9,6 @@ const getCustomBaseStyleButton = (stylization: Record<string, string>) => ({
   fontSize: '24px',
   fontWeight: '500',
   height: '64px',
-  marginTop: '28px',
   transition: 'opacity 300ms',
   ...stylization,
 });
