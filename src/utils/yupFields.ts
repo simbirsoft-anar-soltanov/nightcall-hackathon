@@ -4,31 +4,26 @@ const handleShortTextfield = (fieldName: string, minNumber: number) => {
   return `Слишком короткий ${fieldName}. Минимальный набор символов - ${minNumber}.`;
 };
 
-const loginRegExp = /^[a-z]+([-_]?[a-z0-9]+){0,2}$/i;
+const passwordRegExp =
+  /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/;
+
+const phoneRegExp =
+  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 export const yupFields = {
-  login: yup
-    .string()
-    .required('Введите логин')
-    .test('is-email', 'Введите корректный email или логин', (value) => {
-      if (value) {
-        return value.includes('@')
-          ? yup.string().email().isValidSync(value)
-          : yup
-              .string()
-              .min(5, handleShortTextfield('логин', 5))
-              .matches(loginRegExp, 'Недопустимый формат логина')
-              .isValidSync(value);
-      }
-      return true;
-    }),
+  email: yup.string().email().required('Введите почту'),
   password: yup
     .string()
     .required('Введите пароль')
     .min(6, handleShortTextfield('пароль', 6))
-    .max(26),
+    .max(26)
+    .matches(passwordRegExp, 'Недопустимый формат пароля'),
   organizationName: yup.string().required('Введите название организации'),
   city: yup.string().required('Укажите город'),
-  email: yup.string().email().required('Введите почту'),
-  numberPhone: yup.string().required('Введите номер телефона'),
+  numberPhone: yup
+    .string()
+    .required('Введите номер телефона')
+    .min(12)
+    .max(13)
+    .matches(phoneRegExp, 'Недопустимые символы'),
 };

@@ -3,6 +3,7 @@ export type tRoleOption = 'Организация' | 'Сотрудник';
 const roleOptionVariables: Record<string, string> = {
   0: 'Организация',
   1: 'Сотрудник',
+  2: 'Модератор',
 };
 
 const styledSignUpContainer = {
