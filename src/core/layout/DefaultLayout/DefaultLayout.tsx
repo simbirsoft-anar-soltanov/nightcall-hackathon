@@ -13,7 +13,9 @@ import logoIcon from 'assets/img/logo.png';
 const DefaultLayout = ({ children }: tDefaultLayout) => {
   const { firebase } = useContext(FirebaseContext);
   const { user: loggedInUser } = useContext(UserContext);
-  const { user }: UseUserType = useUser(loggedInUser?.uid);
+  const {
+    user: { id, name, surname, organizationName, avatar },
+  }: UseUserType = useUser(loggedInUser?.uid);
 
   const navigate = useNavigate();
 
@@ -23,14 +25,15 @@ const DefaultLayout = ({ children }: tDefaultLayout) => {
     <Box component='section' className={root}>
       <Box component='header' className={header}>
         <img src={logoIcon} alt='logo' className={logo} />
-        {loggedInUser && user.name && (
+        {loggedInUser && id && (
           <Box className={userBlock}>
             <Avatar
-              src={user.avatar || 'https://i.ibb.co/Lkz8LWW/default.png'}
-              alt={user.name}
+              src={avatar || 'https://i.ibb.co/Lkz8LWW/default.png'}
+              alt={name}
             />
             <Typography className={userName}>
-              {user.name} {user.surname}
+              {organizationName && organizationName}
+              {name && surname && `${name} ${surname}`}
             </Typography>
             <IconButton
               sx={{ padding: 0 }}
