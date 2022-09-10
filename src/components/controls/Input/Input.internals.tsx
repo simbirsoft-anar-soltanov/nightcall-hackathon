@@ -5,21 +5,19 @@ const useStyles = makeStyles({
     '& .MuiInputBase-root': {
       background: '#f3f3f3',
       borderRadius: '6px',
-      height: '72px',
+      height: '52px',
     },
     '& .MuiInputBase-input': {
       fontWeight: 400,
-      fontSize: '20px',
+      fontSize: '16px',
       lineHeight: '20px',
-      paddingBottom: '8px',
-      paddingLeft: '16px',
     },
     '& .MuiInputLabel-root': {
       paddingTop: '10px',
       paddingLeft: '8px',
       color: '#606060',
       fontWeight: 400,
-      fontSize: '20px',
+      fontSize: '16px',
       lineHeight: '20px',
       '&.MuiFormLabel-filled': {
         color: '#606060',
@@ -60,7 +58,7 @@ const styleLabel = {
   fontWeight: 400,
   fontSize: '20px',
   lineHeight: '20px',
-  margin: '12px 0 20px',
+  margin: '8px 0 16px',
 };
 
 export { useStyles, styledBox, styleLabel };
