@@ -17,8 +17,8 @@ const inputCollection = [
   { name: 'surname', label: 'Фамилия' },
   { name: 'email', label: 'Адрес электронной почты' },
   { name: 'password', label: 'Пароль' },
-  { name: 'city', label: 'Город' },
   { name: 'numberPhone', label: 'Номер телефона' },
+  { name: 'city', label: 'Город' },
 ];
 
 const styledForm = {

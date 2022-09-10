@@ -6,6 +6,7 @@ import { Typography, Box, Alert, Snackbar } from '@mui/material';
 import { FirebaseContext } from 'core/context/firebase';
 import { doesOrganizationNameExist } from 'core/services/firebase';
 import Input from 'components/controls/Input/Input';
+import Select from 'components/controls/Select/Select';
 import { CustomSendButton } from 'components/controls/Button/Button';
 import { inputCollection, schema, styledForm } from './OrgForm.internals';
 
@@ -59,15 +60,28 @@ const OrgForm: FC = () => {
         Регистрация организации
       </Typography>
       <Box component='form' onSubmit={onSubmit} sx={styledForm}>
-        {inputCollection.map(({ name, label }) => (
-          <Input
-            key={name}
-            name={name}
-            label={label}
-            formError={errors?.[name]?.message}
-            register={register}
-          />
-        ))}
+        {inputCollection.map(({ name, label }) => {
+          if (name === 'city')
+            return (
+              <Select
+                key={name}
+                name={name}
+                label={label}
+                formError={errors?.[name]?.message}
+                register={register}
+              />
+            );
+
+          return (
+            <Input
+              key={name}
+              name={name}
+              label={label}
+              formError={errors?.[name]?.message}
+              register={register}
+            />
+          );
+        })}
         <CustomSendButton
           type='submit'
           variant='outlined'

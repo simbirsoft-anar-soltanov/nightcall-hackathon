@@ -8,6 +8,7 @@ import Input from 'components/controls/Input/Input';
 import { CustomSendButton } from 'components/controls/Button/Button';
 import { doesEmailExist } from 'core/services/firebase';
 import { inputCollection, schema, styledForm } from './EmployeeForm.internals';
+import Select from 'components/controls/Select/Select';
 
 const EmployeeForm: FC = () => {
   const { firebase } = useContext(FirebaseContext);
@@ -64,15 +65,28 @@ const EmployeeForm: FC = () => {
         Регистрация сотрудника
       </Typography>
       <Box component='form' onSubmit={onSubmit} sx={styledForm}>
-        {inputCollection.map(({ name, label }) => (
-          <Input
-            key={name}
-            name={name}
-            label={label}
-            formError={errors?.[name]?.message}
-            register={register}
-          />
-        ))}
+        {inputCollection.map(({ name, label }) => {
+          if (name === 'city')
+            return (
+              <Select
+                key={name}
+                name={name}
+                label={label}
+                formError={errors?.[name]?.message}
+                register={register}
+              />
+            );
+
+          return (
+            <Input
+              key={name}
+              name={name}
+              label={label}
+              formError={errors?.[name]?.message}
+              register={register}
+            />
+          );
+        })}
         <CustomSendButton type='submit' variant='outlined' disabled={!isValid}>
           Зарегистрироваться
         </CustomSendButton>
