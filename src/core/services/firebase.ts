@@ -1,3 +1,5 @@
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from 'core/lib/firebase';
 import { firebase } from '../lib/firebase';
 import { User } from '../helpers/types';
 
@@ -50,4 +52,12 @@ export const getUserByUserId = async (userId: string): Promise<any[]> => {
   }));
 
   return user;
+};
+
+export const changeStatusRequest = async (
+  requestId: string,
+  status: string,
+): Promise<void> => {
+  const taskDocRef = doc(db, 'request', requestId);
+  await updateDoc(taskDocRef, { status });
 };
