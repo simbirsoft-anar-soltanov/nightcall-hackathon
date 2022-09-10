@@ -1,4 +1,4 @@
-import { Suspense, useContext } from 'react';
+import { Suspense } from 'react';
 import {
   Navigate,
   Route,
@@ -6,30 +6,27 @@ import {
   unstable_HistoryRouter as HistoryRouter,
 } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
+import SpinnerWrap from 'core/components/SpinnerWrap/SpinnerWrap';
 import Error404Page from 'pages/Error404Page/Error404Page';
-import { UserContext } from 'core/context/user';
 import { appPaths } from './paths';
 
 const history = createBrowserHistory({ window });
 
 const Routing = () => {
-  const { user: loggedInUser } = useContext(UserContext);
-
   return (
-    <Suspense fallback='Loading...'>
+    <Suspense fallback={<SpinnerWrap />}>
       <HistoryRouter history={history}>
         <Routes>
-          <Route path='/' element={<Navigate to='/auth' />} />
-          {appPaths.authPage.asRoute()}
-          {appPaths.signUpPage.asRoute()}
-          {loggedInUser && (
-            <>
-              {appPaths.moderatorPage.asRoute()}
-              {appPaths.organizationPage.asRoute()}
-              {appPaths.employeePage.asRoute()}
-            </>
-          )}
-          <Route path={'*'} element={<Error404Page />} />
+          <>
+            <Route path='/' element={<Navigate to='/auth' />} />
+            {appPaths.authPage.asRoute()}
+            {appPaths.signUpPage.asRoute()}
+            {appPaths.errorBoundary.asRoute()}
+            {appPaths.moderatorPage.asRoute()}
+            {appPaths.organizationPage.asRoute()}
+            {appPaths.employeePage.asRoute()}
+            <Route path={'*'} element={<Error404Page />} />
+          </>
         </Routes>
       </HistoryRouter>
     </Suspense>

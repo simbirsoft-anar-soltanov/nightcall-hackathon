@@ -55,3 +55,12 @@ export const employeePage = route('/empDashboard', {
       ),
   ),
 });
+
+export const errorBoundary = route('/error', {
+  Component: lazy(
+    () =>
+      import(
+        /* webpackChunkName: 'default' */ 'core/components/ErrorBoundary/ErrorFallback'
+      ),
+  ),
+});

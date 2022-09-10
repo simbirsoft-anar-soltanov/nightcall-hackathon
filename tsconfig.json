@@ -4,6 +4,7 @@
     "lib": ["dom", "dom.iterable", "esnext", "ES2021"],
     "baseUrl": ".",
     "paths": {
+      "assets/*": ["src/assets/*"],
       "base/*": ["src/base/*"],
       "utils/*": ["src/utils/*"],
       "components/*": ["src/components/*"],
