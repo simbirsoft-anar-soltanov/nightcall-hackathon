@@ -1,52 +1,56 @@
 import Dialog from '@mui/material/Dialog';
-import { Alert, DialogContent, DialogTitle, Snackbar } from '@mui/material';
+import {
+  Alert,
+  Box,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  Snackbar,
+} from '@mui/material';
 import Button from '@mui/material/Button';
 import {
   styledAuthContainer,
   styledForm,
 } from 'pages/AuthPage/AuthPage.internals';
-import { schema } from 'pages/OrgPage/OrgPage.internals';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
-import { Box, Grid } from '@mui/material';
 import Input from 'components/controls/Input/Input';
 import { CustomSendButton } from 'components/controls/Button/Button';
 import { FieldValues, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
-import { addEvent } from 'core/services/firebase';
+import { schemaChangeStatus } from 'pages/OrgPage/OrgPage.internals';
+import { sendOrderForChangeStatusOrg } from 'core/services/firebase';
 import { useContext, useState } from 'react';
+import { UserContext } from 'core/context/user';
 import { UseUserType } from 'core/helpers/types';
 import useUser from 'core/hooks/useUser';
-import { UserContext } from 'core/context/user';
 
-interface OrderModal {
+interface ChangeStatusModal {
   open: boolean;
   onClose: () => void;
 }
 
-const OrderModal = (props: OrderModal) => {
+const ChangeStatusModal = (props: ChangeStatusModal) => {
   const { onClose, open } = props;
   const [error, setError] = useState(false);
   const { user: loggedInUser } = useContext(UserContext);
   const {
-    user: { id },
+    user: { id, ...dataOrg },
   }: UseUserType = useUser(loggedInUser?.uid);
-
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-
+  const fields = [
+    { name: 'aboutSelf', label: 'Деятельность организации' },
+    { name: 'organizationName', label: 'Название организации' },
+  ];
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<FieldValues>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schemaChangeStatus),
     mode: 'all',
   });
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      const isAddEvent = await addEvent(data, id);
+      const isAddEvent = await sendOrderForChangeStatusOrg(data, dataOrg);
       if (isAddEvent) {
         onClose();
       } else {
@@ -56,26 +60,13 @@ const OrderModal = (props: OrderModal) => {
       console.log(err);
     }
   });
-
-  const fields = [
-    { name: 'info', label: 'Название мероприятия' },
-    { name: 'category', label: 'Категория' },
-    { name: 'time_start', label: 'Дата проведения' },
-    { name: 'time', label: 'Длительность мероприятия' },
-    { name: 'must', label: 'Требования к кандидату' },
-    { name: 'people_count', label: 'Количество волонтеров' },
-  ];
-
   return (
     <>
-      <Dialog
-        open={open}
-        onClose={onClose}
-        maxWidth='md'
-        fullScreen={fullScreen}
-      >
+      <Dialog open={open} onClose={onClose} maxWidth='md'>
         <Grid container alignItems='center' justifyContent='space-between'>
-          <DialogTitle style={{ fontSize: '22px' }}>Создать заявку</DialogTitle>
+          <DialogTitle style={{ fontSize: '22px' }}>
+            Получить доступ на создание заявок
+          </DialogTitle>
           <Button onClick={onClose} autoFocus>
             Х
           </Button>
@@ -118,4 +109,4 @@ const OrderModal = (props: OrderModal) => {
   );
 };
 
-export default OrderModal;
+export default ChangeStatusModal;

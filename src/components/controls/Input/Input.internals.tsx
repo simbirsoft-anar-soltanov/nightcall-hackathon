@@ -12,6 +12,10 @@ const useStyles = makeStyles({
       fontSize: '16px',
       lineHeight: '20px',
     },
+    '.MuiDialog-container & .MuiInputBase-input': {
+      maxWidth: '100%',
+      width: '600px',
+    },
     '& .MuiInputLabel-root': {
       paddingTop: '10px',
       paddingLeft: '8px',
