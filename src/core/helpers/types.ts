@@ -11,7 +11,10 @@ export type User = {
   role: string;
   city: string;
   numberPhone: string;
+  status: string;
   organizationName?: string;
+  statusReadyJoinToEvent?: string;
+  joinEvents?: any[];
 };
 
 export type UseUserType = {

@@ -2,7 +2,7 @@ import { UseFormRegister, FieldValues } from 'react-hook-form';
 
 export type tInputProps = {
   label: string;
-  formError: string | undefined;
   name: string;
+  formError: string | undefined;
   register: UseFormRegister<FieldValues>;
 };

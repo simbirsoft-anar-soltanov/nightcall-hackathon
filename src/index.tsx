@@ -5,6 +5,7 @@ import { FirebaseContext } from 'core/context/firebase';
 import { firebase, FieldValue } from 'core/lib/firebase';
 import ErrorBoundary from 'core/components/ErrorBoundary/ErrorBoundary';
 import { default as packageInfo } from '../package.json';
+import 'bulma/css/bulma.min.css';
 import 'src/index.scss';
 
 const container = document.getElementById('root');
