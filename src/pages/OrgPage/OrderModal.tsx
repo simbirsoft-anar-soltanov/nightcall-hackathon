@@ -6,6 +6,8 @@ import {
   styledForm,
 } from 'pages/AuthPage/AuthPage.internals';
 import { schema } from 'pages/OrgPage/OrgPage.internals';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
 import { Box, Grid } from '@mui/material';
 import Input from 'components/controls/Input/Input';
 import { CustomSendButton } from 'components/controls/Button/Button';
@@ -29,6 +31,9 @@ const OrderModal = (props: OrderModal) => {
   const {
     user: { id },
   }: UseUserType = useUser(loggedInUser?.uid);
+
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   const {
     register,
@@ -63,7 +68,12 @@ const OrderModal = (props: OrderModal) => {
 
   return (
     <>
-      <Dialog open={open} onClose={onClose} maxWidth='md'>
+      <Dialog
+        open={open}
+        onClose={onClose}
+        maxWidth='md'
+        fullScreen={fullScreen}
+      >
         <Grid container alignItems='center' justifyContent='space-between'>
           <DialogTitle style={{ fontSize: '22px' }}>Создать заявку</DialogTitle>
           <Button onClick={onClose} autoFocus>

@@ -1,7 +1,8 @@
 import { doc, updateDoc } from 'firebase/firestore';
-import { db } from 'core/lib/firebase';
+import { db, FieldValue } from 'core/lib/firebase';
 import { firebase } from '../lib/firebase';
 import { User } from '../helpers/types';
+import { tCardProps } from 'components/controls/Card/Card';
 import { v4 as uuidv4 } from 'uuid';
 
 export const doesOrganizationNameExist = async (
@@ -56,11 +57,28 @@ export const getUserByUserId = async (userId: string): Promise<any[]> => {
 };
 
 export const changeStatusRequest = async (
-  requestId: string,
-  status: string,
+  { docId }: tCardProps['request'],
+  changeStatus: string,
+  nameCollection?: string,
 ): Promise<void> => {
-  const taskDocRef = doc(db, 'request', requestId);
-  await updateDoc(taskDocRef, { status });
+  if (!nameCollection) return;
+
+  const taskDocRef = doc(db, nameCollection, docId);
+  await updateDoc(taskDocRef, { status: changeStatus });
+};
+
+export const joinToEvent = async (
+  docId: string,
+  event: any,
+  isUnFollow?: boolean,
+): Promise<void> => {
+  const userDocRef = doc(db, 'users', docId);
+
+  await updateDoc(userDocRef, {
+    joinEvents: isUnFollow
+      ? FieldValue.arrayRemove(event)
+      : FieldValue.arrayUnion(event),
+  });
 };
 
 type event = {
@@ -116,4 +134,12 @@ export const sendOrderForChangeStatusOrg = async (data: any, dataOrg: any) => {
   } catch (err) {
     console.log(err);
   }
+};
+
+export const changeEmployeeStatus = async (
+  userId: string,
+  statusReadyJoinToEvent: string,
+): Promise<void> => {
+  const taskDocRef = doc(db, 'users', userId);
+  await updateDoc(taskDocRef, { statusReadyJoinToEvent });
 };
