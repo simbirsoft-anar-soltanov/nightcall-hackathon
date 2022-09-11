@@ -61,3 +61,35 @@ export const changeStatusRequest = async (
   const taskDocRef = doc(db, 'request', requestId);
   await updateDoc(taskDocRef, { status });
 };
+
+type event = {
+  time: string | null;
+  info: string;
+  organization_id: number;
+  foto: string[] | null;
+  date: string;
+  category: string;
+  must: string | null;
+  people_count: number | null;
+  time_start: string;
+};
+
+export const getEvents = async (): Promise<event[]> => {
+  const result = await firebase.firestore().collection('events').get();
+  const eventsOrg: any = result.docs.map((item) => ({
+    ...item.data(),
+  }));
+
+  return eventsOrg;
+};
+
+export const addEvent = async (event: any) => {
+  try {
+    await firebase
+      .firestore()
+      .collection('events')
+      .add({ ...event, organization_id: Math.random() });
+  } catch (err) {
+    console.log(err);
+  }
+};
