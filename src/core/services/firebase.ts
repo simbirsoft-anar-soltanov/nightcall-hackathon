@@ -2,6 +2,7 @@ import { doc, updateDoc } from 'firebase/firestore';
 import { db } from 'core/lib/firebase';
 import { firebase } from '../lib/firebase';
 import { User } from '../helpers/types';
+import { v4 as uuidv4 } from 'uuid';
 
 export const doesOrganizationNameExist = async (
   organizationName: string,
@@ -83,12 +84,35 @@ export const getEvents = async (): Promise<event[]> => {
   return eventsOrg;
 };
 
-export const addEvent = async (event: any) => {
+export const addEvent = async (event: any, userId: string) => {
   try {
     await firebase
       .firestore()
       .collection('events')
-      .add({ ...event, organization_id: Math.random() });
+      .add({ ...event, organization_id: userId, status: 'active' });
+    return true;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const sendOrderForChangeStatusOrg = async (data: any, dataOrg: any) => {
+  try {
+    await firebase
+      .firestore()
+      .collection('request')
+      .add({
+        ...data,
+        city: dataOrg.city,
+        email: dataOrg.email,
+        logo: dataOrg.avatar,
+        organization_id: uuidv4(),
+        phoneNumber: dataOrg.numberPhone,
+        previewPhoto: dataOrg.avatar,
+        requestId: uuidv4(),
+        status: 'active',
+      });
+    return true;
   } catch (err) {
     console.log(err);
   }

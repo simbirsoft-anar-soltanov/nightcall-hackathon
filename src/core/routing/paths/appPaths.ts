@@ -56,6 +56,12 @@ export const employeePage = route('/empDashboard', {
   ),
 });
 
+export const eventPage = route('/event/:id', {
+  Component: lazy(
+    () => import(/* webpackChunkName: 'default' */ 'pages/EventPage/EventPage'),
+  ),
+});
+
 export const errorBoundary = route('/error', {
   Component: lazy(
     () =>

@@ -33,4 +33,35 @@ const CustomSendButton = styled(Button)<{
   };
 });
 
-export { CustomSendButton };
+const CustomOpenModalButton = styled(Button)<{
+  stylization?: Record<string, string>;
+}>(({ stylization = {} }) => {
+  const customBaseStyleButton = getCustomBaseStyleButton(stylization);
+  const customBaseStyleOpenModalButton = {
+    fontSize: '18px',
+    padding: '5px 15px',
+    height: 'auto',
+    margin: '5px 0px 10px',
+  };
+
+  return {
+    ...customBaseStyleButton,
+    ...customBaseStyleOpenModalButton,
+    textTransform: 'none',
+    '&:hover': {
+      ...customBaseStyleButton,
+      ...customBaseStyleOpenModalButton,
+      opacity: '75%',
+    },
+    '&:active': { ...customBaseStyleButton, ...customBaseStyleOpenModalButton },
+    '&:focus': { ...customBaseStyleButton, ...customBaseStyleOpenModalButton },
+    '&:disabled': {
+      ...customBaseStyleButton,
+      opacity: stylization.opacity || '35%',
+      cursor: 'not-allowed',
+      pointerEvents: 'all',
+    },
+  };
+});
+
+export { CustomSendButton, CustomOpenModalButton };

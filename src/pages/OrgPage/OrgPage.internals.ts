@@ -11,9 +11,16 @@ const schema = yup
   })
   .required();
 
+const schemaChangeStatus = yup
+  .object({
+    aboutSelf: yupFields.aboutSelf,
+    organizationName: yupFields.organizationName,
+  })
+  .required();
+
 const styledOrgContainer = {
   maxWidth: '100%',
   margin: '24px auto',
 };
 
-export { schema, styledOrgContainer };
+export { schema, schemaChangeStatus, styledOrgContainer };

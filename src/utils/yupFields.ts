@@ -31,5 +31,6 @@ export const yupFields = {
   time: yup.string().required('Укажите длительность мероприятия'),
   time_start: yup.string().required('Укажите дату проведения'),
   must: yup.string(),
-  people_count: yup.number(),
+  people_count: yup.number().typeError('Введите число').notRequired(),
+  aboutSelf: yup.string().required('Укажите деятельность организации'),
 };
