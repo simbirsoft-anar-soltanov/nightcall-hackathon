@@ -8,11 +8,14 @@ import {
 } from 'pages/AuthPage/AuthPage.internals';
 import { schema } from 'pages/OrgPage/OrgPage.internals';
 import { Box, Typography } from '@mui/material';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
 import Input from 'components/controls/Input/Input';
 import { CustomSendButton } from 'components/controls/Button/Button';
 import { FieldValues, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import { addEvent } from 'core/services/firebase';
+import FileLoader from 'components/controls/FileLoader/FileLoader';
 
 interface OrderModal {
   open: boolean;
@@ -21,6 +24,9 @@ interface OrderModal {
 
 const OrderModal = (props: OrderModal) => {
   const { onClose, open } = props;
+
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   const {
     register,
@@ -40,7 +46,7 @@ const OrderModal = (props: OrderModal) => {
   });
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={open} onClose={onClose} fullScreen={fullScreen}>
       <DialogTitle>
         Создать заявку
         <Button onClick={onClose} autoFocus>
@@ -83,6 +89,7 @@ const OrderModal = (props: OrderModal) => {
               formError={errors.people_count?.message}
               register={register}
             />
+            <FileLoader />
 
             <CustomSendButton
               type='submit'

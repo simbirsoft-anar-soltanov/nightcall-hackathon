@@ -51,7 +51,7 @@ export const employeePage = route('/empDashboard', {
   Component: lazy(
     () =>
       import(
-        /* webpackChunkName: 'default' */ 'pages/EmployeePage/EmployeePage'
+        /* webpackChunkName: 'default' */ 'pages/EmployeePage/EmployeePage.container'
       ),
   ),
 });

@@ -4,6 +4,11 @@ const statusLabelRequest: Record<string, string> = {
   reject: 'Отменена',
 };
 
+const typeModerationVariables: Record<string, string> = {
+  0: 'request',
+  1: 'event',
+};
+
 const statusRequest: Record<string, string> = {
   active: 'info',
   approve: 'success',
@@ -33,6 +38,7 @@ const styledCardContainer = {
 };
 
 export {
+  typeModerationVariables,
   statusLabelRequest,
   statusRequest,
   styledModeratorContainer,

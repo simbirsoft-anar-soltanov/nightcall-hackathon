@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Box, Button, CardActions, Chip } from '@mui/material';
 import { default as CardMui } from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import { red } from '@mui/material/colors';
 import { changeStatusRequest } from 'core/services/firebase';
+import ModalDialog from '../ModalDialog/ModalDialog';
 import {
   statusLabelRequest,
   statusRequest,
@@ -22,12 +23,17 @@ export type tCardProps = {
     phoneNumber: string;
     organizationName: string;
     status: string;
+    role: string;
     logo?: string;
     category?: string[];
     aboutSelf?: string;
     previewPhoto?: string;
     email?: string;
+    readyStatus?: string;
   };
+  nameCollection?: string;
+  onHandleJoinToEvent?: (event: any, isUnFollow?: boolean) => Promise<void>;
+  isMyEvents?: boolean;
 };
 
 const defaultLogo =
@@ -35,8 +41,8 @@ const defaultLogo =
 const defaultPreviewPhoto = 'https://i.ibb.co/gMSX8Xs/eco-volonterstvo.jpg';
 
 const Card: FC<tCardProps> = ({
+  request,
   request: {
-    docId,
     organizationName,
     city,
     phoneNumber,
@@ -45,14 +51,28 @@ const Card: FC<tCardProps> = ({
     aboutSelf,
     previewPhoto,
     status,
+    role,
+    readyStatus,
   },
+  nameCollection,
+  onHandleJoinToEvent,
+  isMyEvents,
 }) => {
+  const [openDialogModal, setOpenDialogModal] = useState<boolean>(false);
+
+  const handleClickOpen = () => {
+    setOpenDialogModal(true);
+  };
+  const handleClose = () => {
+    setOpenDialogModal(false);
+  };
+
   return (
     <CardMui sx={{ maxWidth: 345 }}>
       <CardHeader
         avatar={
           <Avatar src={logo || defaultLogo} sx={{ bgcolor: red[500] }}>
-            {organizationName[0]}
+            {organizationName && organizationName[0]}
           </Avatar>
         }
         title={
@@ -61,12 +81,15 @@ const Card: FC<tCardProps> = ({
           </Typography>
         }
         subheader={
-          <Chip
-            label={statusLabelRequest[status]}
-            color={statusRequest[status] as tColor}
-            variant='outlined'
-            sx={{ fontWeight: 500 }}
-          />
+          status &&
+          role !== 'Сотрудник' && (
+            <Chip
+              label={statusLabelRequest[status]}
+              color={statusRequest[status] as tColor}
+              variant='outlined'
+              sx={{ fontWeight: 500 }}
+            />
+          )
         }
       />
       <CardMedia
@@ -87,18 +110,18 @@ const Card: FC<tCardProps> = ({
             marginTop: '1rem',
           }}
         >
-          {category?.join('')}
+          {category}
           {city && <Chip label={city} />}
           {phoneNumber && <Chip label={phoneNumber} />}
         </Box>
       </CardContent>
-      {status === 'active' && (
+      {status === 'active' && role === 'Модератор' && (
         <CardActions sx={{ display: 'flex', justifyContent: 'space-around' }}>
           <Button
             size='small'
             color='primary'
             onClick={async () => {
-              await changeStatusRequest(docId, 'approve');
+              await changeStatusRequest(request, 'approve', nameCollection);
             }}
           >
             Подтвердить заявку
@@ -107,13 +130,56 @@ const Card: FC<tCardProps> = ({
             size='small'
             color='primary'
             onClick={async () => {
-              await changeStatusRequest(docId, 'reject');
+              await changeStatusRequest(request, 'reject', nameCollection);
             }}
           >
             Отклонить
           </Button>
         </CardActions>
       )}
+
+      {readyStatus === 'ready' && !isMyEvents && (
+        <CardActions sx={{ display: 'flex', justifyContent: 'space-around' }}>
+          <Button
+            size='small'
+            color='primary'
+            onClick={async () => {
+              if (onHandleJoinToEvent) {
+                await onHandleJoinToEvent(request);
+              }
+            }}
+          >
+            Принять участие
+          </Button>
+          <Button size='small' color='primary' onClick={handleClickOpen}>
+            Подробнее
+          </Button>
+        </CardActions>
+      )}
+
+      {isMyEvents && (
+        <CardActions sx={{ display: 'flex', justifyContent: 'space-around' }}>
+          <Button
+            size='small'
+            color='primary'
+            onClick={async () => {
+              if (onHandleJoinToEvent) {
+                await onHandleJoinToEvent(request, true);
+              }
+            }}
+          >
+            Отписаться от события
+          </Button>
+          <Button size='small' color='primary' onClick={handleClickOpen}>
+            Подробнее
+          </Button>
+        </CardActions>
+      )}
+      <ModalDialog
+        open={openDialogModal}
+        handleClose={handleClose}
+        event={request}
+      />
     </CardMui>
   );
 };
