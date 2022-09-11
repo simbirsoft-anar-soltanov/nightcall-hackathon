@@ -25,6 +25,7 @@ const Routing = () => {
             {appPaths.moderatorPage.asRoute()}
             {appPaths.organizationPage.asRoute()}
             {appPaths.employeePage.asRoute()}
+            {appPaths.eventPage.asRoute()}
             <Route path={'*'} element={<Error404Page />} />
           </>
         </Routes>

@@ -83,12 +83,13 @@ export const getEvents = async (): Promise<event[]> => {
   return eventsOrg;
 };
 
-export const addEvent = async (event: any) => {
+export const addEvent = async (event: any, userId: string) => {
   try {
     await firebase
       .firestore()
       .collection('events')
-      .add({ ...event, organization_id: Math.random() });
+      .add({ ...event, organization_id: userId, status: 'active' });
+    return true;
   } catch (err) {
     console.log(err);
   }

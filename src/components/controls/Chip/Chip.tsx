@@ -1,6 +1,6 @@
 import { styled, Chip } from '@mui/material';
-import { purple } from '@mui/material/colors';
-const accent = purple['A200'];
+import { deepPurple } from '@mui/material/colors';
+const accent = deepPurple['400'];
 
 const getCustomBaseStyleChip = (stylization: Record<string, string>) => ({
   background: accent,
