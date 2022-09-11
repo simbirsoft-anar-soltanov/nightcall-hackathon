@@ -26,4 +26,10 @@ export const yupFields = {
     .min(12)
     .max(13)
     .matches(phoneRegExp, 'Недопустимые символы'),
+  info: yup.string().required('Укажите название мероприятия'),
+  category: yup.string().required('Укажите категорию мероприятия'),
+  time: yup.string().required('Укажите длительность мероприятия'),
+  time_start: yup.string().required('Укажите дату проведения'),
+  must: yup.string(),
+  people_count: yup.number(),
 };
