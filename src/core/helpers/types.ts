@@ -12,6 +12,7 @@ export type User = {
   city: string;
   numberPhone: string;
   organizationName?: string;
+  status?: string;
 };
 
 export type UseUserType = {
