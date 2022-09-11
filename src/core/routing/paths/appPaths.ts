@@ -24,3 +24,49 @@ export const authPage = route('/auth', {
     () => import(/* webpackChunkName: 'default' */ 'pages/AuthPage/AuthPage'),
   ),
 });
+
+export const signUpPage = route('/singup', {
+  Component: lazy(
+    () =>
+      import(/* webpackChunkName: 'default' */ 'pages/SignUpPage/SignUpPage'),
+  ),
+});
+
+export const moderatorPage = route('/modDashboard', {
+  Component: lazy(
+    () =>
+      import(
+        /* webpackChunkName: 'default' */ 'pages/ModeratorPage/ModeratorPage'
+      ),
+  ),
+});
+
+export const organizationPage = route('/orgDashboard', {
+  Component: lazy(
+    () => import(/* webpackChunkName: 'default' */ 'pages/OrgPage/OrgPage'),
+  ),
+});
+
+export const employeePage = route('/empDashboard', {
+  Component: lazy(
+    () =>
+      import(
+        /* webpackChunkName: 'default' */ 'pages/EmployeePage/EmployeePage.container'
+      ),
+  ),
+});
+
+export const eventPage = route('/event/:id', {
+  Component: lazy(
+    () => import(/* webpackChunkName: 'default' */ 'pages/EventPage/EventPage'),
+  ),
+});
+
+export const errorBoundary = route('/error', {
+  Component: lazy(
+    () =>
+      import(
+        /* webpackChunkName: 'default' */ 'core/components/ErrorBoundary/ErrorFallback'
+      ),
+  ),
+});

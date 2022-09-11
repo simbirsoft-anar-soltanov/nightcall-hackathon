@@ -1,23 +1,23 @@
-import { ReactNode } from 'react';
 import { Box } from '@mui/material';
-import { makeStyles } from '@mui/styles';
-
-type tDefaultLayout = { children: ReactNode };
-
-const useStyles = makeStyles({
-  root: {
-    maxWidth: '1240px',
-    margin: '0 auto',
-    padding: '28px',
-  },
-});
+import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
+import ErrorBoundary from 'core/components/ErrorBoundary/ErrorBoundary';
+import { tDefaultLayout, useStyles } from './DefaultLayout.internals';
 
 const DefaultLayout = ({ children }: tDefaultLayout) => {
-  const classes = useStyles();
+  const { root } = useStyles();
 
   return (
-    <Box component='section' className={classes.root}>
-      {children}
+    <Box component='section' className={`hero is-fullheight ${root}`}>
+      <Header />
+
+      <div className='container is-fluid'>
+        <ErrorBoundary>{children}</ErrorBoundary>
+      </div>
+
+      <Box component='footer' className='hero-foot'>
+        <Footer />
+      </Box>
     </Box>
   );
 };

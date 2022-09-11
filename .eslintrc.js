@@ -59,6 +59,8 @@ module.exports = {
     'react/jsx-no-target-blank': 'error',
     'react/jsx-pascal-case': 'error',
     'react/jsx-space-before-closing': 'error',
+
+    '@typescript-eslint/ban-ts-comment': 'off',
   },
   overrides: [
     {

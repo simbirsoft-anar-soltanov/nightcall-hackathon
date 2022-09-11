@@ -2,27 +2,40 @@ import * as yup from 'yup';
 import { FieldError } from 'react-hook-form';
 import { yupFields } from 'utils/yupFields';
 
-export const styledForm = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '44px',
-};
-
 export type AuthFormValues = {
-  login: string;
+  email: string;
   password: string;
 };
 
 export type AuthFieldsError = {
   [index: string]: FieldError | undefined;
   [key: number]: FieldError;
-  login?: FieldError;
+  email?: FieldError;
   password?: FieldError;
 };
 
-export const schema = yup
+const schema = yup
   .object({
-    login: yupFields.login,
+    email: yupFields.email,
     password: yupFields.password,
   })
   .required();
+
+const styledAuthContainer = {
+  maxWidth: '600px',
+  margin: '16px auto',
+};
+
+const styledForm = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '42px',
+};
+
+const rolePath: Record<string, string> = {
+  ['Модератор']: '/modDashboard',
+  ['Организатор']: '/orgDashboard',
+  ['Сотрудник']: '/empDashboard',
+};
+
+export { rolePath, schema, styledAuthContainer, styledForm };
