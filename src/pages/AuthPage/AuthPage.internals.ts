@@ -33,9 +33,9 @@ const styledForm = {
 };
 
 const rolePath: Record<string, string> = {
-  ['Модератор']: '/modDashboard',
-  ['Организатор']: '/orgDashboard',
-  ['Сотрудник']: '/empDashboard',
+  ['Модератор']: '/dashboard/mod',
+  ['Организация']: '/dashboard/org',
+  ['Сотрудник']: '/dashboard/emp',
 };
 
 export { rolePath, schema, styledAuthContainer, styledForm };

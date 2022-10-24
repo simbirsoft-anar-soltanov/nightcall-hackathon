@@ -1,10 +1,12 @@
+import { FC } from 'react';
+import { Outlet } from 'react-router-dom';
 import { Box } from '@mui/material';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import ErrorBoundary from 'core/components/ErrorBoundary/ErrorBoundary';
-import { tDefaultLayout, useStyles } from './DefaultLayout.internals';
+import { useStyles } from './DefaultLayout.internals';
 
-const DefaultLayout = ({ children }: tDefaultLayout) => {
+const DefaultLayout: FC = () => {
   const { root } = useStyles();
 
   return (
@@ -12,7 +14,9 @@ const DefaultLayout = ({ children }: tDefaultLayout) => {
       <Header />
 
       <div className='container is-fluid'>
-        <ErrorBoundary>{children}</ErrorBoundary>
+        <ErrorBoundary>
+          <Outlet />
+        </ErrorBoundary>
       </div>
 
       <Box component='footer' className='hero-foot'>

@@ -2,12 +2,16 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 const path = require('path');
 
 const isDevMode = process.env.NODE_ENV === 'development';
 
 const cssLoaders = (extra) => {
-  const loaders = [MiniCssExtractPlugin.loader, 'css-loader'];
+  const loaders = [
+    isDevMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+    'css-loader',
+  ];
 
   return extra ? [...loaders, ...extra] : loaders;
 };
@@ -18,11 +22,11 @@ module.exports = {
   entry: ['core-js/stable', './src/index.tsx'],
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle-[name]-[hash].js',
+    filename: 'bundle-[name]-[fullhash].js',
     publicPath: '/',
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
+    extensions: ['.css', '.scss', '.json', '.js', '.jsx', '.ts', '.tsx'],
     plugins: [
       new TsconfigPathsPlugin({
         configFile: './tsconfig.json',
@@ -34,7 +38,7 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: 'style-[hash].css',
+      filename: 'style-[fullhash].css',
     }),
     new HtmlWebpackPlugin({
       template: './public/index.html',
@@ -42,46 +46,20 @@ module.exports = {
       manifest: './public/manifest.json',
     }),
     new CleanWebpackPlugin(),
+    new SpeedMeasurePlugin({
+      outputFormat: 'humanVerbose',
+      loaderTopFiles: 10,
+    }),
   ],
   module: {
     rules: [
       {
-        test: /\.(css)$/,
-        use: cssLoaders(),
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: 'asset/resource',
       },
       {
-        test: /\.(s[ac]ss)$/,
-        use: cssLoaders([
-          {
-            loader: 'resolve-url-loader',
-            options: {
-              removeCR: true,
-            },
-          },
-          {
-            loader: 'sass-loader',
-            options: {
-              sourceMap: true,
-            },
-          },
-        ]),
-      },
-      {
-        test: /\.tsx?$/,
-        loader: 'ts-loader',
-        exclude: /node_modules/,
-      },
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              presets: ['@babel/preset-env', '@babel/preset-react'],
-            },
-          },
-        ],
+        test: /\.(ico)$/i,
+        type: 'asset/resource',
       },
       {
         test: /\.svg$/,
@@ -101,7 +79,7 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
-              name: '[name].[hash].[ext]',
+              name: '[name].[fullhash].[ext]',
             },
           },
         ],
@@ -119,12 +97,57 @@ module.exports = {
         },
       },
       {
-        test: /\.(woff|woff2|eot|ttf|otf)$/i,
-        type: 'asset/resource',
+        test: /\.(css)$/,
+        use: cssLoaders(),
       },
       {
-        test: /\.(ico)$/i,
-        type: 'asset/resource',
+        test: /\.module\.s(a|c)ss$/,
+        use: [
+          isDevMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+            },
+          },
+          {
+            loader: 'sass-loader',
+          },
+        ],
+      },
+      {
+        test: /\.(s[ac]ss)$/,
+        exclude: /\.module.(s(a|c)ss)$/,
+        use: [
+          isDevMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+          'css-loader',
+          {
+            loader: 'resolve-url-loader',
+            options: { removeCR: true, sourceMap: true },
+          },
+          {
+            loader: 'sass-loader',
+            options: { sourceMap: true },
+          },
+        ],
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env', '@babel/preset-react'],
+            },
+          },
+        ],
+      },
+      {
+        test: /\.tsx?$/,
+        loader: 'ts-loader',
+        exclude: /node_modules/,
+        options: { transpileOnly: true },
       },
     ],
   },

@@ -1,36 +1,52 @@
-import Dialog from '@mui/material/Dialog';
-import { Alert, DialogContent, DialogTitle, Snackbar } from '@mui/material';
-import Button from '@mui/material/Button';
+import { FC, useContext, useState } from 'react';
+import { FieldValues, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
+import {
+  Box,
+  Grid,
+  Button,
+  Alert,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Snackbar,
+} from '@mui/material';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
+import Input from 'components/controls/Input/Input';
+import { CustomSendButton } from 'components/controls/Button/Button';
+import FileLoader from 'components/controls/FileLoader/FileLoader';
+import { addEvent } from 'core/services/firebase';
+import useUser from 'core/hooks/useUser';
+import { UserContext } from 'core/context/user';
+import { UseUserType } from 'core/helpers/types';
+import { schema } from 'pages/OrgPage/OrgPage.internals';
 import {
   styledAuthContainer,
   styledForm,
 } from 'pages/AuthPage/AuthPage.internals';
-import { schema } from 'pages/OrgPage/OrgPage.internals';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
-import { Box, Grid } from '@mui/material';
-import Input from 'components/controls/Input/Input';
-import { CustomSendButton } from 'components/controls/Button/Button';
-import { FieldValues, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
-import { addEvent } from 'core/services/firebase';
-import { useContext, useState } from 'react';
-import { UseUserType } from 'core/helpers/types';
-import useUser from 'core/hooks/useUser';
-import { UserContext } from 'core/context/user';
 
-interface OrderModal {
+const fields = [
+  { name: 'info', label: 'Название мероприятия' },
+  { name: 'category', label: 'Категория' },
+  { name: 'time_start', label: 'Дата проведения' },
+  { name: 'time', label: 'Длительность мероприятия' },
+  { name: 'must', label: 'Требования к кандидату' },
+  { name: 'people_count', label: 'Количество волонтеров' },
+];
+
+type OrderModalProps = {
   open: boolean;
-  onClose: () => void;
-}
+  onClose: VoidFunction;
+};
 
-const OrderModal = (props: OrderModal) => {
-  const { onClose, open } = props;
-  const [error, setError] = useState(false);
+const OrderModal: FC<OrderModalProps> = ({ open, onClose }) => {
   const { user: loggedInUser } = useContext(UserContext);
   const {
     user: { id },
   }: UseUserType = useUser(loggedInUser?.uid);
+
+  const [error, setError] = useState<boolean>(false);
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -47,24 +63,11 @@ const OrderModal = (props: OrderModal) => {
   const onSubmit = handleSubmit(async (data) => {
     try {
       const isAddEvent = await addEvent(data, id);
-      if (isAddEvent) {
-        onClose();
-      } else {
-        setError(true);
-      }
+      isAddEvent ? onClose() : setError(true);
     } catch (err) {
       console.log(err);
     }
   });
-
-  const fields = [
-    { name: 'info', label: 'Название мероприятия' },
-    { name: 'category', label: 'Категория' },
-    { name: 'time_start', label: 'Дата проведения' },
-    { name: 'time', label: 'Длительность мероприятия' },
-    { name: 'must', label: 'Требования к кандидату' },
-    { name: 'people_count', label: 'Количество волонтеров' },
-  ];
 
   return (
     <>
@@ -80,18 +83,21 @@ const OrderModal = (props: OrderModal) => {
             Х
           </Button>
         </Grid>
+
         <DialogContent>
           <Box component='div' sx={styledAuthContainer}>
             <Box component='form' onSubmit={onSubmit} sx={styledForm}>
-              {fields.map((field, index) => (
+              {fields.map(({ name, label }, index) => (
                 <Input
                   key={index}
-                  name={field.name}
-                  label={field.label}
-                  formError={errors[field.name]?.message}
+                  name={name}
+                  label={label}
+                  formError={errors[name]?.message as string}
                   register={register}
                 />
               ))}
+
+              <FileLoader />
               <CustomSendButton
                 type='submit'
                 variant='outlined'
@@ -103,6 +109,7 @@ const OrderModal = (props: OrderModal) => {
           </Box>
         </DialogContent>
       </Dialog>
+
       {error && (
         <Snackbar
           open

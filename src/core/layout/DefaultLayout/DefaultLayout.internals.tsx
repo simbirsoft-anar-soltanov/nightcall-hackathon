@@ -1,9 +1,6 @@
-import { ReactNode } from 'react';
 import { makeStyles } from '@mui/styles';
 
-export type tDefaultLayout = { children: ReactNode };
-
-const useStyles = makeStyles({
+export const useStyles = makeStyles({
   root: {
     maxWidth: '1280px',
     margin: '0 auto',
@@ -33,5 +30,3 @@ const useStyles = makeStyles({
     letterSpacing: 0.8,
   },
 });
-
-export { useStyles };
