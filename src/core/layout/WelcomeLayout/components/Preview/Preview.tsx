@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Box, Button, Typography, Chip } from '@mui/material';
-import { ReactComponent as PreviewLogo } from 'assets/icons/previewlogo.svg';
+import { ReactComponent as PreviewLogo } from 'assets/icons/previewLogo.svg';
 import logoIcon from 'assets/img/hearth.png';
 import {
   sxPreviewContainer,
