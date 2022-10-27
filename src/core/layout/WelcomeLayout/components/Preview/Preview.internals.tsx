@@ -15,12 +15,19 @@ const sxPreviewTitle = {
 };
 
 const sxPreviewLogoBox = {
-  marginTop: '32px',
+  width: '100%',
+  maxWidth: '980px',
+  margin: '32px auto 0',
+  position: 'relative',
   '& > img': {
     position: 'absolute',
     transform: 'rotate(15deg)',
-    top: { xs: '7%', lg: '1%' },
-    right: { xs: '8%', lg: '22%' },
+    top: '-11rem',
+    right: '4rem',
+    display: { xm: 'none', md: 'block' },
+  },
+  '& > svg': {
+    padding: { xs: '0 24px' },
   },
 };
 
