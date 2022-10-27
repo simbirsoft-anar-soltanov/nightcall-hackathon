@@ -5,7 +5,7 @@ const useStyles = makeStyles({
     '& .MuiInputBase-root': {
       background: '#f3f3f3',
       borderRadius: '6px',
-      height: '52px',
+      height: '46px',
     },
     '& .MuiInputBase-input': {
       fontWeight: 400,
@@ -62,7 +62,7 @@ const styleLabel = {
   fontWeight: 400,
   fontSize: '20px',
   lineHeight: '20px',
-  margin: '8px 0 16px',
+  margin: '8px 0',
 };
 
 export { useStyles, styledBox, styleLabel };

@@ -15,6 +15,7 @@ const Select: FC<tSelectProps & SelectProps> = ({
   return (
     <Box>
       {label && <Typography sx={styleLabel}>{label}</Typography>}
+
       <NativeSelect defaultValue={30} {...register(name)}>
         {names.map((name) => (
           <option value={name} key={name}>
@@ -22,6 +23,7 @@ const Select: FC<tSelectProps & SelectProps> = ({
           </option>
         ))}
       </NativeSelect>
+
       {formError && (
         <ErrorDescription
           text={formError}
