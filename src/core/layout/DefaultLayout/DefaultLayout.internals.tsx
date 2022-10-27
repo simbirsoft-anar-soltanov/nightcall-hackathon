@@ -1,7 +1,4 @@
-import { ReactNode } from 'react';
 import { makeStyles } from '@mui/styles';
-
-export type tDefaultLayout = { children: ReactNode };
 
 const useStyles = makeStyles({
   root: {
@@ -34,4 +31,6 @@ const useStyles = makeStyles({
   },
 });
 
-export { useStyles };
+const authPatnNames = ['/entry/auth', '/entry/sign-up'];
+
+export { useStyles, authPatnNames };

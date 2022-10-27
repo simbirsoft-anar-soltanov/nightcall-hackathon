@@ -64,7 +64,9 @@ const AuthPage: FC = () => {
 
       const isCurrentRole = roleOptionVariables[roleOption] === getUser.role;
 
-      isCurrentRole ? navigate(rolePath[getUser.role]) : setIsNotYourRole(true);
+      isCurrentRole
+        ? navigate(rolePath[getUser.role] ?? '/errorBoundary')
+        : setIsNotYourRole(true);
     };
 
     getUserRole();
@@ -75,6 +77,7 @@ const AuthPage: FC = () => {
       <Typography variant='h3' sx={{ margin: '24px 0 16px' }}>
         Вход на портал
       </Typography>
+
       <Box
         sx={{ borderBottom: 1, borderColor: 'divider', marginBottom: '16px' }}
       >
@@ -84,17 +87,18 @@ const AuthPage: FC = () => {
           <Tab label='Модератор' />
         </Tabs>
       </Box>
+
       <Box component='form' onSubmit={onSubmit} sx={styledForm}>
         <Input
           name='email'
           label='Адрес электронной почты'
-          formError={errors.email?.message}
+          formError={errors.email?.message as string}
           register={register}
         />
         <Input
           name='password'
           label='Пароль'
-          formError={errors.password?.message}
+          formError={errors.password?.message as string}
           register={register}
         />
 
@@ -102,11 +106,13 @@ const AuthPage: FC = () => {
           Войти в систему
         </CustomSendButton>
       </Box>
+
       <Box sx={{ marginTop: '16px' }}>
-        <Link href='/singup' variant='body1'>
+        <Link href='/signup' variant='body1'>
           У вас нет аккаунта? Зарегистрируйтесь
         </Link>
       </Box>
+
       {error && (
         <Snackbar
           open
@@ -118,6 +124,7 @@ const AuthPage: FC = () => {
           </Alert>
         </Snackbar>
       )}
+
       {isNotYourRole && (
         <Snackbar
           open

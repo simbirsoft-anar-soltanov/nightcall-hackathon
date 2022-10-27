@@ -2,13 +2,13 @@ import { FC, Fragment, useContext } from 'react';
 import { getFirestore, collection } from 'firebase/firestore';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { Typography, Box, Snackbar, Alert } from '@mui/material';
-import { firebase } from 'core/lib/firebase';
-import { styledCardContainer } from 'src/pages/ModeratorPage/ModeratorPage.internals';
+import { firebase } from 'lib/firebase';
+import { UserContext } from 'context/user';
+import useUser from 'core/hooks/useUser';
 import SpinnerWrap from 'core/components/SpinnerWrap/SpinnerWrap';
 import Card from 'components/controls/Card/Card';
-import { UserContext } from 'core/context/user';
-import { UseUserType } from 'core/helpers/types';
-import useUser from 'core/hooks/useUser';
+import { UseUserType } from 'helpers/types';
+import { styledCardContainer } from 'src/pages/ModeratorPage/ModeratorPage.internals';
 
 const Requests: FC = () => {
   const { user: loggedInUser } = useContext(UserContext);
@@ -33,6 +33,7 @@ const Requests: FC = () => {
             <Typography variant='h4' sx={{ margin: '24px 0 16px' }}>
               Заявки на волонтерскую деятельность:
             </Typography>
+
             <Box component='div' sx={styledCardContainer}>
               {value.docs.map((doc) => {
                 return (
@@ -68,14 +69,15 @@ const Requests: FC = () => {
             </Typography>
             <Box component='div' sx={styledCardContainer}>
               {value.docs.map((doc) => {
+                const docData = doc?.data();
+
                 return (
-                  doc?.data &&
-                  doc?.data().status !== 'active' && (
+                  docData?.status !== 'active' && (
                     <Fragment key={doc?.id}>
                       <Card
                         request={
                           {
-                            ...doc.data(),
+                            ...docData,
                             docId: doc.id,
                             role,
                           } as any
@@ -93,6 +95,7 @@ const Requests: FC = () => {
           </Typography>
         )}
       </Box>
+
       {error && (
         <Snackbar
           open

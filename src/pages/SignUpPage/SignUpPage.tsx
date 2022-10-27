@@ -25,6 +25,7 @@ const SignUpPage = () => {
       <Typography variant='h3' sx={{ margin: '24px 0 16px' }}>
         Регистрация на портале
       </Typography>
+
       <Box
         sx={{ borderBottom: 1, borderColor: 'divider', marginBottom: '16px' }}
       >
@@ -33,9 +34,11 @@ const SignUpPage = () => {
           <Tab label='Сотрудник' />
         </Tabs>
       </Box>
-      {isOrganization ? <OrgForm /> : <EmployeeForm />}
+
+      {isOrganization ? <OrgForm isWithTitle /> : <EmployeeForm />}
+
       <Box sx={{ marginTop: '16px' }}>
-        <Link href='/auth' variant='body1'>
+        <Link href='/entry/auth' variant='body1'>
           Вы зарегистрированы в системе? Тогда авторизуйтесь
         </Link>
       </Box>

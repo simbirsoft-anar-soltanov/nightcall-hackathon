@@ -14,6 +14,12 @@ export type AuthFieldsError = {
   password?: FieldError;
 };
 
+const rolePath: Record<string, string> = {
+  ['Модератор']: '/dashboard/mod',
+  ['Организация']: '/dashboard/org',
+  ['Сотрудник']: '/dashboard/emp',
+};
+
 const schema = yup
   .object({
     email: yupFields.email,
@@ -30,12 +36,6 @@ const styledForm = {
   display: 'flex',
   flexDirection: 'column',
   gap: '42px',
-};
-
-const rolePath: Record<string, string> = {
-  ['Модератор']: '/modDashboard',
-  ['Организатор']: '/orgDashboard',
-  ['Сотрудник']: '/empDashboard',
 };
 
 export { rolePath, schema, styledAuthContainer, styledForm };

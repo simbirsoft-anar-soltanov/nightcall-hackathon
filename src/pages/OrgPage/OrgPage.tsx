@@ -12,20 +12,18 @@ import ChangeStatusModal from 'pages/OrgPage/ChangeStatusModal';
 import SpinnerWrap from 'core/components/SpinnerWrap/SpinnerWrap';
 
 const OrgPage = () => {
-  const [open, setOpen] = useState(false);
-  const [openChangeModal, setOpenChangeModal] = useState(true);
+  const [open, setOpen] = useState<boolean>(false);
+  const [openChangeModal, setOpenChangeModal] = useState<boolean>(true);
+
   const { user: loggedInUser } = useContext(UserContext);
+
   const {
     user: { status },
   }: UseUserType = useUser(loggedInUser?.uid);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const handleClickOpen = () => setOpen(true);
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const handleClose = () => setOpen(false);
 
   if (!status) return <SpinnerWrap />;
 
