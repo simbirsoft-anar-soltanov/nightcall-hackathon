@@ -1,44 +1,46 @@
-import Dialog from '@mui/material/Dialog';
+import { FC, useContext, useState } from 'react';
+import { FieldValues, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import {
   Alert,
   Box,
+  Button,
+  Dialog,
   DialogContent,
   DialogTitle,
   Grid,
   Snackbar,
 } from '@mui/material';
-import Button from '@mui/material/Button';
+import { UserContext } from 'context/user';
+import useUser from 'core/hooks/useUser';
+import { sendOrderForChangeStatusOrg } from 'services/firebase';
+import { schemaChangeStatus } from 'pages/OrgPage/OrgPage.internals';
+import Input from 'components/controls/Input/Input';
+import { CustomSendButton } from 'components/controls/Button/Button';
+import { UseUserType } from 'helpers/types';
 import {
   styledAuthContainer,
   styledForm,
 } from 'pages/AuthPage/AuthPage.internals';
-import Input from 'components/controls/Input/Input';
-import { CustomSendButton } from 'components/controls/Button/Button';
-import { FieldValues, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
-import { schemaChangeStatus } from 'pages/OrgPage/OrgPage.internals';
-import { sendOrderForChangeStatusOrg } from 'core/services/firebase';
-import { useContext, useState } from 'react';
-import { UserContext } from 'core/context/user';
-import { UseUserType } from 'core/helpers/types';
-import useUser from 'core/hooks/useUser';
 
-interface ChangeStatusModal {
+const fields = [
+  { name: 'aboutSelf', label: 'Деятельность организации' },
+  { name: 'organizationName', label: 'Название организации' },
+];
+
+type ChangeStatusModalProps = {
   open: boolean;
-  onClose: () => void;
-}
+  onClose: VoidFunction;
+};
 
-const ChangeStatusModal = (props: ChangeStatusModal) => {
-  const { onClose, open } = props;
-  const [error, setError] = useState(false);
+const ChangeStatusModal: FC<ChangeStatusModalProps> = ({ open, onClose }) => {
   const { user: loggedInUser } = useContext(UserContext);
   const {
     user: { id, ...dataOrg },
   }: UseUserType = useUser(loggedInUser?.uid);
-  const fields = [
-    { name: 'aboutSelf', label: 'Деятельность организации' },
-    { name: 'organizationName', label: 'Название организации' },
-  ];
+
+  const [error, setError] = useState<boolean>(false);
+
   const {
     register,
     handleSubmit,
@@ -51,15 +53,13 @@ const ChangeStatusModal = (props: ChangeStatusModal) => {
   const onSubmit = handleSubmit(async (data) => {
     try {
       const isAddEvent = await sendOrderForChangeStatusOrg(data, dataOrg);
-      if (isAddEvent) {
-        onClose();
-      } else {
-        setError(true);
-      }
+
+      return isAddEvent ? onClose() : setError(true);
     } catch (err) {
       console.log(err);
     }
   });
+
   return (
     <>
       <Dialog open={open} onClose={onClose} maxWidth='md'>
@@ -71,6 +71,7 @@ const ChangeStatusModal = (props: ChangeStatusModal) => {
             Х
           </Button>
         </Grid>
+
         <DialogContent>
           <Box component='div' sx={styledAuthContainer}>
             <Box component='form' onSubmit={onSubmit} sx={styledForm}>
@@ -79,7 +80,7 @@ const ChangeStatusModal = (props: ChangeStatusModal) => {
                   key={index}
                   name={field.name}
                   label={field.label}
-                  formError={errors[field.name]?.message}
+                  formError={errors[field.name]?.message as string}
                   register={register}
                 />
               ))}
@@ -94,6 +95,7 @@ const ChangeStatusModal = (props: ChangeStatusModal) => {
           </Box>
         </DialogContent>
       </Dialog>
+
       {error && (
         <Snackbar
           open

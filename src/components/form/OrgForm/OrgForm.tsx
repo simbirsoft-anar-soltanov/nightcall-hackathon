@@ -10,7 +10,11 @@ import Select from 'components/controls/Select/Select';
 import { CustomSendButton } from 'components/controls/Button/Button';
 import { inputCollection, schema, styledForm } from './OrgForm.internals';
 
-const OrgForm: FC = () => {
+type tOrgFormProps = {
+  isWithTitle?: boolean;
+};
+
+const OrgForm: FC<tOrgFormProps> = ({ isWithTitle }) => {
   const { firebase } = useContext(FirebaseContext);
   const [isAlreadyExists, setIsAlreadyExists] = useState<boolean>(false);
 
@@ -34,20 +38,22 @@ const OrgForm: FC = () => {
           .auth()
           .createUserWithEmailAndPassword(email, password);
 
-        await createdUserResult.user.updateProfile({
-          displayName: organizationName,
-        });
+        if (createdUserResult?.user) {
+          await createdUserResult.user.updateProfile({
+            displayName: organizationName,
+          });
 
-        await firebase.firestore().collection('users').add({
-          id: createdUserResult.user.uid,
-          organizationName: organizationName.toLowerCase(),
-          emailAddress: email.toLowerCase(),
-          city: city.toLowerCase(),
-          numberPhone: numberPhone.toLowerCase(),
-          role: 'Организация',
-        });
+          await firebase.firestore().collection('users').add({
+            id: createdUserResult.user.uid,
+            organizationName: organizationName.toLowerCase(),
+            emailAddress: email.toLowerCase(),
+            city: city.toLowerCase(),
+            numberPhone: numberPhone.toLowerCase(),
+            role: 'Организация',
+          });
 
-        navigate('/orgDashboard');
+          navigate('/orgDashboard');
+        }
       }
 
       setIsAlreadyExists(orgNameExists);
@@ -56,9 +62,11 @@ const OrgForm: FC = () => {
 
   return (
     <>
-      <Typography variant='h3' sx={{ margin: '24px 0 16px' }}>
-        Регистрация организации
-      </Typography>
+      {isWithTitle && (
+        <Typography variant='h3' sx={{ margin: '24px 0 16px' }}>
+          Регистрация организации
+        </Typography>
+      )}
       <Box component='form' onSubmit={onSubmit} sx={styledForm}>
         {inputCollection.map(({ name, label }) => {
           if (name === 'city')
@@ -67,7 +75,7 @@ const OrgForm: FC = () => {
                 key={name}
                 name={name}
                 label={label}
-                formError={errors?.[name]?.message}
+                formError={errors?.[name]?.message as string}
                 register={register}
               />
             );
@@ -77,7 +85,7 @@ const OrgForm: FC = () => {
               key={name}
               name={name}
               label={label}
-              formError={errors?.[name]?.message}
+              formError={errors?.[name]?.message as string}
               register={register}
             />
           );

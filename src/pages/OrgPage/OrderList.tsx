@@ -1,14 +1,19 @@
-import CustomLink from 'components/controls/Link/Link';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import { CustomChip } from 'components/controls/Chip/Chip';
-import { Typography, Box, Snackbar, Alert } from '@mui/material';
-import Grid from '@mui/material/Grid';
-import SpinnerWrap from 'core/components/SpinnerWrap/SpinnerWrap';
-import { useCollection } from 'react-firebase-hooks/firestore';
 import { collection, getFirestore } from 'firebase/firestore';
-import { firebase } from 'core/lib/firebase';
+import { useCollection } from 'react-firebase-hooks/firestore';
+import {
+  Typography,
+  Box,
+  Grid,
+  Card,
+  CardContent,
+  CardMedia,
+  Snackbar,
+  Alert,
+} from '@mui/material';
+import { firebase } from 'lib/firebase';
+import SpinnerWrap from 'core/components/SpinnerWrap/SpinnerWrap';
+import CustomLink from 'components/controls/Link/Link';
+import { CustomChip } from 'components/controls/Chip/Chip';
 
 const OrderList = () => {
   const [value, loading, error] = useCollection(
@@ -30,57 +35,53 @@ const OrderList = () => {
           columns={{ xs: 4, sm: 8, md: 12 }}
         >
           {value.docs.map((event) => {
+            const data = event.data();
+
             return (
               <Grid
-                item
-                xs={12}
-                sm={4}
-                md={4}
-                key={event.data().organization_id}
+                item xs={12} sm={4} md={4}
+                key={data.organization_id}
               >
                 <CustomLink to='/'>
                   <Card sx={{ mb: 1.5 }}>
                     <CardMedia
                       component='img'
                       height='194'
-                      image={
-                        event.data().foto
-                          ? event.data().foto[0]
-                          : defaultPreviewPhoto
-                      }
-                      alt={event.data().info}
+                      image={data.foto ? data.foto[0] : defaultPreviewPhoto}
+                      alt={data.info}
                     />
+
                     <CardContent>
-                      <CustomChip label={event.data().category} />
+                      <CustomChip label={data.category} />
                       <Typography
                         variant='h5'
                         component='div'
                         sx={{ mb: 1.5 }}
                         color='primary.main'
                       >
-                        {event.data().info}
+                        {data.info}
                       </Typography>
+
                       <Box component='div' sx={{ mb: 1.5 }}>
-                        {event.data().must && event.data().must}
+                        {data.must && data.must}
                       </Box>
+
                       <Typography variant='body2'>
                         <strong>Когда:</strong>{' '}
-                        {event.data().time_start && event.data().time_start}
+                        {data.time_start && data.time_start}
                       </Typography>
-                      {event.data().time ? (
+
+                      {data.time && (
                         <Typography variant='body2'>
-                          <strong>Длительность:</strong> {event.data().time}
+                          <strong>Длительность:</strong> {data.time}
                         </Typography>
-                      ) : (
-                        ''
                       )}
-                      {event.data().people_count ? (
+
+                      {data.people_count && (
                         <Typography variant='body2'>
                           <strong>Количество участников:</strong>{' '}
-                          {event.data().people_count}
+                          {data.people_count}
                         </Typography>
-                      ) : (
-                        ''
                       )}
                     </CardContent>
                   </Card>
@@ -94,6 +95,7 @@ const OrderList = () => {
           Заявки отсутствуют
         </Typography>
       )}
+
       {error && (
         <Snackbar
           open

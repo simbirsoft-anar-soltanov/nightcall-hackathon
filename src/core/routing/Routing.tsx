@@ -1,14 +1,18 @@
-import { FC, lazy, Suspense } from 'react';
+import { FC, lazy, Suspense, useContext } from 'react';
 import {
   Route,
   Routes,
   unstable_HistoryRouter as HistoryRouter,
 } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
-import DefaultLayout from 'core/layout/DefaultLayout/DefaultLayout';
-import SpinnerWrap from 'core/components/SpinnerWrap/SpinnerWrap';
+import { UserContext } from 'context/user';
+import useUser from 'core/hooks/useUser';
+import WelcomeLayout from 'layout/WelcomeLayout/WelcomeLayout';
+import DefaultLayout from 'layout/DefaultLayout/DefaultLayout';
 import Error404Page from 'pages/Error404Page/Error404Page';
 import ErrorBoundary from 'core/components/ErrorBoundary/ErrorFallback';
+import SpinnerWrap from 'core/components/SpinnerWrap/SpinnerWrap';
+import { UseUserType } from 'core/helpers/types';
 
 const history = createBrowserHistory({ window });
 
@@ -21,21 +25,37 @@ const EmployeePage = lazy(
 );
 const EventPage = lazy(() => import('pages/EventPage/EventPage'));
 
+const roleRoute: Record<string, JSX.Element> = {
+  Модератор: <Route path='mod' element={<ModeratorPage />} />,
+  Сотрудник: <Route path='emp' element={<EmployeePage />} />,
+  Организация: (
+    <>
+      <Route path='org' element={<OrganizationPage />} />
+      <Route path='event/:id' element={<EventPage />} />
+    </>
+  ),
+};
+
 const Routing: FC = () => {
+  const { user: loggedInUser } = useContext(UserContext);
+
+  const {
+    user: { role },
+  }: UseUserType = useUser(loggedInUser?.uid);
+
   return (
     <Suspense fallback={<SpinnerWrap />}>
       <HistoryRouter history={history}>
         <Routes>
-          <Route path='/' element={<DefaultLayout />}>
-            <Route index element={<AuthPage />} />
-            <Route path='/sign-up' element={<SignUpPage />} />
+          <Route path='/' element={<WelcomeLayout />} />
+
+          <Route path='/entry' element={<DefaultLayout />}>
+            <Route path='auth' element={<AuthPage />} />
+            <Route path='sign-up' element={<SignUpPage />} />
           </Route>
 
           <Route path='/dashboard' element={<DefaultLayout />}>
-            <Route path='mod' element={<ModeratorPage />} />
-            <Route path='org' element={<OrganizationPage />} />
-            <Route path='emp' element={<EmployeePage />} />
-            <Route path='event/:id' element={<EventPage />} />
+            {roleRoute[role]}
           </Route>
 
           <Route path='errorBoundary' element={<ErrorBoundary />} />
