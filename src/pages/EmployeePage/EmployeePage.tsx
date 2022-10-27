@@ -2,19 +2,21 @@ import { FC, MouseEvent, Fragment, useState, useEffect } from 'react';
 import { getFirestore, collection } from 'firebase/firestore';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { Typography, Box, Snackbar, Alert } from '@mui/material';
-import { firebase } from 'core/lib/firebase';
+import { firebase } from 'lib/firebase';
 import SpinnerWrap from 'core/components/SpinnerWrap/SpinnerWrap';
 import Togggle from 'components/controls/Toggle/Toggle';
 import Card from 'components/controls/Card/Card';
-import { styledCardContainer } from 'pages/ModeratorPage/ModeratorPage.internals';
 import {
   changeEmployeeStatus,
   getUserByUserId,
   joinToEvent,
 } from 'core/services/firebase';
-import { User } from 'core/helpers/types';
+import { User } from 'helpers/types';
+import { styledCardContainer } from 'pages/ModeratorPage/ModeratorPage.internals';
 
-const EmployeePage: FC<{ user: User; uid: string }> = ({
+type tEmployeePageProps = { user: User; uid: string };
+
+const EmployeePage: FC<tEmployeePageProps> = ({
   user: { docId, role, statusReadyJoinToEvent, joinEvents },
   uid,
 }) => {
@@ -59,6 +61,7 @@ const EmployeePage: FC<{ user: User; uid: string }> = ({
       <Typography variant='h3' sx={{ margin: '24px 0 16px' }}>
         Страница сотрудника SimbirSoft
       </Typography>
+
       <Box
         sx={{
           display: 'flex',
@@ -74,19 +77,18 @@ const EmployeePage: FC<{ user: User; uid: string }> = ({
         <Typography variant='h4' sx={{ margin: '24px 0 16px' }}>
           Мои мероприятия:
         </Typography>
+
         {myEvents?.length && myEvents.length > 0 ? (
           <Box component='div' sx={styledCardContainer}>
-            {myEvents.map((event, index) => {
-              return (
-                <Fragment key={event.docId + index}>
-                  <Card
-                    request={event}
-                    onHandleJoinToEvent={onHandleJoinToEvent}
-                    isMyEvents
-                  />
-                </Fragment>
-              );
-            })}
+            {myEvents.map((event, index) => (
+              <Fragment key={event.docId + index}>
+                <Card
+                  request={event}
+                  onHandleJoinToEvent={onHandleJoinToEvent}
+                  isMyEvents
+                />
+              </Fragment>
+            ))}
           </Box>
         ) : (
           <Typography variant='body1' sx={{ margin: '24px 0 16px' }}>
@@ -125,6 +127,7 @@ const EmployeePage: FC<{ user: User; uid: string }> = ({
           </>
         )}
       </Box>
+
       {error && (
         <Snackbar
           open

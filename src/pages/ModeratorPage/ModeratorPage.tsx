@@ -1,11 +1,11 @@
 import { FC, SyntheticEvent, useState } from 'react';
 import { Typography, Box, Tabs, Tab } from '@mui/material';
+import Events from './components/Events/Events';
+import Requests from './components/Requests/Requests';
 import {
   styledModeratorContainer,
   typeModerationVariables,
 } from './ModeratorPage.internals';
-import Events from 'pages/ModeratorPage/components/Events/Events';
-import Requests from './components/Requests/Requests';
 
 const ModeratorPage: FC = () => {
   const [typeModeration, setTypeModeration] = useState<number>(0);

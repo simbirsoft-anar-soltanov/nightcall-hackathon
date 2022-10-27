@@ -1,6 +1,6 @@
 import { makeStyles } from '@mui/styles';
 
-export const useStyles = makeStyles({
+const useStyles = makeStyles({
   root: {
     maxWidth: '1280px',
     margin: '0 auto',
@@ -30,3 +30,7 @@ export const useStyles = makeStyles({
     letterSpacing: 0.8,
   },
 });
+
+const authPatnNames = ['/entry/auth', '/entry/sign-up'];
+
+export { useStyles, authPatnNames };
