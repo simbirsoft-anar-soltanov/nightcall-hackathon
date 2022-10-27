@@ -9,7 +9,7 @@ const Registration: FC = () => {
   const classes = useStyles();
 
   return (
-    <Box component='section'>
+    <Box component='section' id='registration'>
       <Box className={classes.root}>
         <Typography sx={sxRegistrationTitle}>Регистрация на портал</Typography>
         <OrgForm />

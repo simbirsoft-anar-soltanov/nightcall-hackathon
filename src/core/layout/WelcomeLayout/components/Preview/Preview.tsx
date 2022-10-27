@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { Link } from 'react-scroll';
 import { Box, Button, Typography, Chip } from '@mui/material';
 import { ReactComponent as PreviewLogo } from 'assets/icons/previewLogo.svg';
 import logoIcon from 'assets/img/hearth.png';
@@ -26,7 +27,13 @@ const Preview: FC = () => {
         <Box>
           <Chip label='Помощь рядом' sx={sxPreviewChip} />
         </Box>
-        <Button sx={sxPreviewBtn}>Зарегистрировать организацию</Button>
+
+        <Link
+          to='registration' spy smooth offset={-3}
+          duration={500}
+        >
+          <Button sx={sxPreviewBtn}>Зарегистрировать организацию</Button>
+        </Link>
       </Box>
     </Box>
   );

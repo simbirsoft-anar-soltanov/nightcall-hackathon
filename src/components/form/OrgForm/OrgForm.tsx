@@ -67,6 +67,7 @@ const OrgForm: FC<tOrgFormProps> = ({ isWithTitle }) => {
           Регистрация организации
         </Typography>
       )}
+
       <Box component='form' onSubmit={onSubmit} sx={styledForm}>
         {inputCollection.map(({ name, label }) => {
           if (name === 'city')
@@ -90,14 +91,11 @@ const OrgForm: FC<tOrgFormProps> = ({ isWithTitle }) => {
             />
           );
         })}
-        <CustomSendButton
-          type='submit'
-          variant='outlined'
-          disabled={!isValid}
-          sx={{ marginTop: '10px' }}
-        >
+
+        <CustomSendButton type='submit' variant='outlined' disabled={!isValid}>
           Зарегистрироваться
         </CustomSendButton>
+
         {isAlreadyExists && (
           <Snackbar
             open
