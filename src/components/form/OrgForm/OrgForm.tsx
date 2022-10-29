@@ -46,13 +46,13 @@ const OrgForm: FC<tOrgFormProps> = ({ isWithTitle }) => {
           await firebase.firestore().collection('users').add({
             id: createdUserResult.user.uid,
             organizationName: organizationName.toLowerCase(),
-            emailAddress: email.toLowerCase(),
+            email: email.toLowerCase(),
             city: city.toLowerCase(),
             numberPhone: numberPhone.toLowerCase(),
             role: 'Организация',
           });
 
-          navigate('/orgDashboard');
+          navigate('/dashboard/org');
         }
       }
 

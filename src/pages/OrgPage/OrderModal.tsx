@@ -76,6 +76,7 @@ const OrderModal: FC<OrderModalProps> = ({ open, onClose }) => {
         onClose={onClose}
         maxWidth='md'
         fullScreen={fullScreen}
+        disableScrollLock
       >
         <Grid container alignItems='center' justifyContent='space-between'>
           <DialogTitle style={{ fontSize: '22px' }}>Создать заявку</DialogTitle>

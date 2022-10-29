@@ -1,10 +1,8 @@
 import { FC, Fragment, useContext } from 'react';
-import { getFirestore, collection } from 'firebase/firestore';
-import { useCollection } from 'react-firebase-hooks/firestore';
 import { Typography, Box, Snackbar, Alert } from '@mui/material';
-import { firebase } from 'lib/firebase';
 import { UserContext } from 'context/user';
 import useUser from 'core/hooks/useUser';
+import useGetCollection from 'core/hooks/useGetCollection';
 import SpinnerWrap from 'core/components/SpinnerWrap/SpinnerWrap';
 import Card from 'components/controls/Card/Card';
 import { UseUserType } from 'helpers/types';
@@ -16,12 +14,7 @@ const Events: FC = () => {
     user: { role },
   }: UseUserType = useUser(loggedInUser?.uid);
 
-  const [value, loading, error] = useCollection(
-    collection(getFirestore(firebase), 'events'),
-    {
-      snapshotListenOptions: { includeMetadataChanges: true },
-    },
-  );
+  const [value, loading, error] = useGetCollection('events');
 
   if (loading) return <SpinnerWrap />;
 

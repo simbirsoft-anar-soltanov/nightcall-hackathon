@@ -7,9 +7,13 @@ const useStyles = makeStyles({
     padding: '28px',
     height: '100vh',
   },
+  headerContainer: {
+    borderBottom: '1px solid #DBDBDB',
+  },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
+    maxWidth: '1280px',
   },
   logo: {
     width: 48,

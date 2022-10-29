@@ -1,14 +1,20 @@
 import { FC, useState } from 'react';
-import { Box, Button, CardActions, Chip } from '@mui/material';
+import {
+  Box,
+  Button,
+  CardActions,
+  Chip,
+  CardHeader,
+  CardContent,
+  CardMedia,
+  Typography,
+  Avatar,
+} from '@mui/material';
 import { default as CardMui } from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import Avatar from '@mui/material/Avatar';
 import { red } from '@mui/material/colors';
 import { changeStatusRequest } from 'core/services/firebase';
 import ModalDialog from '../ModalDialog/ModalDialog';
+import { defaultLogo, defaultPreviewPhoto } from 'core/constants/constants';
 import {
   statusLabelRequest,
   statusRequest,
@@ -35,10 +41,6 @@ export type tCardProps = {
   onHandleJoinToEvent?: (event: any, isUnFollow?: boolean) => Promise<void>;
   isMyEvents?: boolean;
 };
-
-const defaultLogo =
-  'https://i.ibb.co/pdVMWGR/png-clipart-computer-icons-child-desktop-volunteering-child-child-text.png';
-const defaultPreviewPhoto = 'https://i.ibb.co/gMSX8Xs/eco-volonterstvo.jpg';
 
 const Card: FC<tCardProps> = ({
   request,

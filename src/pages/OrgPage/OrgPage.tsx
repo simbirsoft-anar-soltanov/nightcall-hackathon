@@ -1,19 +1,29 @@
-import { useContext, useState } from 'react';
-import { Box, Typography } from '@mui/material';
-import { styledOrgContainer } from 'pages/OrgPage/OrgPage.internals';
+import { FC, useState, useContext } from 'react';
+import { Box, Typography, Tabs, Tab, Button } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import OrderModal from 'pages/OrgPage/OrderModal';
-import OrderList from 'pages/OrgPage/OrderList';
-import { CustomOpenModalButton } from 'components/controls/Button/Button';
 import { UserContext } from 'core/context/user';
-import { UseUserType } from 'core/helpers/types';
+import OrderList from 'pages/OrgPage/OrderList';
+import OrderModal from 'pages/OrgPage/OrderModal';
 import useUser from 'core/hooks/useUser';
+import useTabs from 'core/hooks/useTabs';
+import useModal from 'core/hooks/useModal';
 import ChangeStatusModal from 'pages/OrgPage/ChangeStatusModal';
 import SpinnerWrap from 'core/components/SpinnerWrap/SpinnerWrap';
+import { CustomOpenModalButton } from 'components/controls/Button/Button';
+import { UseUserType } from 'core/helpers/types';
+import {
+  styledOrgContainer,
+  sxOrgTitlePage,
+  sxOrgNamePage,
+  sxOrgTab,
+  sxOrgAddRequest,
+} from 'pages/OrgPage/OrgPage.internals';
 
-const OrgPage = () => {
-  const [open, setOpen] = useState<boolean>(false);
+const OrgPage: FC = () => {
   const [openChangeModal, setOpenChangeModal] = useState<boolean>(true);
+
+  const { modal: open, handleOpen, handleClose } = useModal();
+  const { tab, onChangeTab } = useTabs();
 
   const { user: loggedInUser } = useContext(UserContext);
 
@@ -21,14 +31,15 @@ const OrgPage = () => {
     user: { status },
   }: UseUserType = useUser(loggedInUser?.uid);
 
-  const handleClickOpen = () => setOpen(true);
-
-  const handleClose = () => setOpen(false);
-
   if (!status) return <SpinnerWrap />;
 
   return (
     <Box component='div' sx={styledOrgContainer}>
+      <Grid container justifyContent='space-between' alignItems='center'>
+        <Typography sx={sxOrgTitlePage}>Мероприятия</Typography>
+        <Typography sx={sxOrgNamePage}>Страница организации</Typography>
+      </Grid>
+
       {status === 'active' || status === 'reject' ? (
         <Grid container justifyContent='space-between' alignItems='center'>
           <Typography variant='h3' sx={{ margin: '5px 0 10px' }}>
@@ -45,14 +56,30 @@ const OrgPage = () => {
       ) : (
         <>
           <Grid container justifyContent='space-between' alignItems='center'>
-            <Typography variant='h3' sx={{ margin: '5px 0 10px' }}>
-              Мои заявки
-            </Typography>
-            <CustomOpenModalButton onClick={handleClickOpen}>
+            <Tabs value={tab} onChange={onChangeTab}>
+              <Tab label='Активные' sx={{ paddingLeft: 0, ...sxOrgTab }} />
+              <Tab label='Прошедшие' sx={sxOrgTab} />
+              <Tab label='На модерации' sx={sxOrgTab} />
+            </Tabs>
+
+            <Button
+              variant='text'
+              component='span'
+              sx={sxOrgAddRequest}
+              onClick={handleOpen}
+            >
+              <Typography
+                component='span'
+                sx={{ fontSize: 'inherit', lineHeight: 'inherit' }}
+              >
+                +
+              </Typography>
               Создать заявку
-            </CustomOpenModalButton>
+            </Button>
           </Grid>
+
           <OrderList />
+
           <OrderModal open={open} onClose={handleClose} />
         </>
       )}
