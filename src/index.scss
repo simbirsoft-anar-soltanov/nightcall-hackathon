@@ -3,6 +3,10 @@
 @import '~sanitize.css/typography.css';
 @import './assets/styles/fonts.scss';
 
+html {
+  overflow: auto;
+}
+
 #root {
   height: 100%;
 }
@@ -31,4 +35,10 @@ select:-webkit-autofill:focus {
 
 ::-ms-reveal {
   display: none;
+}
+
+@media screen and (min-width: 1408px) {
+  .container:not(.is-max-desktop):not(.is-max-widescreen) {
+    max-width: 1280px;
+  }
 }

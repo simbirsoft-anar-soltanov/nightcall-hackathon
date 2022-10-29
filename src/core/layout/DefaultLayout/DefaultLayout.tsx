@@ -34,19 +34,20 @@ const DefaultLayout: FC = () => {
   }, [user]);
 
   return (
-    <Box component='section' className={`hero is-fullheight ${root}`}>
+    <>
       <Header firebase={firebase} loggedInUser={loggedInUser} user={user} />
+      <Box component='section' className={`hero is-fullheight p-0 ${root}`}>
+        <div className='container is-fluid p-0'>
+          <ErrorBoundary>
+            <Outlet />
+          </ErrorBoundary>
+        </div>
 
-      <div className='container is-fluid'>
-        <ErrorBoundary>
-          <Outlet />
-        </ErrorBoundary>
-      </div>
-
-      <Box component='footer' className='hero-foot'>
-        <Footer />
+        <Box component='footer' className='hero-foot'>
+          <Footer />
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 

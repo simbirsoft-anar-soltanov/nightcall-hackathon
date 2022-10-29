@@ -5,10 +5,9 @@ const handleShortTextfield = (fieldName: string, minNumber: number) => {
 };
 
 const passwordRegExp =
-  /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/;
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_-])[A-Za-z\d@$!%*?&_-]{8,}$/;
 
-const phoneRegExp =
-  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+const phoneRegExp = /^((\+7|7|8)+([0-9]){10})$/;
 
 export const yupFields = {
   email: yup.string().email().required('Введите почту'),
@@ -23,9 +22,8 @@ export const yupFields = {
   numberPhone: yup
     .string()
     .required('Введите номер телефона')
-    .min(12)
-    .max(13)
     .matches(phoneRegExp, 'Недопустимые символы'),
+
   info: yup.string().required('Укажите название мероприятия'),
   category: yup.string().required('Укажите категорию мероприятия'),
   time: yup.string().required('Укажите длительность мероприятия'),
@@ -33,4 +31,7 @@ export const yupFields = {
   must: yup.string(),
   people_count: yup.number().typeError('Введите число').notRequired(),
   aboutSelf: yup.string().required('Укажите деятельность организации'),
+
+  themeOfTheAppeal: yup.string().required('Укажите тему обращения'),
+  descriptionOfTheProblem: yup.string().required('Опишите проблему'),
 };

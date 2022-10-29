@@ -1,8 +1,6 @@
 import { FC, MouseEvent, Fragment, useState, useEffect } from 'react';
-import { getFirestore, collection } from 'firebase/firestore';
-import { useCollection } from 'react-firebase-hooks/firestore';
 import { Typography, Box, Snackbar, Alert } from '@mui/material';
-import { firebase } from 'lib/firebase';
+import useGetCollection from 'core/hooks/useGetCollection';
 import SpinnerWrap from 'core/components/SpinnerWrap/SpinnerWrap';
 import Togggle from 'components/controls/Toggle/Toggle';
 import Card from 'components/controls/Card/Card';
@@ -23,12 +21,7 @@ const EmployeePage: FC<tEmployeePageProps> = ({
   const [readyStatus, setReadyStatus] = useState<string>('');
   const [myEvents, setMyEvents] = useState<any[]>(joinEvents || []);
 
-  const [value, loading, error] = useCollection(
-    collection(getFirestore(firebase), 'events'),
-    {
-      snapshotListenOptions: { includeMetadataChanges: true },
-    },
-  );
+  const [value, loading, error] = useGetCollection('events');
 
   useEffect(() => {
     joinEvents?.length && setMyEvents(joinEvents);
