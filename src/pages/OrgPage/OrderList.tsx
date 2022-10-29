@@ -1,5 +1,4 @@
-import { collection, getFirestore } from 'firebase/firestore';
-import { useCollection } from 'react-firebase-hooks/firestore';
+import { FC } from 'react';
 import {
   Typography,
   Box,
@@ -10,19 +9,14 @@ import {
   Snackbar,
   Alert,
 } from '@mui/material';
-import { firebase } from 'lib/firebase';
+import useGetCollection from 'core/hooks/useGetCollection';
 import SpinnerWrap from 'core/components/SpinnerWrap/SpinnerWrap';
 import CustomLink from 'components/controls/Link/Link';
 import { CustomChip } from 'components/controls/Chip/Chip';
+import { defaultPreviewPhoto } from 'core/constants/constants';
 
-const OrderList = () => {
-  const [value, loading, error] = useCollection(
-    collection(getFirestore(firebase), 'events'),
-    {
-      snapshotListenOptions: { includeMetadataChanges: true },
-    },
-  );
-  const defaultPreviewPhoto = 'https://i.ibb.co/gMSX8Xs/eco-volonterstvo.jpg';
+const OrderList: FC = () => {
+  const [value, loading, error] = useGetCollection('events');
 
   if (loading) return <SpinnerWrap />;
 

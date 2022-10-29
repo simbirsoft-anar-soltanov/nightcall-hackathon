@@ -9,18 +9,27 @@ const Input = ({
   name,
   register,
   placeholder,
+  multiline,
+  rows,
+  maxRows,
+  inputProps,
+  helperText,
+  sx,
 }: tInputProps & TextFieldProps) => {
-  const { root } = useStyles();
+  const { root, rootTextArea } = useStyles();
+
+  const extraProps = { multiline, rows, maxRows, inputProps, helperText, sx };
 
   return (
     <Box sx={styledBox}>
       {label && <Typography sx={styleLabel}>{label}</Typography>}
       <TextField
         spellCheck={false}
-        classes={{ root }}
+        classes={{ root: rows ? rootTextArea : root }}
         placeholder={placeholder}
         error={!!formError}
         {...register(name)}
+        {...extraProps}
       />
       {formError && (
         <ErrorDescription

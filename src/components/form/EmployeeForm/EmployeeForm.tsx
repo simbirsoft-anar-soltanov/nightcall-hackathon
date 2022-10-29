@@ -35,21 +35,23 @@ const EmployeeForm: FC = () => {
             .auth()
             .createUserWithEmailAndPassword(email, password);
 
-          await createdUserResult.user.updateProfile({
-            displayName: email,
-          });
+          if (createdUserResult?.user) {
+            await createdUserResult.user.updateProfile({
+              displayName: `${name} ${surname}`,
+            });
 
-          await firebase.firestore().collection('users').add({
-            id: createdUserResult.user.uid,
-            email: email.toLowerCase(),
-            name: name.toLowerCase(),
-            surname: surname.toLowerCase(),
-            city: city.toLowerCase(),
-            numberPhone: numberPhone.toLowerCase(),
-            role: 'Сотрудник',
-          });
+            await firebase.firestore().collection('users').add({
+              id: createdUserResult.user.uid,
+              email: email.toLowerCase(),
+              name: name.toLowerCase(),
+              surname: surname.toLowerCase(),
+              city: city.toLowerCase(),
+              numberPhone: numberPhone.toLowerCase(),
+              role: 'Сотрудник',
+            });
 
-          navigate('/empDashboard');
+            navigate('/dashboard/emp');
+          }
         } catch (error: unknown) {
           navigate('/error');
         }
@@ -72,7 +74,7 @@ const EmployeeForm: FC = () => {
                 key={name}
                 name={name}
                 label={label}
-                formError={errors?.[name]?.message}
+                formError={errors?.[name]?.message as string}
                 register={register}
               />
             );
@@ -82,7 +84,7 @@ const EmployeeForm: FC = () => {
               key={name}
               name={name}
               label={label}
-              formError={errors?.[name]?.message}
+              formError={errors?.[name]?.message as string}
               register={register}
             />
           );
