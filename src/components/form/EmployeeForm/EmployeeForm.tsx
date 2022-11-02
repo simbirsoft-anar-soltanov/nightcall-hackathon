@@ -2,13 +2,14 @@ import { FC, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FieldValues, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Typography, Box, Alert, Snackbar } from '@mui/material';
+import { Typography, Box } from '@mui/material';
 import { FirebaseContext } from 'core/context/firebase';
 import Input from 'components/controls/Input/Input';
+import Select from 'components/controls/Select/Select';
 import { CustomSendButton } from 'components/controls/Button/Button';
+import SnackBar from 'components/indicators/SnackBar/SnackBar';
 import { doesEmailExist } from 'core/services/firebase';
 import { inputCollection, schema, styledForm } from './EmployeeForm.internals';
-import Select from 'components/controls/Select/Select';
 
 const EmployeeForm: FC = () => {
   const { firebase } = useContext(FirebaseContext);
@@ -92,16 +93,9 @@ const EmployeeForm: FC = () => {
         <CustomSendButton type='submit' variant='outlined' disabled={!isValid}>
           Зарегистрироваться
         </CustomSendButton>
+
         {isAlreadyExists && (
-          <Snackbar
-            open
-            autoHideDuration={6000}
-            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-          >
-            <Alert severity='error' color='error'>
-              Сотрудник уже зарегистрирована в системе!
-            </Alert>
-          </Snackbar>
+          <SnackBar title='Сотрудник уже зарегистрирована в системе!' />
         )}
       </Box>
     </>

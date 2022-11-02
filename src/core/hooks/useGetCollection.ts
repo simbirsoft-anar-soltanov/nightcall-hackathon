@@ -1,14 +1,11 @@
 import { useCollection } from 'react-firebase-hooks/firestore';
-import { collection, getFirestore } from 'firebase/firestore';
-import { firebase } from 'lib/firebase';
+import { collection } from 'firebase/firestore';
+import { db } from 'lib/firebase';
 
 const useGetCollection = (name: string) => {
-  const stateCollection = useCollection(
-    collection(getFirestore(firebase), name),
-    {
-      snapshotListenOptions: { includeMetadataChanges: true },
-    },
-  );
+  const stateCollection = useCollection(collection(db, name), {
+    snapshotListenOptions: { includeMetadataChanges: true },
+  });
 
   return stateCollection;
 };

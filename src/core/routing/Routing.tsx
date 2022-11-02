@@ -31,7 +31,7 @@ const roleRoute: Record<string, JSX.Element> = {
   Организация: (
     <>
       <Route path='org' element={<OrganizationPage />} />
-      <Route path='event/:id' element={<EventPage />} />
+      <Route path='org/event/:id' element={<EventPage />} />
     </>
   ),
 };
