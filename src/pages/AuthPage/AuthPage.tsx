@@ -1,30 +1,23 @@
 import { FC, useState, useEffect, SyntheticEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { FieldValues, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useNavigate } from 'react-router-dom';
-import {
-  Typography,
-  Box,
-  Link,
-  Alert,
-  Snackbar,
-  Tabs,
-  Tab,
-} from '@mui/material';
+import { Typography, Box, Link, Tabs, Tab } from '@mui/material';
 import { auth } from 'core/lib/firebase';
+import { getUserByUserId } from 'core/services/firebase';
 import { CustomSendButton } from 'components/controls/Button/Button';
 import Input from 'components/controls/Input/Input';
 import SpinnerWrap from 'core/components/SpinnerWrap/SpinnerWrap';
+import SnackBar from 'components/indicators/SnackBar/SnackBar';
+import { roleOptionVariables } from 'pages/SignUpPage/SignUpPage.internals';
+import { User } from 'core/helpers/types';
 import {
   styledAuthContainer,
   styledForm,
   schema,
   rolePath,
 } from './AuthPage.internals';
-import { User } from 'core/helpers/types';
-import { getUserByUserId } from 'core/services/firebase';
-import { roleOptionVariables } from 'pages/SignUpPage/SignUpPage.internals';
 
 const AuthPage: FC = () => {
   const [isNotYourRole, setIsNotYourRole] = useState<boolean>(false);
@@ -108,34 +101,14 @@ const AuthPage: FC = () => {
       </Box>
 
       <Box sx={{ marginTop: '16px' }}>
-        <Link href='/signup' variant='body1'>
+        <Link href='/entry/sign-up' variant='body1'>
           У вас нет аккаунта? Зарегистрируйтесь
         </Link>
       </Box>
 
-      {error && (
-        <Snackbar
-          open
-          autoHideDuration={6000}
-          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        >
-          <Alert severity='error' color='error'>
-            Неверный адрес или пароль
-          </Alert>
-        </Snackbar>
-      )}
+      {error && <SnackBar title='Неверный адрес или пароль' />}
 
-      {isNotYourRole && (
-        <Snackbar
-          open
-          autoHideDuration={6000}
-          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        >
-          <Alert severity='error' color='error'>
-            Выберите доступную для Вас роль
-          </Alert>
-        </Snackbar>
-      )}
+      {isNotYourRole && <SnackBar title='Выберите доступную для Вас роль' />}
     </Box>
   );
 };

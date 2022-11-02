@@ -6,7 +6,7 @@ export type User = {
   surname: string;
   dateCreated: number;
   docId: string;
-  emailAddress: string;
+  email: string;
   avatar: string;
   role: string;
   city: string;

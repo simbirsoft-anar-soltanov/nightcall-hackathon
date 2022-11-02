@@ -2,20 +2,19 @@ import { FC, useContext, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import {
-  Alert,
   Box,
   Button,
   Dialog,
   DialogContent,
   DialogTitle,
   Grid,
-  Snackbar,
 } from '@mui/material';
 import { UserContext } from 'context/user';
 import useUser from 'core/hooks/useUser';
 import { sendOrderForChangeStatusOrg } from 'services/firebase';
 import { schemaChangeStatus } from 'pages/OrgPage/OrgPage.internals';
 import Input from 'components/controls/Input/Input';
+import SnackBar from 'components/indicators/SnackBar/SnackBar';
 import { CustomSendButton } from 'components/controls/Button/Button';
 import { UseUserType } from 'helpers/types';
 import {
@@ -62,7 +61,7 @@ const ChangeStatusModal: FC<ChangeStatusModalProps> = ({ open, onClose }) => {
 
   return (
     <>
-      <Dialog open={open} onClose={onClose} maxWidth='md'>
+      <Dialog open={open} onClose={onClose} maxWidth='md' disableScrollLock>
         <Grid container alignItems='center' justifyContent='space-between'>
           <DialogTitle style={{ fontSize: '22px' }}>
             Получить доступ на создание заявок
@@ -96,17 +95,7 @@ const ChangeStatusModal: FC<ChangeStatusModalProps> = ({ open, onClose }) => {
         </DialogContent>
       </Dialog>
 
-      {error && (
-        <Snackbar
-          open
-          autoHideDuration={6000}
-          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        >
-          <Alert severity='error' color='error'>
-            Данные не сохранились
-          </Alert>
-        </Snackbar>
-      )}
+      {error && <SnackBar title='Данные не сохранились' />}
     </>
   );
 };

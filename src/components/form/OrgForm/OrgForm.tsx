@@ -2,12 +2,14 @@ import { FC, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FieldValues, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Typography, Box, Alert, Snackbar } from '@mui/material';
+import { Typography, Box } from '@mui/material';
 import { FirebaseContext } from 'core/context/firebase';
 import { doesOrganizationNameExist } from 'core/services/firebase';
 import Input from 'components/controls/Input/Input';
 import Select from 'components/controls/Select/Select';
 import { CustomSendButton } from 'components/controls/Button/Button';
+import SnackBar from 'components/indicators/SnackBar/SnackBar';
+import { defaultLogo } from 'core/constants/constants';
 import { inputCollection, schema, styledForm } from './OrgForm.internals';
 
 type tOrgFormProps = {
@@ -45,11 +47,13 @@ const OrgForm: FC<tOrgFormProps> = ({ isWithTitle }) => {
 
           await firebase.firestore().collection('users').add({
             id: createdUserResult.user.uid,
+            avatar: defaultLogo,
             organizationName: organizationName.toLowerCase(),
             email: email.toLowerCase(),
             city: city.toLowerCase(),
             numberPhone: numberPhone.toLowerCase(),
             role: 'Организация',
+            status: 'active',
           });
 
           navigate('/dashboard/org');
@@ -97,15 +101,7 @@ const OrgForm: FC<tOrgFormProps> = ({ isWithTitle }) => {
         </CustomSendButton>
 
         {isAlreadyExists && (
-          <Snackbar
-            open
-            autoHideDuration={6000}
-            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-          >
-            <Alert severity='error' color='error'>
-              Пользователь зарегистрирован в системе!
-            </Alert>
-          </Snackbar>
+          <SnackBar title='Пользователь зарегистрирован в системе!' />
         )}
       </Box>
     </>

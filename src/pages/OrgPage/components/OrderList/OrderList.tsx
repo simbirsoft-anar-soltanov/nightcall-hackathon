@@ -6,11 +6,10 @@ import {
   Card,
   CardContent,
   CardMedia,
-  Snackbar,
-  Alert,
 } from '@mui/material';
 import useGetCollection from 'core/hooks/useGetCollection';
 import SpinnerWrap from 'core/components/SpinnerWrap/SpinnerWrap';
+import SnackBar from 'components/indicators/SnackBar/SnackBar';
 import CustomLink from 'components/controls/Link/Link';
 import { CustomChip } from 'components/controls/Chip/Chip';
 import { defaultPreviewPhoto } from 'core/constants/constants';
@@ -27,6 +26,7 @@ const OrderList: FC = () => {
           container
           spacing={{ xs: 2, md: 3 }}
           columns={{ xs: 4, sm: 8, md: 12 }}
+          sx={{ overflow: 'scroll' }}
         >
           {value.docs.map((event) => {
             const data = event.data();
@@ -90,17 +90,7 @@ const OrderList: FC = () => {
         </Typography>
       )}
 
-      {error && (
-        <Snackbar
-          open
-          autoHideDuration={6000}
-          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        >
-          <Alert severity='error' color='error'>
-            Произошла ошибка
-          </Alert>
-        </Snackbar>
-      )}
+      {error && <SnackBar title='Произошла ошибка' />}
     </>
   );
 };

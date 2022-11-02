@@ -37,7 +37,7 @@ select:-webkit-autofill:focus {
   display: none;
 }
 
-@media screen and (min-width: 1408px) {
+@media screen and (min-width: 1024px) {
   .container:not(.is-max-desktop):not(.is-max-widescreen) {
     max-width: 1280px;
   }
