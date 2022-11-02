@@ -5,11 +5,9 @@ import {
   Box,
   Grid,
   Button,
-  Alert,
   Dialog,
   DialogContent,
   DialogTitle,
-  Snackbar,
 } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
@@ -25,6 +23,7 @@ import {
   styledAuthContainer,
   styledForm,
 } from 'pages/AuthPage/AuthPage.internals';
+import SnackBar from 'components/indicators/SnackBar/SnackBar';
 
 const fields = [
   { name: 'info', label: 'Название мероприятия' },
@@ -111,17 +110,7 @@ const OrderModal: FC<OrderModalProps> = ({ open, onClose }) => {
         </DialogContent>
       </Dialog>
 
-      {error && (
-        <Snackbar
-          open
-          autoHideDuration={6000}
-          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        >
-          <Alert severity='error' color='error'>
-            Данные не сохранились
-          </Alert>
-        </Snackbar>
-      )}
+      {error && <SnackBar title='Данные не сохранились' />}
     </>
   );
 };

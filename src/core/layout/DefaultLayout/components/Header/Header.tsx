@@ -71,12 +71,12 @@ const Header: FC<tHeaderProps> = ({
                   sx={{ padding: 0 }}
                   onClick={() => {
                     firebase.auth().signOut();
-                    navigate('/');
+                    navigate('/entry/auth');
                   }}
                   onKeyDown={({ key }) => {
                     if (key === 'Enter') {
                       firebase.auth().signOut();
-                      navigate('/');
+                      navigate('/entry/auth');
                     }
                   }}
                 >

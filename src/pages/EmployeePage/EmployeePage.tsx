@@ -1,7 +1,8 @@
 import { FC, MouseEvent, Fragment, useState, useEffect } from 'react';
-import { Typography, Box, Snackbar, Alert } from '@mui/material';
+import { Typography, Box } from '@mui/material';
 import useGetCollection from 'core/hooks/useGetCollection';
 import SpinnerWrap from 'core/components/SpinnerWrap/SpinnerWrap';
+import SnackBar from 'components/indicators/SnackBar/SnackBar';
 import Togggle from 'components/controls/Toggle/Toggle';
 import Card from 'components/controls/Card/Card';
 import {
@@ -121,17 +122,7 @@ const EmployeePage: FC<tEmployeePageProps> = ({
         )}
       </Box>
 
-      {error && (
-        <Snackbar
-          open
-          autoHideDuration={6000}
-          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        >
-          <Alert severity='error' color='error'>
-            Произошла ошибка
-          </Alert>
-        </Snackbar>
-      )}
+      {error && <SnackBar title='Произошла ошибка' />}
     </Box>
   );
 };

@@ -18,8 +18,9 @@ const Dialog: FC<tDialogProps> = ({
     data-test-id='dialog'
     open={open}
     onClose={onClose}
-    keepMounted
     maxWidth='lg'
+    disableScrollLock
+    keepMounted
     style={{
       zIndex: 1100,
       display: isOpenSecondDialog ? 'none' : 'block',

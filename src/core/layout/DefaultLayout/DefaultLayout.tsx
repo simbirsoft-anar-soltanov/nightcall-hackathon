@@ -36,7 +36,7 @@ const DefaultLayout: FC = () => {
   return (
     <>
       <Header firebase={firebase} loggedInUser={loggedInUser} user={user} />
-      <Box component='section' className={`hero is-fullheight p-0 ${root}`}>
+      <Box component='section' className={`hero is-fullheight p-3 ${root}`}>
         <div className='container is-fluid p-0'>
           <ErrorBoundary>
             <Outlet />

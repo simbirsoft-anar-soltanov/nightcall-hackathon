@@ -2,12 +2,13 @@ import { FC, useState, useContext } from 'react';
 import { Box, Typography, Tabs, Tab, Button } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { UserContext } from 'core/context/user';
-import OrderList from 'pages/OrgPage/OrderList';
-import OrderModal from 'pages/OrgPage/OrderModal';
 import useUser from 'core/hooks/useUser';
 import useTabs from 'core/hooks/useTabs';
 import useModal from 'core/hooks/useModal';
-import ChangeStatusModal from 'pages/OrgPage/ChangeStatusModal';
+import ChangeStatusModal from 'pages/OrgPage/components/ChangeStatusModal/ChangeStatusModal';
+import OrderBoxList from './components/OrderBoxList/OrderBoxList';
+import OrgInfo from './components/OrgInfo/OrgInfo';
+import OrderModal from 'pages/OrgPage/components/OrderModal/OrderModal';
 import SpinnerWrap from 'core/components/SpinnerWrap/SpinnerWrap';
 import { CustomOpenModalButton } from 'components/controls/Button/Button';
 import { UseUserType } from 'core/helpers/types';
@@ -28,10 +29,11 @@ const OrgPage: FC = () => {
   const { user: loggedInUser } = useContext(UserContext);
 
   const {
+    user,
     user: { status },
   }: UseUserType = useUser(loggedInUser?.uid);
 
-  if (!status) return <SpinnerWrap />;
+  if (!user) return <SpinnerWrap />;
 
   return (
     <Box component='div' sx={styledOrgContainer}>
@@ -45,9 +47,11 @@ const OrgPage: FC = () => {
           <Typography variant='h3' sx={{ margin: '5px 0 10px' }}>
             Страница организации
           </Typography>
+
           <CustomOpenModalButton onClick={() => setOpenChangeModal(true)}>
             Получить доступ
           </CustomOpenModalButton>
+
           <ChangeStatusModal
             open={openChangeModal}
             onClose={() => setOpenChangeModal(false)}
@@ -60,6 +64,7 @@ const OrgPage: FC = () => {
               <Tab label='Активные' sx={{ paddingLeft: 0, ...sxOrgTab }} />
               <Tab label='Прошедшие' sx={sxOrgTab} />
               <Tab label='На модерации' sx={sxOrgTab} />
+              <Tab label='Отклонены' sx={sxOrgTab} />
             </Tabs>
 
             <Button
@@ -78,11 +83,13 @@ const OrgPage: FC = () => {
             </Button>
           </Grid>
 
-          <OrderList />
+          <OrderBoxList tab={tab} />
 
           <OrderModal open={open} onClose={handleClose} />
         </>
       )}
+
+      <OrgInfo user={user} />
     </Box>
   );
 };
