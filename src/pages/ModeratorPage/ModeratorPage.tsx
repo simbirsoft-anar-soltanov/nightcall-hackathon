@@ -1,4 +1,4 @@
-import { FC, SyntheticEvent, useState } from 'react';
+import { FC, SyntheticEvent, useState, useEffect } from 'react';
 import { Typography, Box, Tabs, Tab } from '@mui/material';
 import Events from './components/Events/Events';
 import Requests from './components/Requests/Requests';
@@ -9,6 +9,10 @@ import {
 
 const ModeratorPage: FC = () => {
   const [typeModeration, setTypeModeration] = useState<number>(0);
+
+  useEffect(() => {
+    document.title = 'Страница Модератора';
+  }, []);
 
   const onChangeTypeModeration = (_: SyntheticEvent, newValue: number) => {
     setTypeModeration(newValue);

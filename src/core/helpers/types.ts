@@ -1,4 +1,5 @@
 import { Dispatch } from 'react';
+import Firebase from 'firebase/compat/app';
 
 export type User = {
   id: string;
@@ -20,4 +21,17 @@ export type User = {
 export type UseUserType = {
   user: User;
   setActiveUser: Dispatch<User>;
+};
+
+export type tEventSnaphot = Firebase.firestore.DocumentSnapshot<tEvent>;
+
+export type tEvent = {
+  organization_id: string;
+  category: string;
+  info: string;
+  must: string;
+  people_count: number;
+  status: string;
+  time: string;
+  time_start: string;
 };
