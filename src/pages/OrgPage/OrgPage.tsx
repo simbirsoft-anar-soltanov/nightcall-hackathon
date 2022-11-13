@@ -1,14 +1,14 @@
-import { FC, useState, useContext } from 'react';
+import { FC, useState, useContext, useEffect } from 'react';
 import { Box, Typography, Tabs, Tab, Button } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { UserContext } from 'core/context/user';
 import useUser from 'core/hooks/useUser';
 import useTabs from 'core/hooks/useTabs';
 import useModal from 'core/hooks/useModal';
-import ChangeStatusModal from 'pages/OrgPage/components/ChangeStatusModal/ChangeStatusModal';
-import OrderBoxList from './components/OrderBoxList/OrderBoxList';
-import OrgInfo from './components/OrgInfo/OrgInfo';
-import OrderModal from 'pages/OrgPage/components/OrderModal/OrderModal';
+import ChangeStatusModal from 'core/components/ChangeStatusModal/ChangeStatusModal';
+import OrderBoxList from 'core/components/Order/OrderBoxList/OrderBoxList';
+import OrgInfo from 'core/components/OrgInfo/OrgInfo';
+import OrderModal from 'core/components/Order/OrderModal/OrderModal';
 import SpinnerWrap from 'core/components/SpinnerWrap/SpinnerWrap';
 import { CustomOpenModalButton } from 'components/controls/Button/Button';
 import { UseUserType } from 'core/helpers/types';
@@ -32,6 +32,10 @@ const OrgPage: FC = () => {
     user,
     user: { status },
   }: UseUserType = useUser(loggedInUser?.uid);
+
+  useEffect(() => {
+    document.title = 'Страница организации';
+  }, []);
 
   if (!user) return <SpinnerWrap />;
 

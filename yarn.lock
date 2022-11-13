@@ -10664,6 +10664,11 @@ url-parse@^1.5.3:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
 
+use-pagination-firestore@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/use-pagination-firestore/-/use-pagination-firestore-0.6.0.tgz#b7f282d30bf914703d7a7df8936bb93c561871e6"
+  integrity sha512-fmhnZ7+cx1e6IpdzvTAIfjTftx2L6HJTWZdsJ85PqeQD5OMLw5eOdQYGgZdiOJXMA/z2B2fsSXQmic7lU0iTHg==
+
 util-deprecate@^1.0.1, util-deprecate@^1.0.2, util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"

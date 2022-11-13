@@ -1,18 +1,3 @@
-const statusEvents: Record<string, string> = {
-  0: 'active',
-  1: 'past',
-  2: 'approve',
-  3: 'reject',
-};
-
-const sxOrderGridItems = {
-  display: 'grid',
-  gridTemplate: 'repeat(2, 1fr)/1fr',
-  height: '350px',
-  gap: '36px',
-  overflow: 'hidden',
-};
-
 const sxOrderBoxContainer = {
   display: 'flex',
   justifyContent: 'space-between',
@@ -55,8 +40,6 @@ const sxOrderBoxCategory = {
 const sxOrderBoxTime = { display: 'inline-flex', gap: '14px' };
 
 export {
-  statusEvents,
-  sxOrderGridItems,
   sxOrderBoxContainer,
   sxOrderBoxLeftPanel,
   sxOrderBoxInfo,

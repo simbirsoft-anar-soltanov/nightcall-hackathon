@@ -49,6 +49,10 @@ const EmployeePage: FC<tEmployeePageProps> = ({
   console.log('joinEvents = ', joinEvents);
 
   useEffect(() => {
+    document.title = 'Страница сотрудника';
+  }, []);
+
+  useEffect(() => {
     joinEvents?.length && setMyEvents(joinEvents);
   }, [joinEvents]);
 
