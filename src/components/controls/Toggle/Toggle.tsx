@@ -18,7 +18,7 @@ const Toggle: FC<tToggle> = ({ value, handleChange }) => {
       size='small'
     >
       <ToggleButton value='ready'>Готов</ToggleButton>
-      <ToggleButton value='dontDisturb'>Не беспокоить</ToggleButton>
+      <ToggleButton value='dontDisturb'>Занят</ToggleButton>
     </ToggleButtonGroup>
   );
 };
