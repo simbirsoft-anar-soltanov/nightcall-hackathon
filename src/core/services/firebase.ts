@@ -102,6 +102,21 @@ export const getEvents = async (): Promise<event[]> => {
   return eventsOrg;
 };
 
+export const getEventsByStatus = async (
+  statuses: string[],
+): Promise<event[]> => {
+  const result = await firebase
+    .firestore()
+    .collection('events')
+    .where('status', 'in', statuses)
+    .get();
+  const eventsByStatus: any = result.docs.map((item) => ({
+    ...item.data(),
+  }));
+
+  return eventsByStatus;
+};
+
 export const addEvent = async (event: any, userId: string) => {
   try {
     await firebase
