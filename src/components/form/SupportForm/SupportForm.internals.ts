@@ -1,18 +1,33 @@
 import * as yup from 'yup';
 import { yupFields } from 'utils/yupFields';
 
-const { themeOfTheAppeal, descriptionOfTheProblem } = yupFields;
+const {
+  supportForm: {
+    user_name,
+    user_email,
+    themeOfTheAppeal,
+    descriptionOfTheProblem,
+  },
+} = yupFields;
 
 const schema = yup
   .object({
+    user_name,
+    user_email,
     themeOfTheAppeal,
     descriptionOfTheProblem,
   })
   .required();
 
 const inputCollection = [
-  { name: 'themeOfTheAppeal', label: 'Тема' },
-  { name: 'descriptionOfTheProblem', label: 'Описание проблемы' },
+  { name: 'user_name', label: 'Ваше имя' },
+  { name: 'user_email', label: 'Адрес электронной почты' },
+  { name: 'themeOfTheAppeal', label: 'Тема', isSpellCheck: true },
+  {
+    name: 'descriptionOfTheProblem',
+    label: 'Описание проблемы',
+    isSpellCheck: true,
+  },
 ];
 
 const styledForm = {

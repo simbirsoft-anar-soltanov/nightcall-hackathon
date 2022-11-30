@@ -32,6 +32,11 @@ export const yupFields = {
   people_count: yup.number().typeError('Введите число').notRequired(),
   aboutSelf: yup.string().required('Укажите деятельность организации'),
 
-  themeOfTheAppeal: yup.string().required('Укажите тему обращения'),
-  descriptionOfTheProblem: yup.string().required('Опишите проблему'),
+  supportForm: {
+    user_name: yup.string(),
+    ticket_number: yup.string(),
+    user_email: yup.string().email().required('Введите почту'),
+    themeOfTheAppeal: yup.string().required('Укажите тему обращения'),
+    descriptionOfTheProblem: yup.string().required('Опишите проблему'),
+  },
 };
