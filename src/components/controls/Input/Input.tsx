@@ -14,6 +14,7 @@ const Input = ({
   maxRows,
   inputProps,
   helperText,
+  spellCheck,
   sx,
 }: tInputProps & TextFieldProps) => {
   const { root, rootTextArea } = useStyles();
@@ -24,7 +25,7 @@ const Input = ({
     <Box sx={styledBox}>
       {label && <Typography sx={styleLabel}>{label}</Typography>}
       <TextField
-        spellCheck={false}
+        spellCheck={spellCheck ?? false}
         classes={{ root: rows ? rootTextArea : root }}
         placeholder={placeholder}
         error={!!formError}
