@@ -5,6 +5,10 @@ import { Typography, Box, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import Input from 'components/controls/Input/Input';
 import { CustomSendButton } from 'components/controls/Button/Button';
+import { createSupportTicket } from 'utils/createSupportTicket';
+import { getTextAreaProps } from 'utils/getTextAreaProps';
+import { tAlert } from 'core/layout/DefaultLayout/components/Header/Header';
+import { ticketNumberGenerator } from 'utils/createTicketNumber';
 import {
   inputCollection,
   schema,
@@ -13,10 +17,14 @@ import {
 } from './SupportForm.internals';
 
 type tSupportFormProps = {
-  handleClose: MouseEventHandler<HTMLButtonElement>;
+  onHandleChangeAlert: (payload: tAlert) => void;
+  handleClose: VoidFunction;
 };
 
-const SupportForm: FC<tSupportFormProps> = ({ handleClose }) => {
+const SupportForm: FC<tSupportFormProps> = ({
+  onHandleChangeAlert,
+  handleClose,
+}) => {
   const {
     register,
     watch,
@@ -25,11 +33,21 @@ const SupportForm: FC<tSupportFormProps> = ({ handleClose }) => {
   } = useForm<FieldValues>({
     resolver: yupResolver(schema),
     mode: 'all',
+    defaultValues: {
+      ticket_number: ticketNumberGenerator(),
+    },
   });
 
-  const onSubmit = handleSubmit((data) => console.log('data', data));
+  const onSubmit = handleSubmit((data) => {
+    createSupportTicket(data, onHandleChangeAlert);
+    handleClose();
+  });
 
   const helperText = `${watch('descriptionOfTheProblem')?.length ?? 0}/255`;
+
+  const onClickCloseModal: MouseEventHandler<HTMLButtonElement> = () => {
+    handleClose();
+  };
 
   return (
     <>
@@ -38,21 +56,16 @@ const SupportForm: FC<tSupportFormProps> = ({ handleClose }) => {
         <IconButton
           data-test-id='buttonClose-addIntegration'
           aria-label='close'
-          onClick={handleClose}
+          onClick={onClickCloseModal}
         >
           <CloseIcon />
         </IconButton>
       </Box>
 
       <Box component='form' onSubmit={onSubmit} sx={styledForm}>
-        {inputCollection.map(({ name, label }) => {
-          const textAreaProps = name === 'descriptionOfTheProblem' && {
-            multiline: true,
-            rows: 4,
-            maxRows: 6,
-            inputProps: { maxLength: 255 },
-            helperText,
-          };
+        {inputCollection.map(({ name, label, isSpellCheck }) => {
+          const textAreaProps =
+            name === 'descriptionOfTheProblem' && getTextAreaProps(helperText);
 
           return (
             <Input
@@ -61,6 +74,7 @@ const SupportForm: FC<tSupportFormProps> = ({ handleClose }) => {
               label={label}
               formError={errors?.[name]?.message as string}
               register={register}
+              spellCheck={isSpellCheck}
               {...textAreaProps}
             />
           );
