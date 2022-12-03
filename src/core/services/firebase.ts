@@ -110,6 +110,7 @@ export const getEventsByStatus = async (
     .collection('events')
     .where('status', 'in', statuses)
     .get();
+
   const eventsByStatus: any = result.docs.map((item) => ({
     ...item.data(),
   }));

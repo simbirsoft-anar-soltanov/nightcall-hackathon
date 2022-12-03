@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { DocumentData, DocumentSnapshot } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { Typography, Box, Grid, Button } from '@mui/material';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
@@ -14,12 +15,13 @@ import {
   sxEventBoxTime,
   sxEventBoxRightPanel,
 } from './EventBoxItem.internals';
-import { DocumentData, DocumentSnapshot } from 'firebase/firestore';
+
+type Event = DocumentData & Pick<DocumentSnapshot<DocumentData>, 'id'>;
 
 type OrderBoxItemProps = {
-  item: DocumentData & Pick<DocumentSnapshot<DocumentData>, 'id'>;
+  item: Event;
   tab: number;
-  onHandleJoinToEvent: (event: any, isUnFollow?: boolean) => Promise<void>;
+  onHandleJoinToEvent: (event: Event, isUnFollow?: boolean) => Promise<void>;
 };
 
 const EventBoxItem: FC<OrderBoxItemProps> = ({
@@ -30,6 +32,10 @@ const EventBoxItem: FC<OrderBoxItemProps> = ({
   const navigate = useNavigate();
 
   const { organization_id, category, info, time, time_start } = item;
+
+  const handlerActionWithEvent = async () => {
+    await onHandleJoinToEvent(item, tab === 2);
+  };
 
   return (
     <Grid sx={sxEventBoxContainer}>
@@ -60,9 +66,7 @@ const EventBoxItem: FC<OrderBoxItemProps> = ({
       </Box>
       <Box sx={sxEventBoxRightPanel}>
         <Button
-          onClick={async () => {
-            await onHandleJoinToEvent(item, tab === 2);
-          }}
+          onClick={handlerActionWithEvent}
           sx={tab === 2 ? sxRejectBtn : sxAcceptBtn}
         >
           {tab === 2 ? 'Отклонить' : 'Принять'}

@@ -19,7 +19,7 @@ const sxOrderBoxContainer = {
   alignItems: 'center',
   padding: '24px',
   background: '#FFF',
-  boxShadow: '0px 7px 40px rgba(31, 37, 113, 0.07)',
+  boxShadow: '0 7px 40px rgba(31, 37, 113, 0.07)',
   borderRadius: '20px',
   border: '1px solid #DBDBDB',
 };

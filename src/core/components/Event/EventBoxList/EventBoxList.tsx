@@ -2,15 +2,16 @@ import { FC, useState, useEffect } from 'react';
 import { Typography, Box, Grid, Stack, IconButton } from '@mui/material';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import SpinnerWrap from 'core/components/SpinnerWrap/SpinnerWrap';
-import EventBoxItem from '../EventBoxItem/EventBoxItem';
-import { statusEvents, sxEventGridItems } from './EventBoxList.internals';
 import {
   getUserByUserId,
   getEventsByStatus,
   joinToEvent,
 } from 'services/firebase';
+import SpinnerWrap from 'core/components/SpinnerWrap/SpinnerWrap';
+import EventBoxItem from '../EventBoxItem/EventBoxItem';
 import FiltersBox from 'core/components/Filters/FiltersBox';
+import { DocumentData } from 'firebase/firestore';
+import { statusEvents, sxEventGridItems } from './EventBoxList.internals';
 
 type tEventBoxListProps = {
   tab: number;
@@ -20,8 +21,8 @@ type tEventBoxListProps = {
 
 const EventBoxList: FC<tEventBoxListProps> = ({ tab, docId, uid }) => {
   const [page, setPage] = useState<number>(1);
-  const [events, setEvents] = useState([] as any);
-  const [loading, setLoading] = useState(false);
+  const [events, setEvents] = useState<DocumentData[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   // let { items, isLoading, isStart, isEnd, getPrev, getNext } = usePagination(
   // 	query(
@@ -49,19 +50,22 @@ const EventBoxList: FC<tEventBoxListProps> = ({ tab, docId, uid }) => {
     }
   };
 
+  const setEventsFromApi = (res: any) => {
+    if (res) setEvents(res);
+    setLoading(false);
+  };
+
   useEffect(() => {
     setPage(1);
     setLoading(true);
     if (tab === 2) {
       getEvents(uid).then((res) => {
-        if (res) setEvents(res);
-        setLoading(false);
+        setEventsFromApi(res);
       });
     }
     if (tab === 0 || tab === 1) {
       getByStatus().then((res) => {
-        if (res) setEvents(res);
-        setLoading(false);
+        setEventsFromApi(res);
       });
     }
   }, [tab]);

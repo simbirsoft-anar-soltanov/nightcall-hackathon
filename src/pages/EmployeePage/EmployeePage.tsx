@@ -1,17 +1,17 @@
 import { FC, MouseEvent, useState, useEffect } from 'react';
 import { Typography, Box, Tabs, Tab } from '@mui/material';
-import Togggle from 'components/controls/Toggle/Toggle';
-import { changeEmployeeStatus } from 'core/services/firebase';
-import { User } from 'helpers/types';
 import Grid from '@mui/material/Grid';
+import { changeEmployeeStatus } from 'core/services/firebase';
+import useTabs from 'core/hooks/useTabs';
+import EventBoxList from 'core/components/Event/EventBoxList/EventBoxList';
+import Togggle from 'components/controls/Toggle/Toggle';
+import { User } from 'helpers/types';
 import {
   sxEmpTitlePage,
   styledEmpContainer,
   sxEmpNamePage,
   sxEmpTab,
 } from 'pages/EmployeePage/EmployeePage.internals';
-import useTabs from 'core/hooks/useTabs';
-import EventBoxList from 'core/components/Event/EventBoxList/EventBoxList';
 
 type tEmployeePageProps = { user: User; uid: string };
 

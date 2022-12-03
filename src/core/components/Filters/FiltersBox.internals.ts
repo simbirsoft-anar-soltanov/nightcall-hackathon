@@ -4,7 +4,7 @@ const sxFiltersBoxContainer = {
   alignItems: 'center',
   padding: '24px',
   background: '#FFF',
-  boxShadow: '0px 7px 40px rgba(31, 37, 113, 0.07)',
+  boxShadow: '0 7px 40px rgba(31, 37, 113, 0.07)',
   borderRadius: '20px',
   border: '1px solid #E1E3E8',
   backgroundColor: '#E1E3E8',
@@ -27,17 +27,18 @@ const sxFiltersLabel = {
 const sxItemLeftBoxFilters = {
   flex: '0 0 33.33333%',
   width: '33.33333',
+  padding: '0 15px',
   paddingLeft: '15px',
-  paddingRight: '15px',
 };
 
 const sxFiltersInput = {
-  backgroundColor: '#ffffff',
+  backgroundColor: '#fff',
   overflow: 'hidden',
   borderRadius: '4px',
   width: '100%',
   '&:hover fieldset': {
-    borderColor: 'rgba(0, 0, 0, 0.23)!important',
+    // Todo попробовать убрать импотэнт
+    borderColor: 'rgba(0, 0, 0, 0.23) !important',
   },
 };
 
@@ -49,12 +50,12 @@ const sxFiltersButton = {
   fontWeight: 500,
   fontSize: '16px',
   lineHeight: '24px',
-  color: '#ffffff',
+  color: '#fff',
   textTransform: 'none',
   backgroundColor: '#4745D0',
   '&:hover': {
     backgroundColor: '#4745D0',
-    color: '#ffffff',
+    color: '#fff',
   },
 };
 
