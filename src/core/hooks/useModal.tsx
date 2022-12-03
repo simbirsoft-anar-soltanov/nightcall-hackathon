@@ -1,6 +1,12 @@
 import { useState } from 'react';
 
-const useModal = () => {
+type tReturnUseModal = {
+  modal: boolean;
+  handleOpen: VoidFunction;
+  handleClose: VoidFunction;
+};
+
+const useModal = (): tReturnUseModal => {
   const [modal, setModal] = useState<boolean>(false);
 
   const handleOpen = () => setModal(true);

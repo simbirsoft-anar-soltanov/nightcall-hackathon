@@ -1,7 +1,16 @@
-import { FC } from 'react';
+import { FC, useState, useEffect } from 'react';
 import Firebase from 'firebase/compat/app';
 import { Link, useNavigate } from 'react-router-dom';
-import { Box, Button, IconButton, Typography, Avatar } from '@mui/material';
+import {
+  Box,
+  Button,
+  IconButton,
+  Typography,
+  Avatar,
+  Alert,
+  AlertColor,
+} from '@mui/material';
+import SnackBar from 'components/indicators/SnackBar/SnackBar';
 import LogoutIcon from '@mui/icons-material/Logout';
 import useModal from 'core/hooks/useModal';
 import Dialog from 'components/controls/Dialog/Dialog';
@@ -22,6 +31,8 @@ type tHeaderProps = {
   user: UseUserType['user'];
 };
 
+export type tAlert = { status: string; title: string };
+
 const Header: FC<tHeaderProps> = ({
   firebase,
   loggedInUser,
@@ -30,6 +41,18 @@ const Header: FC<tHeaderProps> = ({
   const navigate = useNavigate();
 
   const { modal: isModalOpen, handleOpen, handleClose } = useModal();
+
+  const [alert, setAlert] = useState<tAlert | null>(null);
+
+  const onHandleChangeAlert = (payload: tAlert) => setAlert(payload);
+
+  useEffect(() => {
+    const clearAlert = setTimeout(() => setAlert(null), 5000);
+
+    return () => {
+      clearTimeout(clearAlert);
+    };
+  }, [alert]);
 
   const { header, headerContainer, logo, userBlock, userName } = useStyles();
 
@@ -89,9 +112,18 @@ const Header: FC<tHeaderProps> = ({
           {isModalOpen && (
             <Dialog open={isModalOpen} onClose={handleClose}>
               <Box sx={sxSupportWrap}>
-                <SupportForm handleClose={handleClose} />
+                <SupportForm
+                  onHandleChangeAlert={onHandleChangeAlert}
+                  handleClose={handleClose}
+                />
               </Box>
             </Dialog>
+          )}
+
+          {alert?.status && (
+            <SnackBar>
+              <Alert severity={alert.status as AlertColor}>{alert.title}</Alert>
+            </SnackBar>
           )}
         </Box>
       </Box>
