@@ -7,8 +7,8 @@ import Input from 'components/controls/Input/Input';
 import { CustomSendButton } from 'components/controls/Button/Button';
 import { createSupportTicket } from 'utils/createSupportTicket';
 import { getTextAreaProps } from 'utils/getTextAreaProps';
-import { tAlert } from 'core/layout/DefaultLayout/components/Header/Header';
 import { ticketNumberGenerator } from 'utils/createTicketNumber';
+import { tAlert } from 'core/hooks/useAlert';
 import {
   inputCollection,
   schema,
