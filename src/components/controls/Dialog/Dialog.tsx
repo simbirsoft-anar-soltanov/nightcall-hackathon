@@ -8,6 +8,11 @@ type tDialogProps = {
   isOpenSecondDialog?: boolean;
 };
 
+const sxDialogContent = {
+  padding: { xs: '20px', xm: '34px', md: '44px' },
+  overflow: 'auto',
+};
+
 const Dialog: FC<tDialogProps> = ({
   open,
   children,
@@ -21,17 +26,9 @@ const Dialog: FC<tDialogProps> = ({
     maxWidth='lg'
     disableScrollLock
     keepMounted
-    style={{
-      zIndex: 1100,
-      display: isOpenSecondDialog ? 'none' : 'block',
-    }}
+    style={{ zIndex: 1100, display: isOpenSecondDialog ? 'none' : 'block' }}
   >
-    <DialogContent
-      sx={{
-        padding: { xs: '20px', xm: '34px', md: '44px' },
-        overflow: 'auto',
-      }}
-    >
+    <DialogContent sx={sxDialogContent}>
       <>{children}</>
     </DialogContent>
   </DialogMui>

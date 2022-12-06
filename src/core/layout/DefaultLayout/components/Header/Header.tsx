@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react';
+import { FC } from 'react';
 import Firebase from 'firebase/compat/app';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -14,8 +14,9 @@ import SnackBar from 'components/indicators/SnackBar/SnackBar';
 import LogoutIcon from '@mui/icons-material/Logout';
 import useModal from 'core/hooks/useModal';
 import Dialog from 'components/controls/Dialog/Dialog';
-import { useStyles } from '../../DefaultLayout.internals';
 import SupportForm from 'components/form/SupportForm/SupportForm';
+import { useAlert } from 'core/hooks/useAlert';
+import { useStyles } from '../../DefaultLayout.internals';
 import logoIcon from 'assets/img/logo.png';
 import { defaultAvatar } from 'core/constants/constants';
 import { UseUserType } from 'core/helpers/types';
@@ -31,8 +32,6 @@ type tHeaderProps = {
   user: UseUserType['user'];
 };
 
-export type tAlert = { status: string; title: string };
-
 const Header: FC<tHeaderProps> = ({
   firebase,
   loggedInUser,
@@ -42,17 +41,7 @@ const Header: FC<tHeaderProps> = ({
 
   const { modal: isModalOpen, handleOpen, handleClose } = useModal();
 
-  const [alert, setAlert] = useState<tAlert | null>(null);
-
-  const onHandleChangeAlert = (payload: tAlert) => setAlert(payload);
-
-  useEffect(() => {
-    const clearAlert = setTimeout(() => setAlert(null), 5000);
-
-    return () => {
-      clearTimeout(clearAlert);
-    };
-  }, [alert]);
+  const { alert, onHandleChangeAlert } = useAlert();
 
   const { header, headerContainer, logo, userBlock, userName } = useStyles();
 

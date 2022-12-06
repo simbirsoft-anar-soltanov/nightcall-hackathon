@@ -1,13 +1,12 @@
 import * as yup from 'yup';
 import { yupFields } from 'utils/yupFields';
 
-const { organizationName, email, password, city, numberPhone } = yupFields;
+const { organizationName, email, city, numberPhone } = yupFields;
 
 const schema = yup
   .object({
     organizationName,
     email,
-    password,
     city,
     numberPhone,
   })
@@ -16,7 +15,6 @@ const schema = yup
 const inputCollection = [
   { name: 'organizationName', label: 'Имя организации' },
   { name: 'email', label: 'Адрес электронной почты' },
-  { name: 'password', label: 'Пароль' },
   { name: 'numberPhone', label: 'Номер телефона' },
   { name: 'city', label: 'Город' },
 ];
