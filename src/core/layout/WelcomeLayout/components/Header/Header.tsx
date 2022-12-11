@@ -16,7 +16,7 @@ const Header: FC = () => {
           onClick={() => navigate('/entry/sign-up')}
           onKeyDown={({ key }) => key === 'Enter' && navigate('/entry/sign-up')}
         >
-          Зарегистрировать организацию
+          Зарегистрироваться в системе
         </Button>
         <Button
           onClick={() => navigate('/entry/auth')}
