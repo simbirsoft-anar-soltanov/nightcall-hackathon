@@ -1,4 +1,4 @@
-const sxFiltersBoxContainer = {
+const sxSearchBoxContainer = {
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
@@ -10,7 +10,7 @@ const sxFiltersBoxContainer = {
   backgroundColor: '#E1E3E8',
 };
 
-const sxLeftBoxFilters = {
+const sxLeftBoxSearch = {
   display: 'flex',
   flexWrap: 'wrap',
   justifyContent: 'space-between',
@@ -18,31 +18,30 @@ const sxLeftBoxFilters = {
   width: '70%',
 };
 
-const sxFiltersLabel = {
+const sxSearchLabel = {
   fontWeight: '500',
   fontSize: '12px',
   color: '#7780A1',
 };
 
-const sxItemLeftBoxFilters = {
+const sxItemLeftBoxSearch = {
   flex: '0 0 33.33333%',
   width: '33.33333',
   padding: '0 15px',
   paddingLeft: '15px',
 };
 
-const sxFiltersInput = {
+const sxSearchInput = {
   backgroundColor: '#fff',
   overflow: 'hidden',
   borderRadius: '4px',
   width: '100%',
   '&:hover fieldset': {
-    // Todo попробовать убрать импотэнт
     borderColor: 'rgba(0, 0, 0, 0.23) !important',
   },
 };
 
-const sxFiltersButton = {
+const sxSearchButton = {
   width: '142px',
   height: '46px',
   border: '2px solid #4745D0',
@@ -59,11 +58,54 @@ const sxFiltersButton = {
   },
 };
 
+type tItemSearchNameFields = {
+  key: number;
+  title: string;
+  field: string;
+};
+
+const searchNameFields: Array<tItemSearchNameFields> = [
+  {
+    key: 1,
+    title: 'Нащвание организации',
+    field: 'organizationName',
+  },
+  {
+    key: 2,
+    title: 'Дата проведения',
+    field: 'startDate',
+  },
+  {
+    key: 3,
+    title: 'Категории',
+    field: 'category',
+  },
+];
+
+export type tOptions = {
+  value: string;
+  field: string;
+};
+
+export type tSearch = {
+  organizationName: string;
+  startDate: string;
+  category: string;
+};
+
+const initSearch: tSearch = {
+  organizationName: '',
+  startDate: '',
+  category: '',
+};
+
 export {
-  sxFiltersBoxContainer,
-  sxFiltersLabel,
-  sxLeftBoxFilters,
-  sxItemLeftBoxFilters,
-  sxFiltersInput,
-  sxFiltersButton,
+  sxSearchBoxContainer,
+  sxSearchLabel,
+  sxLeftBoxSearch,
+  sxItemLeftBoxSearch,
+  sxSearchInput,
+  sxSearchButton,
+  searchNameFields,
+  initSearch,
 };

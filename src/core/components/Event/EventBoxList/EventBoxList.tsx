@@ -6,12 +6,15 @@ import {
   getUserByUserId,
   getEventsByStatus,
   joinToEvent,
+  getEventsBySearch,
 } from 'services/firebase';
 import SpinnerWrap from 'core/components/SpinnerWrap/SpinnerWrap';
 import EventBoxItem from '../EventBoxItem/EventBoxItem';
-import FiltersBox from 'core/components/Filters/FiltersBox';
+import SearchBox from 'core/components/Search/SearchBox';
 import { DocumentData } from 'firebase/firestore';
 import { statusEvents, sxEventGridItems } from './EventBoxList.internals';
+import { tSearch } from 'core/components/Search/SearchBox.internals';
+import { dataIsEmpty } from 'utils/checkEmpty';
 
 type tEventBoxListProps = {
   tab: number;
@@ -38,8 +41,43 @@ const EventBoxList: FC<tEventBoxListProps> = ({ tab, docId, uid }) => {
     return getUser?.joinEvents || null;
   };
 
+  const setEventsFromApi = (res: any) => {
+    if (res) setEvents(res);
+    setLoading(false);
+  };
+
   const getByStatus = async () => {
     return await getEventsByStatus(statusEvents[tab]);
+  };
+
+  const getEventsBySearchForRespond = (search: tSearch) => {
+    const { organizationName, startDate, category } = search;
+    const eventsBySearch = events.filter((event) => {
+      return (
+        (event.organizationName &&
+          organizationName !== '' &&
+          event.organizationName.includes(organizationName)) ||
+        (category !== '' && event.category.includes(category)) ||
+        (startDate !== '' && event.time_start.includes(startDate))
+      );
+    });
+    setEvents(eventsBySearch);
+  };
+
+  const getBySearch = async (search: tSearch) => {
+    if (tab === 2) {
+      if (dataIsEmpty(search)) {
+        getEvents(uid).then((res) => {
+          setEventsFromApi(res);
+        });
+      } else {
+        return getEventsBySearchForRespond(search);
+      }
+    }
+    if (dataIsEmpty(search)) {
+      return await getEventsByStatus(statusEvents[tab]);
+    }
+    return await getEventsBySearch(search, statusEvents[tab]);
   };
 
   const onHandleJoinToEvent = async (event: any, isUnFollow?: boolean) => {
@@ -50,9 +88,10 @@ const EventBoxList: FC<tEventBoxListProps> = ({ tab, docId, uid }) => {
     }
   };
 
-  const setEventsFromApi = (res: any) => {
-    if (res) setEvents(res);
-    setLoading(false);
+  const searchEvents = (search: tSearch) => {
+    getBySearch(search).then((res) => {
+      setEventsFromApi(res);
+    });
   };
 
   useEffect(() => {
@@ -78,7 +117,7 @@ const EventBoxList: FC<tEventBoxListProps> = ({ tab, docId, uid }) => {
         </Box>
       ) : (
         <Box sx={{ display: 'grid', gap: '24px' }}>
-          <FiltersBox />
+          <SearchBox searchEvents={searchEvents} />
           {events.length ? (
             <Grid sx={sxEventGridItems}>
               {events.map((item: any, index: number) => (

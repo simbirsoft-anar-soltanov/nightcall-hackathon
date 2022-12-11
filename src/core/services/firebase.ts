@@ -4,6 +4,7 @@ import { firebase } from '../lib/firebase';
 import { User } from '../helpers/types';
 import { tCardProps } from 'components/controls/Card/Card';
 import { v4 as uuidv4 } from 'uuid';
+import { tSearch } from 'core/components/Search/SearchBox.internals';
 
 export const doesOrganizationNameExist = async (
   organizationName: string,
@@ -158,4 +159,34 @@ export const changeEmployeeStatus = async (
 ): Promise<void> => {
   const taskDocRef = doc(db, 'users', userId);
   await updateDoc(taskDocRef, { statusReadyJoinToEvent });
+};
+
+export const getEventsBySearch = async (
+  search: tSearch,
+  statuses: string[],
+): Promise<event[]> => {
+  const { organizationName, startDate, category } = search;
+
+  let initQuery = firebase
+    .firestore()
+    .collection('events')
+    .where('status', 'in', statuses);
+
+  if (category !== '') {
+    initQuery = initQuery.where('category', '==', category);
+  }
+  if (organizationName !== '') {
+    initQuery = initQuery.where('organizationName', '==', organizationName);
+  }
+  if (startDate !== '') {
+    initQuery = initQuery.where('time_start', '==', startDate);
+  }
+
+  const result = await initQuery.get();
+
+  const eventsBySearch: any = result.docs.map((item) => ({
+    ...item.data(),
+  }));
+
+  return eventsBySearch;
 };
