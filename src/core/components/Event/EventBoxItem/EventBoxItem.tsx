@@ -1,10 +1,11 @@
 import { FC } from 'react';
-import { DocumentData, DocumentSnapshot } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { Typography, Box, Grid, Button } from '@mui/material';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import Tooltip from 'components/indicators/Tooltip/Tooltip';
+import { upperCaseFirstString } from 'utils/upperCaseFirstString';
+import { tDocumentEvent } from 'core/helpers/types';
 import { sxSupportBtn } from 'core/layout/DefaultLayout/components/Header/Header.internals';
 import { sxAcceptBtn, sxRejectBtn } from './EventBoxItem.internals';
 import {
@@ -16,22 +17,23 @@ import {
   sxEventBoxRightPanel,
 } from './EventBoxItem.internals';
 
-type Event = DocumentData & Pick<DocumentSnapshot<DocumentData>, 'id'>;
-
-type OrderBoxItemProps = {
-  item: Event;
+type EventBoxItemProps = {
+  item: tDocumentEvent;
   tab: number;
-  onHandleJoinToEvent: (event: Event, isUnFollow?: boolean) => Promise<void>;
+  onHandleJoinToEvent: (
+    event: tDocumentEvent,
+    isUnFollow?: boolean,
+  ) => Promise<void>;
 };
 
-const EventBoxItem: FC<OrderBoxItemProps> = ({
+const EventBoxItem: FC<EventBoxItemProps> = ({
   item,
   tab,
   onHandleJoinToEvent,
 }) => {
   const navigate = useNavigate();
 
-  const { organization_id, category, info, time, time_start } = item;
+  const { organization_id, category, info, time, time_start, city } = item;
 
   const handlerActionWithEvent = async () => {
     await onHandleJoinToEvent(item, tab === 2);
@@ -50,7 +52,9 @@ const EventBoxItem: FC<OrderBoxItemProps> = ({
               </Tooltip>
             )}
           </Typography>
-          <Typography sx={sxEventBoxCategory}>{category}</Typography>
+          <Typography sx={sxEventBoxCategory}>
+            {upperCaseFirstString(category)} - {upperCaseFirstString(city)}
+          </Typography>
         </Box>
 
         <Box sx={{ display: 'grid', gap: '24px' }}>

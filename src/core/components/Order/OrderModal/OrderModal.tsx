@@ -14,16 +14,16 @@ import { useTheme } from '@mui/material/styles';
 import Input from 'components/controls/Input/Input';
 import { CustomSendButton } from 'components/controls/Button/Button';
 import FileLoader from 'components/controls/FileLoader/FileLoader';
-import { addEvent } from 'core/services/firebase';
 import useUser from 'core/hooks/useUser';
 import { UserContext } from 'core/context/user';
 import { UseUserType } from 'core/helpers/types';
+import { addEvent } from 'core/services/events/addEvent';
+import SnackBar from 'components/indicators/SnackBar/SnackBar';
 import { schema } from 'pages/OrgPage/OrgPage.internals';
 import {
   styledAuthContainer,
   styledForm,
 } from 'pages/AuthPage/AuthPage.internals';
-import SnackBar from 'components/indicators/SnackBar/SnackBar';
 
 const fields = [
   { name: 'info', label: 'Название мероприятия' },

@@ -9,14 +9,14 @@ import {
   searchNameFields,
   initSearch,
   tOptions,
-  tSearch,
+  tSearchFilters,
 } from './SearchBox.internals';
 
 type tSearchBox = {
-  searchEvents: (x: tSearch) => void;
+  handleFiltersEvents: (filters: tSearchFilters) => void;
 };
 
-const SearchBox: FC<tSearchBox> = ({ searchEvents }) => {
+const SearchBox: FC<tSearchBox> = ({ handleFiltersEvents }) => {
   const [searchData, setSearchData] = useState(initSearch);
 
   const changeValue = (options: tOptions) => {
@@ -24,22 +24,21 @@ const SearchBox: FC<tSearchBox> = ({ searchEvents }) => {
     setSearchData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handlerSearchEvents = () => {
-    searchEvents(searchData);
-  };
+  const handlerSearchEvents = () => handleFiltersEvents(searchData);
 
   return (
     <Grid sx={sxSearchBoxContainer}>
       <Box sx={sxLeftBoxSearch}>
-        {searchNameFields.map((searchField) => (
+        {searchNameFields.map(({ key, title, field }) => (
           <SearchInput
-            key={searchField.key}
-            title={searchField.title}
-            field={searchField.field}
+            key={key}
+            title={title}
+            field={field}
             changeValue={changeValue}
           />
         ))}
       </Box>
+
       <Box>
         <Button sx={sxSearchButton} onClick={handlerSearchEvents}>
           <Search className='mr-3' />

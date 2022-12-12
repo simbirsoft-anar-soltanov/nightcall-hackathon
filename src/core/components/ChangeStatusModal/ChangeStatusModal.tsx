@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { UserContext } from 'context/user';
 import useUser from 'core/hooks/useUser';
-import { sendOrderForChangeStatusOrg } from 'services/firebase';
+import { sendOrderForChangeStatusOrg } from 'core/services/status/sendOrderForChangeStatusOrg';
 import { schemaChangeStatus } from 'pages/OrgPage/OrgPage.internals';
 import Input from 'components/controls/Input/Input';
 import SnackBar from 'components/indicators/SnackBar/SnackBar';

@@ -67,8 +67,8 @@ type tItemSearchNameFields = {
 const searchNameFields: Array<tItemSearchNameFields> = [
   {
     key: 1,
-    title: 'Название организации',
-    field: 'organizationName',
+    title: 'Город',
+    field: 'city',
   },
   {
     key: 2,
@@ -87,14 +87,14 @@ export type tOptions = {
   field: string;
 };
 
-export type tSearch = {
-  organizationName: string;
+export type tSearchFilters = {
+  city: string;
   startDate: string;
   category: string;
 };
 
-const initSearch: tSearch = {
-  organizationName: '',
+const initSearch: tSearchFilters = {
+  city: '',
   startDate: '',
   category: '',
 };

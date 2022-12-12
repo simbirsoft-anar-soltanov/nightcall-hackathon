@@ -1,8 +1,7 @@
 const statusEvents: Record<string, string> = {
   0: 'active',
-  1: 'past',
-  2: 'approve',
-  3: 'reject',
+  1: 'approve',
+  2: 'reject',
 };
 
 const sxOrderGridItems = {

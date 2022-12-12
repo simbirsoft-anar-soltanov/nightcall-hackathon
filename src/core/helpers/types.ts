@@ -1,7 +1,8 @@
 import { Dispatch } from 'react';
 import Firebase from 'firebase/compat/app';
+import { DocumentData, DocumentSnapshot } from 'firebase/firestore';
 
-export type User = {
+export type tUser = {
   id: string;
   name: string;
   surname: string;
@@ -19,18 +20,28 @@ export type User = {
 };
 
 export type UseUserType = {
-  user: User;
-  setActiveUser: Dispatch<User>;
+  user: tUser;
+  setActiveUser: Dispatch<tUser>;
 };
 
 export type tEventSnaphot = Firebase.firestore.DocumentSnapshot<tEvent>;
 
+export type tDocumentEvent = DocumentData &
+  Pick<DocumentSnapshot<tEvent>, 'id'>;
+
 export type tEvent = {
   organization_id: string;
   category: string;
+  city: string;
+  foto: string[];
   info: string;
   must: string;
+  organizationName: string;
   people_count: number;
+  peoples: {
+    userId: string;
+    avatarUrl: string;
+  }[];
   status: string;
   time: string;
   time_start: string;

@@ -14,7 +14,7 @@ const EmployeePageContainer: FC = () => {
 
   if (!docId) return <SpinnerWrap />;
 
-  return <EmployeePage user={user} uid={loggedInUser?.uid} />;
+  return <EmployeePage user={user} userId={loggedInUser?.uid} />;
 };
 
 export default EmployeePageContainer;

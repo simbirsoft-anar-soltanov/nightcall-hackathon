@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import { default as CardMui } from '@mui/material/Card';
 import { red } from '@mui/material/colors';
-import { changeStatusRequest } from 'core/services/firebase';
+import { changeStatusRequest } from 'core/services/requests/changeStatusRequest';
 import ModalDialog from '../ModalDialog/ModalDialog';
 import { defaultLogo, defaultPreviewPhoto } from 'core/constants/constants';
 import {
