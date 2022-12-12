@@ -5,7 +5,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import CallIcon from '@mui/icons-material/Call';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import { defaultAvatar } from 'core/constants/constants';
-import { User } from 'core/helpers/types';
+import { tUser } from 'core/helpers/types';
 import { sxOrgTitlePage } from 'pages/OrgPage/OrgPage.internals';
 import {
   sxOrgInfoWrap,
@@ -19,9 +19,7 @@ import {
   mockOrgDescr,
 } from './OrgInfo.internals';
 
-type tOrgInfoProps = {
-  user: User;
-};
+type tOrgInfoProps = { user: tUser };
 
 const OrgInfo: FC<tOrgInfoProps> = ({
   user: { avatar, organizationName, numberPhone, email },

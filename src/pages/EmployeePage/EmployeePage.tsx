@@ -2,23 +2,24 @@ import { FC, MouseEvent, useState, useEffect } from 'react';
 import { Box, Tabs, Tab } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import useTabs from 'core/hooks/useTabs';
-import { changeEmployeeStatus } from 'core/services/firebase';
 import TitleHead from 'core/components/TitleHead/TitleHead';
 import EventBoxList from 'core/components/Event/EventBoxList/EventBoxList';
 import Togggle from 'components/controls/Toggle/Toggle';
-import { User } from 'helpers/types';
+import { changeEmployeeStatus } from 'core/services/status/changeEmployeeStatus';
+import { tUser } from 'helpers/types';
 import {
   styledEmpContainer,
   sxEmpTab,
 } from 'pages/EmployeePage/EmployeePage.internals';
 
-type tEmployeePageProps = { user: User; uid: string };
+type tEmployeePageProps = { user: tUser; userId: string };
 
 const EmployeePage: FC<tEmployeePageProps> = ({
-  user: { docId, statusReadyJoinToEvent },
-  uid,
+  user: { docId: userDocId, statusReadyJoinToEvent },
+  userId,
 }) => {
   const [readyStatus, setReadyStatus] = useState<string>('');
+
   const { tab, onChangeTab } = useTabs();
 
   useEffect(() => {
@@ -34,7 +35,7 @@ const EmployeePage: FC<tEmployeePageProps> = ({
     newStatus: string,
   ) => {
     setReadyStatus(newStatus);
-    await changeEmployeeStatus(docId, newStatus);
+    await changeEmployeeStatus(userDocId, newStatus);
   };
 
   return (
@@ -50,7 +51,7 @@ const EmployeePage: FC<tEmployeePageProps> = ({
         <Togggle value={readyStatus} handleChange={handleChange} />
       </Grid>
 
-      <EventBoxList tab={tab} docId={docId} uid={uid} />
+      <EventBoxList tab={tab} userDocId={userDocId} userId={userId} />
     </Box>
   );
 };
