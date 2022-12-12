@@ -3,9 +3,9 @@ import { makeStyles } from '@mui/styles';
 const useStyles = makeStyles({
   root: {
     maxWidth: '1280px',
+    width: '100%',
     margin: '0 auto',
     padding: '28px',
-    height: '100vh',
   },
   headerContainer: {
     borderBottom: '1px solid #DBDBDB',

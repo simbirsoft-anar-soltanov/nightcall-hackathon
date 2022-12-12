@@ -19,7 +19,7 @@ type OrderBoxItemProps = {
 };
 
 const OrderBoxItem: FC<OrderBoxItemProps> = ({
-  item: { organization_id, category, info, time, time_start, status },
+  item: { organization_id, category, info, time, time_start },
 }) => {
   const navigate = useNavigate();
 
@@ -36,11 +36,7 @@ const OrderBoxItem: FC<OrderBoxItemProps> = ({
               </Tooltip>
             )}
           </Typography>
-          <Typography sx={sxOrderBoxCategory}>
-            {category}
-            <br />
-            {organization_id}
-          </Typography>
+          <Typography sx={sxOrderBoxCategory}>{category}</Typography>
         </Box>
 
         <Box sx={{ display: 'grid', gap: '24px' }}>
@@ -50,16 +46,15 @@ const OrderBoxItem: FC<OrderBoxItemProps> = ({
           </Typography>
           <Typography sx={sxOrderBoxTime}>
             <ScheduleIcon sx={{ color: '#134BC5' }} />
-            {time} &nbsp;
-            {status}
+            {time}
           </Typography>
         </Box>
       </Box>
 
       <Button
-        onClick={() => navigate(`event/${organization_id}`)}
+        onClick={() => navigate(`/dashboard/event/${organization_id}`)}
         onKeyDown={({ key }) =>
-          key === 'Enter' && navigate(`event/${organization_id}`)
+          key === 'Enter' && navigate(`/dashboard/event/${organization_id}`)
         }
         sx={sxSupportBtn}
       >

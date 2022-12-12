@@ -1,15 +1,14 @@
 import { FC, MouseEvent, useState, useEffect } from 'react';
-import { Typography, Box, Tabs, Tab } from '@mui/material';
+import { Box, Tabs, Tab } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import { changeEmployeeStatus } from 'core/services/firebase';
 import useTabs from 'core/hooks/useTabs';
+import { changeEmployeeStatus } from 'core/services/firebase';
+import TitleHead from 'core/components/TitleHead/TitleHead';
 import EventBoxList from 'core/components/Event/EventBoxList/EventBoxList';
 import Togggle from 'components/controls/Toggle/Toggle';
 import { User } from 'helpers/types';
 import {
-  sxEmpTitlePage,
   styledEmpContainer,
-  sxEmpNamePage,
   sxEmpTab,
 } from 'pages/EmployeePage/EmployeePage.internals';
 
@@ -40,10 +39,7 @@ const EmployeePage: FC<tEmployeePageProps> = ({
 
   return (
     <Box component='div' sx={styledEmpContainer}>
-      <Grid container justifyContent='space-between' alignItems='center'>
-        <Typography sx={sxEmpTitlePage}>Мероприятия</Typography>
-        <Typography sx={sxEmpNamePage}>Страница Волонтера</Typography>
-      </Grid>
+      <TitleHead title='SimbirHelp' namePage='Страница сотрудника SimbirSoft' />
 
       <Grid container justifyContent='space-between' alignItems='center'>
         <Tabs value={tab} onChange={onChangeTab}>
@@ -53,6 +49,7 @@ const EmployeePage: FC<tEmployeePageProps> = ({
         </Tabs>
         <Togggle value={readyStatus} handleChange={handleChange} />
       </Grid>
+
       <EventBoxList tab={tab} docId={docId} uid={uid} />
     </Box>
   );

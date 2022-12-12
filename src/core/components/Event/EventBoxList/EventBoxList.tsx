@@ -118,6 +118,7 @@ const EventBoxList: FC<tEventBoxListProps> = ({ tab, docId, uid }) => {
       ) : (
         <Box sx={{ display: 'grid', gap: '24px' }}>
           <SearchBox searchEvents={searchEvents} />
+
           {events.length ? (
             <Grid sx={sxEventGridItems}>
               {events.map((item: any, index: number) => (

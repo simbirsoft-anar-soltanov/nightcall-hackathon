@@ -67,7 +67,7 @@ type tItemSearchNameFields = {
 const searchNameFields: Array<tItemSearchNameFields> = [
   {
     key: 1,
-    title: 'Нащвание организации',
+    title: 'Название организации',
     field: 'organizationName',
   },
   {

@@ -24,16 +24,12 @@ const EmployeePage = lazy(
   () => import('pages/EmployeePage/EmployeePage.container'),
 );
 const EventPage = lazy(() => import('pages/EventPage/EventPage'));
+const ProfilePage = lazy(() => import('pages/ProfilePage/ProfilePage'));
 
 const roleRoute: Record<string, JSX.Element> = {
   Модератор: <Route path='mod' element={<ModeratorPage />} />,
   Сотрудник: <Route path='emp' element={<EmployeePage />} />,
-  Организация: (
-    <>
-      <Route path='org' element={<OrganizationPage />} />
-      <Route path='org/event/:id' element={<EventPage />} />
-    </>
-  ),
+  Организация: <Route path='org' element={<OrganizationPage />} />,
 };
 
 const Routing: FC = () => {
@@ -56,6 +52,9 @@ const Routing: FC = () => {
 
           <Route path='/dashboard' element={<DefaultLayout />}>
             {roleRoute[role]}
+
+            <Route path='profile' element={<ProfilePage />} />
+            <Route path='event/:id' element={<EventPage />} />
           </Route>
 
           <Route path='errorBoundary' element={<ErrorBoundary />} />

@@ -72,9 +72,9 @@ const EventBoxItem: FC<OrderBoxItemProps> = ({
           {tab === 2 ? 'Отклонить' : 'Принять'}
         </Button>
         <Button
-          onClick={() => navigate(`/org/event/${organization_id}`)}
+          onClick={() => navigate(`/dashboard/event/${organization_id}`)}
           onKeyDown={({ key }) =>
-            key === 'Enter' && navigate(`/org/event/${organization_id}`)
+            key === 'Enter' && navigate(`/dashboard/event/${organization_id}`)
           }
           sx={sxSupportBtn}
         >

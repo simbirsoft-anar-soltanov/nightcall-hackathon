@@ -24,11 +24,6 @@ export type tColor =
   | 'info'
   | 'warning';
 
-const styledModeratorContainer = {
-  maxWidth: '1280px',
-  margin: '16px auto',
-};
-
 const styledCardContainer = {
   display: 'flex',
   flexWrap: 'wrap',
@@ -41,6 +36,5 @@ export {
   typeModerationVariables,
   statusLabelRequest,
   statusRequest,
-  styledModeratorContainer,
   styledCardContainer,
 };

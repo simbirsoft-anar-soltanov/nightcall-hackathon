@@ -7,12 +7,16 @@ import { useAuthListener } from 'core/hooks/useAuthListener';
 const App: FC = () => {
   const { user } = useAuthListener();
 
-  return (
+  return user ? (
     <UserContext.Provider value={{ user }}>
       <MuiTheme>
         <Routing />
       </MuiTheme>
     </UserContext.Provider>
+  ) : (
+    <MuiTheme>
+      <Routing />
+    </MuiTheme>
   );
 };
 

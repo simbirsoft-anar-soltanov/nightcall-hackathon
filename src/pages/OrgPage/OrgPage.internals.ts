@@ -18,8 +18,8 @@ const schemaChangeStatus = yup
   })
   .required();
 
-const styledOrgContainer = {
-  maxWidth: '100%',
+const styledContainer = {
+  maxWidth: '1280px',
   margin: '24px auto',
   display: 'grid',
   gap: '32px',
@@ -66,7 +66,7 @@ const sxOrgAddRequest = {
 export {
   schema,
   schemaChangeStatus,
-  styledOrgContainer,
+  styledContainer,
   sxOrgTitlePage,
   sxOrgNamePage,
   sxOrgTab,
