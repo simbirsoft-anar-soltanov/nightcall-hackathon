@@ -1,11 +1,10 @@
 import { FC, SyntheticEvent, useState, useEffect } from 'react';
-import { Typography, Box, Tabs, Tab } from '@mui/material';
+import { Box, Tabs, Tab } from '@mui/material';
+import TitleHead from 'core/components/TitleHead/TitleHead';
 import Events from './components/Events/Events';
 import Requests from './components/Requests/Requests';
-import {
-  styledModeratorContainer,
-  typeModerationVariables,
-} from './ModeratorPage.internals';
+import { typeModerationVariables } from './ModeratorPage.internals';
+import { styledContainer } from 'pages/OrgPage/OrgPage.internals';
 
 const ModeratorPage: FC = () => {
   const [typeModeration, setTypeModeration] = useState<number>(0);
@@ -21,13 +20,10 @@ const ModeratorPage: FC = () => {
   const isEvent = typeModerationVariables[typeModeration] === 'event';
 
   return (
-    <Box component='div' sx={styledModeratorContainer}>
-      <Typography variant='h3' sx={{ margin: '24px 0 16px' }}>
-        Страница Модератора
-      </Typography>
-      <Box
-        sx={{ borderBottom: 1, borderColor: 'divider', marginBottom: '16px' }}
-      >
+    <Box component='div' sx={styledContainer}>
+      <TitleHead title='Мероприятия' namePage='Страница Модератора' />
+
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={typeModeration} onChange={onChangeTypeModeration}>
           <Tab label='Заявки организаций' sx={{ paddingLeft: 0 }} />
           <Tab label='Заявки на создание мероприятия' />

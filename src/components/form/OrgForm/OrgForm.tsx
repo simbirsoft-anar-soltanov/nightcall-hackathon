@@ -63,11 +63,9 @@ const OrgForm: FC<tOrgFormProps> = ({ isWithTitle }) => {
           status: 'active',
         });
 
-        sendRegistrationLetter(
-          { ...fieldValues, password },
-          onHandleChangeAlert,
-        );
+        const payloadLetter = { ...fieldValues, password };
 
+        sendRegistrationLetter(payloadLetter, onHandleChangeAlert);
         reset();
         handleOpen();
       }

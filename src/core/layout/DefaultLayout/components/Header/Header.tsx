@@ -17,6 +17,7 @@ import Dialog from 'components/controls/Dialog/Dialog';
 import SupportForm from 'components/form/SupportForm/SupportForm';
 import { useAlert } from 'core/hooks/useAlert';
 import { useStyles } from '../../DefaultLayout.internals';
+import { ReactComponent as SimbirHelpIcon } from 'assets/icons/simbirHelp.svg';
 import logoIcon from 'assets/img/logo.png';
 import { defaultAvatar } from 'core/constants/constants';
 import { UseUserType } from 'core/helpers/types';
@@ -70,10 +71,13 @@ const Header: FC<tHeaderProps> = ({
             </Button>
           </Box>
 
-          {loggedInUser && id && (
+          {loggedInUser && id ? (
             <>
               <Box className={userBlock}>
-                <Avatar src={avatar || defaultAvatar} alt={name} />
+                <Link to='/dashboard/profile'>
+                  <Avatar src={avatar || defaultAvatar} alt={name} />
+                </Link>
+
                 <Typography className={userName}>
                   {organizationName && organizationName}
                   {name && surname && `${name} ${surname}`}
@@ -96,6 +100,10 @@ const Header: FC<tHeaderProps> = ({
                 </IconButton>
               </Box>
             </>
+          ) : (
+            <Box sx={{ display: 'flex', alignItems: 'stretch' }}>
+              <SimbirHelpIcon height='auto' />
+            </Box>
           )}
 
           {isModalOpen && (
