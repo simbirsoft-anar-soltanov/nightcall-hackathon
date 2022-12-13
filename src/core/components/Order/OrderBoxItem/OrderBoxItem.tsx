@@ -19,7 +19,7 @@ type OrderBoxItemProps = {
 };
 
 const OrderBoxItem: FC<OrderBoxItemProps> = ({
-  item: { organization_id, category, info, time, time_start },
+  item: { id, category, info, time, time_start },
 }) => {
   const navigate = useNavigate();
 
@@ -52,9 +52,9 @@ const OrderBoxItem: FC<OrderBoxItemProps> = ({
       </Box>
 
       <Button
-        onClick={() => navigate(`/dashboard/event/${organization_id}`)}
+        onClick={() => navigate(`/dashboard/event/${id}`)}
         onKeyDown={({ key }) =>
-          key === 'Enter' && navigate(`/dashboard/event/${organization_id}`)
+          key === 'Enter' && navigate(`/dashboard/event/${id}`)
         }
         sx={sxSupportBtn}
       >

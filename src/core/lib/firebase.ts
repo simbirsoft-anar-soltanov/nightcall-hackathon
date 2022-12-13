@@ -26,7 +26,7 @@ const firebaseConfig: configType = {
 
 const firebase: Firebase.app.App = Firebase.initializeApp(firebaseConfig);
 const auth: Auth = getAuth(firebase);
-const { FieldValue } = Firebase.firestore;
+const { FieldValue, FieldPath } = Firebase.firestore;
 const db = getFirestore(firebase);
 
-export { firebase, db, auth, FieldValue };
+export { firebase, db, auth, FieldValue, FieldPath };

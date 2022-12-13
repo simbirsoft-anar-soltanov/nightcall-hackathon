@@ -39,7 +39,7 @@ const OrderBoxList: FC<tOrderBoxListProps> = ({ tab }) => {
         <Box sx={{ display: 'grid', gap: '24px' }}>
           {items.length ? (
             <Grid sx={sxOrderGridItems}>
-              {items.map((item, index) => (
+              {items?.map((item, index) => (
                 <OrderBoxItem item={item} key={index} />
               ))}
             </Grid>

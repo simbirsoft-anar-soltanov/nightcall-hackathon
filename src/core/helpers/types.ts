@@ -30,6 +30,8 @@ export type tDocumentEvent = DocumentData &
   Pick<DocumentSnapshot<tEvent>, 'id'>;
 
 export type tEvent = {
+  id: string;
+  docId: string;
   organization_id: string;
   category: string;
   city: string;
@@ -39,7 +41,7 @@ export type tEvent = {
   organizationName: string;
   people_count: number;
   peoples: {
-    userId: string;
+    userName: string;
     avatarUrl: string;
   }[];
   status: string;

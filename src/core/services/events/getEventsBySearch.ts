@@ -14,7 +14,7 @@ export const getEventsBySearch = async (
     .where('status', 'in', statuses);
 
   if (search !== '') {
-    initQuery = initQuery.where('info', '>=', search);
+    initQuery = initQuery.where('info', '==', search);
   }
 
   if (city !== '') {
@@ -26,7 +26,6 @@ export const getEventsBySearch = async (
   }
 
   if (category !== '') {
-    console.log(category.toLowerCase());
     initQuery = initQuery.where('category', '==', category);
   }
 
@@ -34,6 +33,7 @@ export const getEventsBySearch = async (
 
   const eventsBySearch = result.docs.map((item) => ({
     ...item.data(),
+    docId: item.id,
   })) as tEvent[];
 
   return eventsBySearch;
