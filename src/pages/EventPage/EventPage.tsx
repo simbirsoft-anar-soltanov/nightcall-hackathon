@@ -55,7 +55,11 @@ const EventPage: FC<tEventPageProps> = ({ eventId }) => {
       <TitleHead title='Данные мероприятия' namePage='Страница мероприятия' />
 
       {event[0] && (
-        <EventBoxItem item={event[0] as tDocumentEvent} isDetailsPage />
+        <EventBoxItem
+          item={event[0] as tDocumentEvent}
+          role={role}
+          isDetailsPage
+        />
       )}
 
       {orgInfo?.length ? (

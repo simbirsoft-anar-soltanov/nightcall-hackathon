@@ -12,11 +12,12 @@ import {
   sxEmpTab,
 } from 'pages/EmployeePage/EmployeePage.internals';
 
-type tEmployeePageProps = { user: tUser; userId: string };
+type tEmployeePageProps = { user: tUser; userId: string; role: string };
 
 const EmployeePage: FC<tEmployeePageProps> = ({
   user: { docId: userDocId, statusReadyJoinToEvent },
   userId,
+  role,
 }) => {
   const [readyStatus, setReadyStatus] = useState<string>('');
 
@@ -56,6 +57,7 @@ const EmployeePage: FC<tEmployeePageProps> = ({
         tab={tab}
         userDocId={userDocId}
         userId={userId}
+        role={role}
         readyStatus={readyStatus}
       />
     </Box>

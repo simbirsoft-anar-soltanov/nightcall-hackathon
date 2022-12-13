@@ -44,11 +44,12 @@ const EmployeeForm: FC = () => {
             await firebase.firestore().collection('users').add({
               id: createdUserResult.user.uid,
               email: email.toLowerCase(),
-              name: name.toLowerCase(),
-              surname: surname.toLowerCase(),
-              city: city.toLowerCase(),
+              name,
+              surname,
+              city,
               numberPhone: numberPhone.toLowerCase(),
               role: 'Сотрудник',
+              statusReadyJoinToEvent: 'dontDisturb',
             });
 
             navigate('/dashboard/emp');

@@ -28,8 +28,8 @@ export const yupFields = {
   category: yup.string().required('Укажите категорию мероприятия'),
   time: yup.string().required('Укажите длительность мероприятия'),
   time_start: yup.string().required('Укажите дату проведения'),
-  must: yup.string(),
-  people_count: yup.number().typeError('Введите число').notRequired(),
+  must: yup.string().required('Укажите требования к волонтёру'),
+  people_count: yup.number().typeError('Введите число').required(),
   aboutSelf: yup.string().required('Укажите деятельность организации'),
 
   supportForm: {

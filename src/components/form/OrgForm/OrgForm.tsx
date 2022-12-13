@@ -43,21 +43,25 @@ const OrgForm: FC<tOrgFormProps> = ({ isWithTitle }) => {
     const orgNameExists = await doesOrganizationNameExist(organizationName);
 
     if (!orgNameExists) {
-      const createdUserResult = await firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password);
+      try {
+        const createdUserResult = await firebase
+          .auth()
+          .createUserWithEmailAndPassword(email, password);
 
-      if (createdUserResult?.user) {
-        const { user } = createdUserResult;
+        await createdUserResult?.user?.updateProfile({
+          displayName: organizationName,
+        });
 
-        await user.updateProfile({ displayName: organizationName });
+        reset();
+        handleOpen();
 
         await firebase.firestore().collection('users').add({
-          id: user.uid,
+          id: createdUserResult?.user?.uid,
+          organization_id: createdUserResult?.user?.uid,
           avatar: defaultLogo,
-          organizationName: organizationName.toLowerCase(),
           email: email.toLowerCase(),
-          city: city.toLowerCase(),
+          organizationName,
+          city,
           numberPhone: numberPhone.toLowerCase(),
           role: 'Организация',
           status: 'active',
@@ -66,16 +70,15 @@ const OrgForm: FC<tOrgFormProps> = ({ isWithTitle }) => {
         const payloadLetter = { ...fieldValues, password };
 
         sendRegistrationLetter(payloadLetter, onHandleChangeAlert);
-        reset();
-        handleOpen();
+      } catch (error: unknown) {
+        reset({});
       }
-    }
-
-    orgNameExists &&
+    } else {
       onHandleChangeAlert({
         status: 'error',
         title: 'Пользователь зарегистрирован в системе!',
       });
+    }
   });
 
   return (

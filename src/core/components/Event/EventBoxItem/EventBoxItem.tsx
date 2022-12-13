@@ -20,9 +20,11 @@ import {
 
 type EventBoxItemProps = {
   item: tDocumentEvent;
+  role: string;
   tab?: number;
   isConfirmEventDisabled?: boolean;
   isDetailsPage?: boolean;
+  handleIsAlreadyEmpSubscribeEvent?: (id: string) => boolean;
   onHandleJoinToEvent?: (
     event: tDocumentEvent,
     isUnFollow?: boolean,
@@ -31,8 +33,10 @@ type EventBoxItemProps = {
 
 const EventBoxItem: FC<EventBoxItemProps> = ({
   item,
+  role,
   tab,
   isConfirmEventDisabled,
+  handleIsAlreadyEmpSubscribeEvent,
   isDetailsPage,
   onHandleJoinToEvent,
 }) => {
@@ -49,9 +53,12 @@ const EventBoxItem: FC<EventBoxItemProps> = ({
     peoples,
   } = item;
 
+  const isTakeAlreadyEvent =
+    handleIsAlreadyEmpSubscribeEvent && handleIsAlreadyEmpSubscribeEvent(docId);
+
   const handlerActionWithEvent = async () => {
     if (onHandleJoinToEvent) {
-      await onHandleJoinToEvent(item, tab === 2);
+      await onHandleJoinToEvent(item, isTakeAlreadyEvent || tab === 2);
     }
   };
 
@@ -92,13 +99,15 @@ const EventBoxItem: FC<EventBoxItemProps> = ({
           <TotalAvatars avatars={peoples} total={people_count} />
         )}
 
-        <Button
-          onClick={handlerActionWithEvent}
-          disabled={isConfirmEventDisabled}
-          sx={tab === 2 ? sxRejectBtn : sxAcceptBtn}
-        >
-          {tab === 2 ? 'Отклонить' : 'Принять'}
-        </Button>
+        {role === 'Сотрудник' && (
+          <Button
+            onClick={handlerActionWithEvent}
+            disabled={isConfirmEventDisabled}
+            sx={isTakeAlreadyEvent || tab === 2 ? sxRejectBtn : sxAcceptBtn}
+          >
+            {isTakeAlreadyEvent || tab === 2 ? 'Отклонить' : 'Принять'}
+          </Button>
+        )}
 
         {!isDetailsPage && (
           <Button
