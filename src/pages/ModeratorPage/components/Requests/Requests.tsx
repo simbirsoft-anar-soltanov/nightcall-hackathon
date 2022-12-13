@@ -1,13 +1,29 @@
-import { FC, Fragment, useContext } from 'react';
-import { Typography, Box } from '@mui/material';
+import { FC, useContext } from 'react';
+import { Typography, Box, Grid, Chip, Avatar, Button } from '@mui/material';
 import { UserContext } from 'context/user';
 import useUser from 'core/hooks/useUser';
 import useGetCollection from 'core/hooks/useGetCollection';
 import SpinnerWrap from 'core/components/SpinnerWrap/SpinnerWrap';
 import SnackBar from 'components/indicators/SnackBar/SnackBar';
-import Card from 'components/controls/Card/Card';
+import { changeStatusRequest } from 'services/requests/changeStatusRequest';
+import {
+  statusLabelRequest,
+  statusRequest,
+  sxRequestBoxContainer,
+  sxRequestBoxInfo,
+  sxRequestBoxLeftPanel,
+  tColor,
+  sxRequestBoxPhoneNumber,
+  sxRequestBoxRightPanel,
+} from 'src/pages/ModeratorPage/ModeratorPage.internals';
+import { sxEventGridItems } from 'core/components/Event/EventBoxList/EventBoxList.internals';
+import { defaultLogo } from 'core/constants/constants';
+import { red } from '@mui/material/colors';
+import {
+  sxAcceptBtn,
+  sxRejectBtn,
+} from 'core/components/Event/EventBoxItem/EventBoxItem.internals';
 import { UseUserType } from 'helpers/types';
-import { styledCardContainer } from 'src/pages/ModeratorPage/ModeratorPage.internals';
 
 const Requests: FC = () => {
   const { user: loggedInUser } = useContext(UserContext);
@@ -28,27 +44,80 @@ const Requests: FC = () => {
               Заявки на волонтерскую деятельность:
             </Typography>
 
-            <Box component='div' sx={styledCardContainer}>
+            <Grid sx={sxEventGridItems}>
               {value.docs.map((doc) => {
                 return (
                   doc?.data &&
                   doc?.data().status === 'active' && (
-                    <Fragment key={doc?.id}>
-                      <Card
-                        request={
-                          {
-                            ...doc.data(),
-                            docId: doc.id,
-                            role,
-                          } as any
-                        }
-                        nameCollection='request'
-                      />
-                    </Fragment>
+                    <>
+                      <Grid sx={sxRequestBoxContainer}>
+                        <Box sx={sxRequestBoxLeftPanel}>
+                          <Box sx={{ display: 'grid', gap: '4px' }}>
+                            <div>
+                              <Chip
+                                avatar={
+                                  <Avatar
+                                    src={doc.data().logo || defaultLogo}
+                                    sx={{ bgcolor: red[500] }}
+                                  />
+                                }
+                                label={statusLabelRequest[doc.data().status]}
+                                color={
+                                  statusRequest[doc.data().status] as tColor
+                                }
+                                variant='outlined'
+                                sx={{ fontWeight: 500 }}
+                              />
+                            </div>
+                            <Typography sx={sxRequestBoxInfo} component='div'>
+                              {doc.data().organizationName}
+                            </Typography>
+                            <Typography sx={sxRequestBoxPhoneNumber}>
+                              {doc.data().city} ({doc.data().phoneNumber})
+                            </Typography>
+                          </Box>
+                          <Box sx={{ display: 'grid', gap: '24px' }} />
+                        </Box>
+                        <Box sx={sxRequestBoxRightPanel}>
+                          <Button
+                            onClick={async () => {
+                              await changeStatusRequest(
+                                {
+                                  ...doc.data(),
+                                  docId: doc.id,
+                                  role,
+                                } as any,
+                                'reject',
+                                'request',
+                              );
+                            }}
+                            sx={sxRejectBtn}
+                          >
+                            Отклонить
+                          </Button>
+                          <Button
+                            onClick={async () => {
+                              await changeStatusRequest(
+                                {
+                                  ...doc.data(),
+                                  docId: doc.id,
+                                  role,
+                                } as any,
+                                'approve',
+                                'request',
+                              );
+                            }}
+                            sx={sxAcceptBtn}
+                          >
+                            Принять
+                          </Button>
+                        </Box>
+                      </Grid>
+                    </>
                   )
                 );
               })}
-            </Box>
+            </Grid>
           </>
         ) : (
           <Typography variant='body1' sx={{ margin: '24px 0 16px' }}>
@@ -61,27 +130,47 @@ const Requests: FC = () => {
             <Typography variant='h4' sx={{ margin: '24px 0 16px' }}>
               Завершенные заявки:
             </Typography>
-            <Box component='div' sx={styledCardContainer}>
+            <Grid sx={sxEventGridItems}>
               {value.docs.map((doc) => {
                 const docData = doc?.data();
 
                 return (
                   docData?.status !== 'active' && (
-                    <Fragment key={doc?.id}>
-                      <Card
-                        request={
-                          {
-                            ...docData,
-                            docId: doc.id,
-                            role,
-                          } as any
-                        }
-                      />
-                    </Fragment>
+                    <>
+                      <Grid sx={sxRequestBoxContainer}>
+                        <Box sx={sxRequestBoxLeftPanel}>
+                          <Box sx={{ display: 'grid', gap: '4px' }}>
+                            <div>
+                              <Chip
+                                avatar={
+                                  <Avatar
+                                    src={doc.data().logo || defaultLogo}
+                                    sx={{ bgcolor: red[500] }}
+                                  />
+                                }
+                                label={statusLabelRequest[doc.data().status]}
+                                color={
+                                  statusRequest[doc.data().status] as tColor
+                                }
+                                variant='outlined'
+                                sx={{ fontWeight: 500 }}
+                              />
+                            </div>
+                            <Typography sx={sxRequestBoxInfo} component='div'>
+                              {doc.data().organizationName}
+                            </Typography>
+                            <Typography sx={sxRequestBoxPhoneNumber}>
+                              {doc.data().city} ({doc.data().phoneNumber})
+                            </Typography>
+                          </Box>
+                          <Box sx={{ display: 'grid', gap: '24px' }} />
+                        </Box>
+                      </Grid>
+                    </>
                   )
                 );
               })}
-            </Box>
+            </Grid>
           </>
         ) : (
           <Typography variant='body1' sx={{ margin: '24px 0 16px' }}>
