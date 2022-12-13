@@ -1,4 +1,4 @@
-import { FC, useContext, useState } from 'react';
+import { FC, useContext, useState, useEffect } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import {
@@ -39,6 +39,15 @@ type OrderModalProps = {
   onClose: VoidFunction;
 };
 
+const initValues = {
+  info: '',
+  category: '',
+  time: '',
+  time_start: '',
+  must: '',
+  people_count: '',
+};
+
 const OrderModal: FC<OrderModalProps> = ({ open, onClose }) => {
   const { user: loggedInUser } = useContext(UserContext);
   const {
@@ -53,11 +62,19 @@ const OrderModal: FC<OrderModalProps> = ({ open, onClose }) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isValid },
   } = useForm<FieldValues>({
     resolver: yupResolver(schema),
     mode: 'all',
+    defaultValues: initValues,
   });
+
+  useEffect(() => {
+    return () => {
+      reset(initValues);
+    };
+  }, []);
 
   const onSubmit = handleSubmit(async (data) => {
     try {

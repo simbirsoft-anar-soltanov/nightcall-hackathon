@@ -80,7 +80,7 @@ const OrgPage: FC = () => {
 
           <OrderBoxList tab={tab} />
 
-          <OrderModal open={open} onClose={handleClose} />
+          {open && <OrderModal open={open} onClose={handleClose} />}
         </>
       )}
 

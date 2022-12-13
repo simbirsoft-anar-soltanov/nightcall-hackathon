@@ -1,9 +1,18 @@
 import { FC, useState, useEffect } from 'react';
-import { Typography, Box, Grid, Stack, IconButton } from '@mui/material';
+import {
+  Typography,
+  Box,
+  Grid,
+  Stack,
+  IconButton,
+  Alert,
+  AlertColor,
+} from '@mui/material';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { getUserByUserId } from 'services/firebase';
 import SpinnerWrap from 'core/components/SpinnerWrap/SpinnerWrap';
+import SnackBar from 'components/indicators/SnackBar/SnackBar';
 import EventBoxItem from '../EventBoxItem/EventBoxItem';
 import SearchBox from 'core/components/Search/SearchBox';
 import { DocumentData } from 'firebase/firestore';
@@ -15,12 +24,14 @@ import { statusEvents, sxEventGridItems } from './EventBoxList.internals';
 import { tSearchFilters } from 'core/components/Search/SearchBox.internals';
 import { dataIsEmpty } from 'utils/checkEmpty';
 import { tDocumentEvent } from 'core/helpers/types';
+import { useAlert } from 'core/hooks/useAlert';
 
 type tEventBoxListProps = {
   tab: number;
   userDocId: string;
   userId: string;
   readyStatus: string;
+  role: string;
 };
 
 const EventBoxList: FC<tEventBoxListProps> = ({
@@ -28,10 +39,23 @@ const EventBoxList: FC<tEventBoxListProps> = ({
   userDocId,
   userId,
   readyStatus,
+  role,
 }) => {
   const [page, setPage] = useState<number>(1);
   const [events, setEvents] = useState<DocumentData[]>([]);
+  const [joinEvents, setJoinEvents] = useState<DocumentData[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const { alert, onHandleChangeAlert } = useAlert();
+
+  const getJoinEvents = async () => {
+    const [getUser] = await getUserByUserId(userId);
+    getUser && setJoinEvents(getUser?.joinEvents);
+  };
+
+  useEffect(() => {
+    getJoinEvents();
+  }, []);
 
   useEffect(() => {
     setPage(1);
@@ -84,6 +108,13 @@ const EventBoxList: FC<tEventBoxListProps> = ({
     if (getUser?.joinEvents && tab === 2) {
       setEvents(getUser?.joinEvents);
     }
+
+    onHandleChangeAlert({
+      status: isUnFollow ? 'error' : 'success',
+      title: isUnFollow
+        ? 'Вы отписались от события.'
+        : 'Вы успешно подписались на событие.',
+    });
   };
 
   const handleFiltersEvents = (search: tSearchFilters) => {
@@ -91,6 +122,12 @@ const EventBoxList: FC<tEventBoxListProps> = ({
   };
 
   const isConfirmEventDisabled = readyStatus === 'dontDisturb';
+
+  const handleIsAlreadyEmpSubscribeEvent = (id: string): boolean => {
+    return joinEvents.some(
+      ({ docId: joinEventDocId }) => joinEventDocId === id,
+    );
+  };
 
   return (
     <Box>
@@ -100,17 +137,21 @@ const EventBoxList: FC<tEventBoxListProps> = ({
         </Box>
       ) : (
         <Box sx={{ display: 'grid', gap: '24px' }}>
+          <SearchBox handleFiltersEvents={handleFiltersEvents} />
+
           {events.length ? (
             <>
-              <SearchBox handleFiltersEvents={handleFiltersEvents} />
-
               <Grid sx={sxEventGridItems}>
                 {events.map((item: DocumentData, index: number) => (
                   <EventBoxItem
                     key={index}
                     tab={tab}
                     item={item as tDocumentEvent}
+                    role={role}
                     isConfirmEventDisabled={isConfirmEventDisabled}
+                    handleIsAlreadyEmpSubscribeEvent={
+                      handleIsAlreadyEmpSubscribeEvent
+                    }
                     onHandleJoinToEvent={onHandleJoinToEvent}
                   />
                 ))}
@@ -136,6 +177,12 @@ const EventBoxList: FC<tEventBoxListProps> = ({
               <ArrowForwardIosIcon />
             </IconButton>
           </Stack>
+
+          {alert?.status && (
+            <SnackBar>
+              <Alert severity={alert.status as AlertColor}>{alert.title}</Alert>
+            </SnackBar>
+          )}
         </Box>
       )}
     </Box>

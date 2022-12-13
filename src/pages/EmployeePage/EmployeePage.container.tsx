@@ -9,12 +9,12 @@ const EmployeePageContainer: FC = () => {
   const { user: loggedInUser } = useContext(UserContext);
   const {
     user,
-    user: { docId },
+    user: { docId, role },
   }: UseUserType = useUser(loggedInUser?.uid);
 
   if (!docId) return <SpinnerWrap />;
 
-  return <EmployeePage user={user} userId={loggedInUser?.uid} />;
+  return <EmployeePage user={user} userId={loggedInUser?.uid} role={role} />;
 };
 
 export default EmployeePageContainer;
