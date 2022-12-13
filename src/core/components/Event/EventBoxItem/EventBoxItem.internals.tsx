@@ -56,6 +56,9 @@ const sxRejectBtn = {
   lineHeight: '24px',
   color: '#BB5A6C',
   textTransform: 'none',
+  '&:disabled': {
+    border: '2px solid #ccc',
+  },
 };
 
 const sxAcceptBtn = {
@@ -68,6 +71,9 @@ const sxAcceptBtn = {
   lineHeight: '24px',
   color: '#28C61A',
   textTransform: 'none',
+  '&:disabled': {
+    border: '2px solid #ccc',
+  },
 };
 
 export {

@@ -1,7 +1,6 @@
 const statusEvents: Record<string, string[]> = {
   0: ['active', 'past'],
   1: ['active'],
-  2: ['past'],
 };
 
 const sxEventGridItems = {

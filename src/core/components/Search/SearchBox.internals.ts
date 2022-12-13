@@ -1,21 +1,98 @@
+import * as yup from 'yup';
+import { yupFields } from 'utils/yupFields';
+
+const {
+  filterForm: { city, startDate, category },
+} = yupFields;
+
+const schema = yup.object({
+  city,
+  startDate,
+  category,
+});
+
+export type tItems = { key: string; value: string }[];
+
+type tItemSearchNameFields = {
+  key: number;
+  label: string;
+  name: string;
+  type: string;
+  items?: tItems;
+};
+
+const searchNameFields: Array<tItemSearchNameFields> = [
+  {
+    key: 1,
+    label: 'Дата проведения',
+    name: 'startDate',
+    type: 'input',
+  },
+  {
+    key: 2,
+    label: 'Город',
+    name: 'city',
+    type: 'dropdown',
+    items: [
+      { key: 'Samara', value: 'Самара' },
+      { key: 'Ulyanovsk', value: 'Ульяновск' },
+      { key: 'Kazan', value: 'Казань' },
+    ],
+  },
+  {
+    key: 3,
+    label: 'Категории',
+    name: 'category',
+    type: 'dropdown',
+    items: [
+      { key: 'eco', value: 'Экология' },
+      { key: 'volunteering', value: 'Волонтёрство' },
+      { key: 'shelter', value: 'Помощь приютам' },
+    ],
+  },
+];
+
+export type tOptions = {
+  value: string;
+  field: string;
+};
+
+export type tSearchFilters = {
+  [index: string]: string;
+  [key: number]: string;
+  search: string;
+  city: string;
+  startDate: string;
+  category: string;
+};
+
+const initSearch: tSearchFilters = {
+  search: '',
+  city: '',
+  startDate: '',
+  category: '',
+};
+
 const sxSearchBoxContainer = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
   padding: '24px',
   background: '#FFF',
   boxShadow: '0 7px 40px rgba(31, 37, 113, 0.07)',
   borderRadius: '20px',
   border: '1px solid #E1E3E8',
   backgroundColor: '#E1E3E8',
+  display: 'grid',
+  gridTemplate: `'search search btn' auto 'filter filter filter' 1fr / 1fr`,
+  gridAutoFlow: 'column',
+  alignItems: 'flex-end',
+  gap: '12px',
 };
 
 const sxLeftBoxSearch = {
-  display: 'flex',
-  flexWrap: 'wrap',
-  justifyContent: 'space-between',
-  flex: '0 0 75%',
-  width: '70%',
+  display: 'grid',
+  gridAutoFlow: 'column',
+  gridTemplate: 'auto/ 1fr 1fr 1fr 200px',
+  gap: '12px',
+  alignItems: 'flex-end',
 };
 
 const sxSearchLabel = {
@@ -58,54 +135,14 @@ const sxSearchButton = {
   },
 };
 
-type tItemSearchNameFields = {
-  key: number;
-  title: string;
-  field: string;
-};
-
-const searchNameFields: Array<tItemSearchNameFields> = [
-  {
-    key: 1,
-    title: 'Город',
-    field: 'city',
-  },
-  {
-    key: 2,
-    title: 'Дата проведения',
-    field: 'startDate',
-  },
-  {
-    key: 3,
-    title: 'Категории',
-    field: 'category',
-  },
-];
-
-export type tOptions = {
-  value: string;
-  field: string;
-};
-
-export type tSearchFilters = {
-  city: string;
-  startDate: string;
-  category: string;
-};
-
-const initSearch: tSearchFilters = {
-  city: '',
-  startDate: '',
-  category: '',
-};
-
 export {
+  schema,
+  searchNameFields,
+  initSearch,
   sxSearchBoxContainer,
   sxSearchLabel,
   sxLeftBoxSearch,
   sxItemLeftBoxSearch,
   sxSearchInput,
   sxSearchButton,
-  searchNameFields,
-  initSearch,
 };

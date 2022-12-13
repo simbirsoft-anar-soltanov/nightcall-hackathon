@@ -3,18 +3,22 @@ import { tSearchFilters } from 'core/components/Search/SearchBox.internals';
 import { tEvent } from 'core/helpers/types';
 
 export const getEventsBySearch = async (
-  search: tSearchFilters,
+  filters: tSearchFilters,
   statuses: string[],
 ): Promise<tEvent[]> => {
-  const { city, startDate, category } = search;
+  const { search, city, startDate, category } = filters;
 
   let initQuery = firebase
     .firestore()
     .collection('events')
     .where('status', 'in', statuses);
 
+  if (search !== '') {
+    initQuery = initQuery.where('info', '>=', search);
+  }
+
   if (city !== '') {
-    initQuery = initQuery.where('city', '==', city.toLowerCase());
+    initQuery = initQuery.where('city', '==', city);
   }
 
   if (startDate !== '') {
@@ -23,7 +27,7 @@ export const getEventsBySearch = async (
 
   if (category !== '') {
     console.log(category.toLowerCase());
-    initQuery = initQuery.where('category', '==', category.toLowerCase());
+    initQuery = initQuery.where('category', '==', category);
   }
 
   const result = await initQuery.get();

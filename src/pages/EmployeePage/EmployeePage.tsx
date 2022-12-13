@@ -48,10 +48,16 @@ const EmployeePage: FC<tEmployeePageProps> = ({
           <Tab label='Активные' sx={sxEmpTab} />
           <Tab label='Откликнутые' sx={sxEmpTab} />
         </Tabs>
+
         <Togggle value={readyStatus} handleChange={handleChange} />
       </Grid>
 
-      <EventBoxList tab={tab} userDocId={userDocId} userId={userId} />
+      <EventBoxList
+        tab={tab}
+        userDocId={userDocId}
+        userId={userId}
+        readyStatus={readyStatus}
+      />
     </Box>
   );
 };

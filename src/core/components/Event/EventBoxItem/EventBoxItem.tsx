@@ -20,6 +20,7 @@ import {
 type EventBoxItemProps = {
   item: tDocumentEvent;
   tab: number;
+  isConfirmEventDisabled: boolean;
   onHandleJoinToEvent: (
     event: tDocumentEvent,
     isUnFollow?: boolean,
@@ -29,6 +30,7 @@ type EventBoxItemProps = {
 const EventBoxItem: FC<EventBoxItemProps> = ({
   item,
   tab,
+  isConfirmEventDisabled,
   onHandleJoinToEvent,
 }) => {
   const navigate = useNavigate();
@@ -53,7 +55,8 @@ const EventBoxItem: FC<EventBoxItemProps> = ({
             )}
           </Typography>
           <Typography sx={sxEventBoxCategory}>
-            {upperCaseFirstString(category)} - {upperCaseFirstString(city)}
+            {upperCaseFirstString(category)}
+            {` (${upperCaseFirstString(city)})`}
           </Typography>
         </Box>
 
@@ -71,10 +74,12 @@ const EventBoxItem: FC<EventBoxItemProps> = ({
       <Box sx={sxEventBoxRightPanel}>
         <Button
           onClick={handlerActionWithEvent}
+          disabled={isConfirmEventDisabled}
           sx={tab === 2 ? sxRejectBtn : sxAcceptBtn}
         >
           {tab === 2 ? 'Отклонить' : 'Принять'}
         </Button>
+
         <Button
           onClick={() => navigate(`/dashboard/event/${organization_id}`)}
           onKeyDown={({ key }) =>
