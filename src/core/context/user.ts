@@ -1,3 +1,8 @@
 import { createContext, Context } from 'react';
+import Firebase from 'firebase/compat/app';
 
-export const UserContext: Context<any> = createContext(null);
+type tUserContext = Context<{ user: Firebase.User }>;
+
+export const UserContext: tUserContext = createContext({
+  user: {} as Firebase.User,
+});

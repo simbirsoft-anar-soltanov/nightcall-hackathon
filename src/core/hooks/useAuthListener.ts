@@ -1,14 +1,13 @@
-//@ts-nocheck
 import { useState, useEffect, useContext } from 'react';
+import Firebase from 'firebase/compat/app';
 import { FirebaseContext } from '../context/firebase';
 
 export const useAuthListener = () => {
-  const [user, setUser] = useState(
+  const { firebase } = useContext(FirebaseContext);
+
+  const [user, setUser] = useState<Firebase.User | null>(
     JSON.parse(localStorage.getItem('authUser') || '{}'),
   );
-
-  //@ts-ignore
-  const { firebase } = useContext(FirebaseContext);
 
   useEffect(() => {
     const listener = firebase?.auth()?.onAuthStateChanged((authUser) => {

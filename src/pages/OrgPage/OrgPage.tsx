@@ -1,44 +1,53 @@
-import { useContext, useState } from 'react';
-import { Box, Typography } from '@mui/material';
-import { styledOrgContainer } from 'pages/OrgPage/OrgPage.internals';
+import { FC, useState, useContext, useEffect } from 'react';
+import { Box, Typography, Tabs, Tab, Button } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import OrderModal from 'pages/OrgPage/OrderModal';
-import OrderList from 'pages/OrgPage/OrderList';
-import { CustomOpenModalButton } from 'components/controls/Button/Button';
 import { UserContext } from 'core/context/user';
-import { UseUserType } from 'core/helpers/types';
-import useUser from 'core/hooks/useUser';
-import ChangeStatusModal from 'pages/OrgPage/ChangeStatusModal';
+import TitleHead from 'core/components/TitleHead/TitleHead';
+import ChangeStatusModal from 'core/components/ChangeStatusModal/ChangeStatusModal';
+import OrderBoxList from 'core/components/Order/OrderBoxList/OrderBoxList';
+import OrgInfo from 'core/components/OrgInfo/OrgInfo';
+import OrderModal from 'core/components/Order/OrderModal/OrderModal';
 import SpinnerWrap from 'core/components/SpinnerWrap/SpinnerWrap';
+import { CustomOpenModalButton } from 'components/controls/Button/Button';
+import useUser from 'core/hooks/useUser';
+import useTabs from 'core/hooks/useTabs';
+import useModal from 'core/hooks/useModal';
+import { UseUserType } from 'core/helpers/types';
+import {
+  styledContainer,
+  sxOrgTab,
+  sxOrgAddRequest,
+} from 'pages/OrgPage/OrgPage.internals';
 
-const OrgPage = () => {
-  const [open, setOpen] = useState(false);
-  const [openChangeModal, setOpenChangeModal] = useState(true);
+const OrgPage: FC = () => {
+  const [openChangeModal, setOpenChangeModal] = useState<boolean>(true);
+
+  const { modal: open, handleOpen, handleClose } = useModal();
+  const { tab, onChangeTab } = useTabs();
+
   const { user: loggedInUser } = useContext(UserContext);
+
   const {
+    user,
     user: { status },
   }: UseUserType = useUser(loggedInUser?.uid);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  useEffect(() => {
+    document.title = 'Страница организации';
+  }, []);
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  if (!status) return <SpinnerWrap />;
+  if (!user) return <SpinnerWrap />;
 
   return (
-    <Box component='div' sx={styledOrgContainer}>
+    <Box component='div' sx={styledContainer}>
+      <TitleHead title='Мероприятия' namePage='Страница организации' />
+
       {status === 'active' || status === 'reject' ? (
-        <Grid container justifyContent='space-between' alignItems='center'>
-          <Typography variant='h3' sx={{ margin: '5px 0 10px' }}>
-            Страница организации
-          </Typography>
+        <Grid container justifyContent='flex-end' alignItems='center'>
           <CustomOpenModalButton onClick={() => setOpenChangeModal(true)}>
             Получить доступ
           </CustomOpenModalButton>
+
           <ChangeStatusModal
             open={openChangeModal}
             onClose={() => setOpenChangeModal(false)}
@@ -47,17 +56,35 @@ const OrgPage = () => {
       ) : (
         <>
           <Grid container justifyContent='space-between' alignItems='center'>
-            <Typography variant='h3' sx={{ margin: '5px 0 10px' }}>
-              Мои заявки
-            </Typography>
-            <CustomOpenModalButton onClick={handleClickOpen}>
+            <Tabs value={tab} onChange={onChangeTab}>
+              <Tab label='Активные' sx={{ paddingLeft: 0, ...sxOrgTab }} />
+              <Tab label='На модерации' sx={sxOrgTab} />
+              <Tab label='Отклонены' sx={sxOrgTab} />
+            </Tabs>
+
+            <Button
+              variant='text'
+              component='span'
+              sx={sxOrgAddRequest}
+              onClick={handleOpen}
+            >
+              <Typography
+                component='span'
+                sx={{ fontSize: 'inherit', lineHeight: 'inherit' }}
+              >
+                +
+              </Typography>
               Создать заявку
-            </CustomOpenModalButton>
+            </Button>
           </Grid>
-          <OrderList />
+
+          <OrderBoxList tab={tab} />
+
           <OrderModal open={open} onClose={handleClose} />
         </>
       )}
+
+      <OrgInfo user={user} />
     </Box>
   );
 };

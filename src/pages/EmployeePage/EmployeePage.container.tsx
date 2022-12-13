@@ -1,9 +1,9 @@
 import { FC, useContext } from 'react';
+import { UserContext } from 'context/user';
 import useUser from 'core/hooks/useUser';
-import { UseUserType } from 'core/helpers/types';
-import { UserContext } from 'core/context/user';
-import EmployeePage from './EmployeePage';
 import SpinnerWrap from 'core/components/SpinnerWrap/SpinnerWrap';
+import EmployeePage from './EmployeePage';
+import { UseUserType } from 'helpers/types';
 
 const EmployeePageContainer: FC = () => {
   const { user: loggedInUser } = useContext(UserContext);
@@ -14,7 +14,7 @@ const EmployeePageContainer: FC = () => {
 
   if (!docId) return <SpinnerWrap />;
 
-  return <EmployeePage user={user} uid={loggedInUser?.uid} />;
+  return <EmployeePage user={user} userId={loggedInUser?.uid} />;
 };
 
 export default EmployeePageContainer;

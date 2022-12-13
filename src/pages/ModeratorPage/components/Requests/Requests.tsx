@@ -1,14 +1,13 @@
 import { FC, Fragment, useContext } from 'react';
-import { getFirestore, collection } from 'firebase/firestore';
-import { useCollection } from 'react-firebase-hooks/firestore';
-import { Typography, Box, Snackbar, Alert } from '@mui/material';
-import { firebase } from 'core/lib/firebase';
-import { styledCardContainer } from 'src/pages/ModeratorPage/ModeratorPage.internals';
-import SpinnerWrap from 'core/components/SpinnerWrap/SpinnerWrap';
-import Card from 'components/controls/Card/Card';
-import { UserContext } from 'core/context/user';
-import { UseUserType } from 'core/helpers/types';
+import { Typography, Box } from '@mui/material';
+import { UserContext } from 'context/user';
 import useUser from 'core/hooks/useUser';
+import useGetCollection from 'core/hooks/useGetCollection';
+import SpinnerWrap from 'core/components/SpinnerWrap/SpinnerWrap';
+import SnackBar from 'components/indicators/SnackBar/SnackBar';
+import Card from 'components/controls/Card/Card';
+import { UseUserType } from 'helpers/types';
+import { styledCardContainer } from 'src/pages/ModeratorPage/ModeratorPage.internals';
 
 const Requests: FC = () => {
   const { user: loggedInUser } = useContext(UserContext);
@@ -16,12 +15,7 @@ const Requests: FC = () => {
     user: { role },
   }: UseUserType = useUser(loggedInUser?.uid);
 
-  const [value, loading, error] = useCollection(
-    collection(getFirestore(firebase), 'request'),
-    {
-      snapshotListenOptions: { includeMetadataChanges: true },
-    },
-  );
+  const [value, loading, error] = useGetCollection('request');
 
   if (loading) return <SpinnerWrap />;
 
@@ -33,6 +27,7 @@ const Requests: FC = () => {
             <Typography variant='h4' sx={{ margin: '24px 0 16px' }}>
               Заявки на волонтерскую деятельность:
             </Typography>
+
             <Box component='div' sx={styledCardContainer}>
               {value.docs.map((doc) => {
                 return (
@@ -68,14 +63,15 @@ const Requests: FC = () => {
             </Typography>
             <Box component='div' sx={styledCardContainer}>
               {value.docs.map((doc) => {
+                const docData = doc?.data();
+
                 return (
-                  doc?.data &&
-                  doc?.data().status !== 'active' && (
+                  docData?.status !== 'active' && (
                     <Fragment key={doc?.id}>
                       <Card
                         request={
                           {
-                            ...doc.data(),
+                            ...docData,
                             docId: doc.id,
                             role,
                           } as any
@@ -93,17 +89,8 @@ const Requests: FC = () => {
           </Typography>
         )}
       </Box>
-      {error && (
-        <Snackbar
-          open
-          autoHideDuration={6000}
-          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        >
-          <Alert severity='error' color='error'>
-            Произошла ошибка
-          </Alert>
-        </Snackbar>
-      )}
+
+      {error && <SnackBar title='Произошла ошибка' />}
     </>
   );
 };
