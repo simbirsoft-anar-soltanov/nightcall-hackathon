@@ -10,82 +10,28 @@ import { DocumentData } from 'firebase/firestore';
 import { joinToEvent } from 'core/services/events/joinToEvent';
 import { getEventsBySearch } from 'core/services/events/getEventsBySearch';
 import { getEventsByStatus } from 'core/services/events/getEventsByStatus';
+import { getEventsBySearchForRespond } from 'utils/getEventsBySearchForRespond';
 import { statusEvents, sxEventGridItems } from './EventBoxList.internals';
 import { tSearchFilters } from 'core/components/Search/SearchBox.internals';
 import { dataIsEmpty } from 'utils/checkEmpty';
+import { tDocumentEvent } from 'core/helpers/types';
 
 type tEventBoxListProps = {
   tab: number;
   userDocId: string;
   userId: string;
+  readyStatus: string;
 };
 
-const EventBoxList: FC<tEventBoxListProps> = ({ tab, userDocId, userId }) => {
+const EventBoxList: FC<tEventBoxListProps> = ({
+  tab,
+  userDocId,
+  userId,
+  readyStatus,
+}) => {
   const [page, setPage] = useState<number>(1);
   const [events, setEvents] = useState<DocumentData[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-
-  const getEvents = async (userId: string) => {
-    const [getUser] = await getUserByUserId(userId);
-    return getUser?.joinEvents || null;
-  };
-
-  const setEventsFromApi = (res: any) => {
-    if (res) setEvents(res);
-    setLoading(false);
-  };
-
-  const getByStatus = async () => await getEventsByStatus(statusEvents[tab]);
-
-  const getEventsBySearchForRespond = ({
-    city,
-    startDate,
-    category,
-  }: tSearchFilters) => {
-    const eventsBySearch = events.filter((event) => {
-      const isCity = city !== '' && event.city.includes(city);
-
-      const isCategoryFilter =
-        category !== '' && event.category.includes(category);
-
-      const isStartDate =
-        startDate !== '' && event.time_start.includes(startDate);
-
-      return isCity || isCategoryFilter || isStartDate;
-    });
-
-    setEvents(eventsBySearch);
-  };
-
-  const getBySearch = async (searchFilters: tSearchFilters) => {
-    if (tab === 2) {
-      if (dataIsEmpty(searchFilters)) {
-        getEvents(userId).then((response) => {
-          setEventsFromApi(response);
-        });
-      } else {
-        return getEventsBySearchForRespond(searchFilters);
-      }
-    }
-    if (dataIsEmpty(searchFilters)) {
-      return await getEventsByStatus(statusEvents[tab]);
-    }
-    return await getEventsBySearch(searchFilters, statusEvents[tab]);
-  };
-
-  const onHandleJoinToEvent = async (event: any, isUnFollow?: boolean) => {
-    await joinToEvent(userDocId, { ...event, userDocId }, isUnFollow);
-
-    const [getUser] = await getUserByUserId(userId);
-
-    if (getUser?.joinEvents && tab === 2) {
-      setEvents(getUser?.joinEvents);
-    }
-  };
-
-  const handleFiltersEvents = (search: tSearchFilters) => {
-    getBySearch(search).then((response) => setEventsFromApi(response));
-  };
 
   useEffect(() => {
     setPage(1);
@@ -99,6 +45,53 @@ const EventBoxList: FC<tEventBoxListProps> = ({ tab, userDocId, userId }) => {
     }
   }, [tab]);
 
+  const getEvents = async (userId: string) => {
+    const [getUser] = await getUserByUserId(userId);
+    return getUser?.joinEvents || null;
+  };
+
+  const setEventsFromApi = (response: any) => {
+    if (response) setEvents(response);
+    setLoading(false);
+  };
+
+  const getByStatus = async () => await getEventsByStatus(statusEvents[tab]);
+
+  const getBySearch = async (searchFilters: tSearchFilters) => {
+    if (tab === 2) {
+      if (dataIsEmpty(searchFilters)) {
+        getEvents(userId).then((response) => setEventsFromApi(response));
+      } else {
+        return getEventsBySearchForRespond(searchFilters, events, setEvents);
+      }
+    }
+
+    if (dataIsEmpty(searchFilters)) {
+      return await getEventsByStatus(statusEvents[tab]);
+    }
+
+    return await getEventsBySearch(searchFilters, statusEvents[tab]);
+  };
+
+  const onHandleJoinToEvent = async (
+    event: tDocumentEvent,
+    isUnFollow?: boolean,
+  ) => {
+    await joinToEvent(userDocId, event, isUnFollow);
+
+    const [getUser] = await getUserByUserId(userId);
+
+    if (getUser?.joinEvents && tab === 2) {
+      setEvents(getUser?.joinEvents);
+    }
+  };
+
+  const handleFiltersEvents = (search: tSearchFilters) => {
+    getBySearch(search).then((response) => setEventsFromApi(response));
+  };
+
+  const isConfirmEventDisabled = readyStatus === 'dontDisturb';
+
   return (
     <Box>
       {loading ? (
@@ -107,19 +100,22 @@ const EventBoxList: FC<tEventBoxListProps> = ({ tab, userDocId, userId }) => {
         </Box>
       ) : (
         <Box sx={{ display: 'grid', gap: '24px' }}>
-          <SearchBox handleFiltersEvents={handleFiltersEvents} />
-
           {events.length ? (
-            <Grid sx={sxEventGridItems}>
-              {events.map((item: any, index: number) => (
-                <EventBoxItem
-                  key={index}
-                  item={item}
-                  tab={tab}
-                  onHandleJoinToEvent={onHandleJoinToEvent}
-                />
-              ))}
-            </Grid>
+            <>
+              <SearchBox handleFiltersEvents={handleFiltersEvents} />
+
+              <Grid sx={sxEventGridItems}>
+                {events.map((item: DocumentData, index: number) => (
+                  <EventBoxItem
+                    key={index}
+                    tab={tab}
+                    item={item as tDocumentEvent}
+                    isConfirmEventDisabled={isConfirmEventDisabled}
+                    onHandleJoinToEvent={onHandleJoinToEvent}
+                  />
+                ))}
+              </Grid>
+            </>
           ) : (
             <Box sx={{ minHeight: '350px' }}>
               <Typography

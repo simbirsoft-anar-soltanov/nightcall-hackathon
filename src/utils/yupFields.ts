@@ -39,4 +39,11 @@ export const yupFields = {
     themeOfTheAppeal: yup.string().required('Укажите тему обращения'),
     descriptionOfTheProblem: yup.string().required('Опишите проблему'),
   },
+
+  filterForm: {
+    search: yup.string().optional(),
+    city: yup.string().optional(),
+    startDate: yup.string().optional(),
+    category: yup.string().optional(),
+  },
 };
