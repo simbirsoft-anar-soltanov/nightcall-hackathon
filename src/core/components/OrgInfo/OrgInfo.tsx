@@ -8,7 +8,7 @@ import { defaultAvatar } from 'core/constants/constants';
 import { tUser } from 'core/helpers/types';
 import { sxOrgTitlePage } from 'pages/OrgPage/OrgPage.internals';
 import {
-  sxOrgInfoWrap,
+  getSxOrgInfoWrap,
   sxOrgInfoProfile,
   sxOrgInfoDescr,
   sxOrgInfoName,
@@ -19,17 +19,24 @@ import {
   mockOrgDescr,
 } from './OrgInfo.internals';
 
-type tOrgInfoProps = { user: tUser };
+type tOrgInfoProps = {
+  user: tUser;
+  isNotTitle?: boolean;
+  isFullWidth?: boolean;
+};
 
 const OrgInfo: FC<tOrgInfoProps> = ({
   user: { avatar, organizationName, numberPhone, email },
+  isNotTitle,
+  isFullWidth,
 }) => {
   const [showMore, setShowMore] = useState<boolean>(false);
 
   return (
     <>
-      <Typography sx={sxOrgTitlePage}>Данные</Typography>
-      <Grid container sx={sxOrgInfoWrap}>
+      {!isNotTitle && <Typography sx={sxOrgTitlePage}>Данные</Typography>}
+
+      <Grid container sx={getSxOrgInfoWrap(isFullWidth)}>
         <Box sx={sxOrgInfoProfile}>
           <Avatar src={avatar || defaultAvatar} alt={organizationName} />
 

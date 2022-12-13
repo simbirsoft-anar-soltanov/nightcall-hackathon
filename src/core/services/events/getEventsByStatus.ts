@@ -12,6 +12,7 @@ export const getEventsByStatus = async (
 
   const eventsByStatus = result.docs.map((item) => ({
     ...item.data(),
+    docId: item.id,
   })) as tEvent[];
 
   return eventsByStatus;

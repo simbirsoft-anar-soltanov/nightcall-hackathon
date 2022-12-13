@@ -4,6 +4,7 @@ import { Typography, Box, Grid, Button } from '@mui/material';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import Tooltip from 'components/indicators/Tooltip/Tooltip';
+import TotalAvatars from 'components/view/TotalAvatars/TotalAvatars';
 import { upperCaseFirstString } from 'utils/upperCaseFirstString';
 import { tDocumentEvent } from 'core/helpers/types';
 import { sxSupportBtn } from 'core/layout/DefaultLayout/components/Header/Header.internals';
@@ -19,9 +20,10 @@ import {
 
 type EventBoxItemProps = {
   item: tDocumentEvent;
-  tab: number;
-  isConfirmEventDisabled: boolean;
-  onHandleJoinToEvent: (
+  tab?: number;
+  isConfirmEventDisabled?: boolean;
+  isDetailsPage?: boolean;
+  onHandleJoinToEvent?: (
     event: tDocumentEvent,
     isUnFollow?: boolean,
   ) => Promise<void>;
@@ -31,14 +33,26 @@ const EventBoxItem: FC<EventBoxItemProps> = ({
   item,
   tab,
   isConfirmEventDisabled,
+  isDetailsPage,
   onHandleJoinToEvent,
 }) => {
   const navigate = useNavigate();
 
-  const { organization_id, category, info, time, time_start, city } = item;
+  const {
+    docId,
+    category,
+    info,
+    time,
+    time_start,
+    city,
+    people_count,
+    peoples,
+  } = item;
 
   const handlerActionWithEvent = async () => {
-    await onHandleJoinToEvent(item, tab === 2);
+    if (onHandleJoinToEvent) {
+      await onHandleJoinToEvent(item, tab === 2);
+    }
   };
 
   return (
@@ -54,6 +68,7 @@ const EventBoxItem: FC<EventBoxItemProps> = ({
               </Tooltip>
             )}
           </Typography>
+
           <Typography sx={sxEventBoxCategory}>
             {upperCaseFirstString(category)}
             {` (${upperCaseFirstString(city)})`}
@@ -71,7 +86,12 @@ const EventBoxItem: FC<EventBoxItemProps> = ({
           </Typography>
         </Box>
       </Box>
+
       <Box sx={sxEventBoxRightPanel}>
+        {isDetailsPage && (
+          <TotalAvatars avatars={peoples} total={people_count} />
+        )}
+
         <Button
           onClick={handlerActionWithEvent}
           disabled={isConfirmEventDisabled}
@@ -80,15 +100,17 @@ const EventBoxItem: FC<EventBoxItemProps> = ({
           {tab === 2 ? 'Отклонить' : 'Принять'}
         </Button>
 
-        <Button
-          onClick={() => navigate(`/dashboard/event/${organization_id}`)}
-          onKeyDown={({ key }) =>
-            key === 'Enter' && navigate(`/dashboard/event/${organization_id}`)
-          }
-          sx={sxSupportBtn}
-        >
-          Подробнее
-        </Button>
+        {!isDetailsPage && (
+          <Button
+            onClick={() => navigate(`/dashboard/event/${docId}`)}
+            onKeyDown={({ key }) =>
+              key === 'Enter' && navigate(`/dashboard/event/${docId}`)
+            }
+            sx={sxSupportBtn}
+          >
+            Подробнее
+          </Button>
+        )}
       </Box>
     </Grid>
   );

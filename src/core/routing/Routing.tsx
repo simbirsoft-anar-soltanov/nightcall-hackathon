@@ -23,7 +23,7 @@ const OrganizationPage = lazy(() => import('pages/OrgPage/OrgPage'));
 const EmployeePage = lazy(
   () => import('pages/EmployeePage/EmployeePage.container'),
 );
-const EventPage = lazy(() => import('pages/EventPage/EventPage'));
+const EventPage = lazy(() => import('pages/EventPage/EventPageContainer'));
 const ProfilePage = lazy(() => import('pages/ProfilePage/ProfilePage'));
 
 const roleRoute: Record<string, JSX.Element> = {
